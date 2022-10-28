@@ -222,12 +222,6 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li>
-                                        <a href="{{route('services')}}">
-                                            <i class="fa fa fa-cube" aria-hidden="true"></i>
-                                            <span>SERVICES</span>
-                                        </a>
-                                    </li>
                                     @if (Auth::user()->boutique->settings->where('tag', 'inventaire')->first() && Auth::user()->boutique->settings->where('tag', 'inventaire')->first()->pivot->is_active)
                                     <li>
                                         <a href="{{route('inventaire')}}">
@@ -246,13 +240,6 @@
                                         <a href="{{route('fournisseurs')}}">
                                             <i class="fa fa-child" aria-hidden="true"></i>
                                             <span>{{ Str::upper(__('msg.providers')) }}</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a href="{{route('projets')}}">
-                                            <i class="fa  fa-users" aria-hidden="true"></i>
-                                            <span>PROJETS</span>
                                         </a>
                                     </li>
                                     
