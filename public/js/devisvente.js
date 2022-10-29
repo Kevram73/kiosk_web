@@ -390,3 +390,50 @@ $('#quantite').on('change',function ( ) {
     var total = $('#prix').val() * $('#quantite').val();
     $('#prixQte').val(total);
 });
+
+
+
+$('#btnclient').on('click', function(){
+
+    $('.modal-title-user').text('ENREGISTREMENT DU CLIENT');
+    $('#idclient').val(null);
+    $('#nom').val(null);
+    $('#btnadd').text('Valider');
+    $('#btnadd').removeClass('btn-warning');
+    $('#btnadd').addClass('btn-primary');
+    $('#prenoms').val(null);
+    $('#email').val(null);
+    $('#contact').val(null);
+    $('#sexe').val(null);
+    $('#ajout_client').modal('show');
+});
+//post des données
+$('#ajout_client  form').on('submit', function (e) {
+
+    let url;
+    if (!$('#idclient').val()){
+        url = '/ajoutclient'
+    }
+
+    e.preventDefault();
+    if (e.isDefaultPrevented()){
+        $.ajax({
+            url : url ,
+            type : "post",
+            // data : $('#modal-form-user').serialize(),
+            data: new FormData($("#ajout_client form")[0]),
+            //data: new FormData($("#modal-form-user")[0]),
+            contentType: false,
+            processData: false,
+            success : function(data) {
+
+                $('#ajout_client').modal('hide');
+                window.location='/devisvente'
+
+            },
+            error : function(data){
+                alert('erreur')
+            }
+        });
+    }
+});

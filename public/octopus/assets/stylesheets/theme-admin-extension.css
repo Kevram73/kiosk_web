@@ -1423,7 +1423,7 @@ input.input-rounded {
 .checkbox-custom input[type="checkbox"]:checked + label:after {
 	position: absolute;
 	display: inline-block;
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: '\F00C';
 	top: 50%;
 	left: 4px;
@@ -1749,7 +1749,7 @@ div.validation-message ul label.error {
 }
 
 div.validation-message ul label.error:before {
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: '\f00d';
 	position: absolute;
 	top: 0;
@@ -3380,12 +3380,12 @@ html.dark div.DTTT .btn {
 
 .datepicker table thead tr th.prev {
 	content: '\f0d9';
-	font-family: Georgia;
+	font-family: Roboto;
 }
 
 .datepicker table thead tr th.next {
 	content: '\f0da';
-	font-family: Georgia;
+	font-family: Roboto;
 }
 
 .datepicker table td {
@@ -3562,7 +3562,7 @@ html.dark .datepicker.datepicker-primary {
 	background: none;
 	border-radius: 4px;
 	color: #555;
-	font-family: "Georgia", Helvetica, Arial, sans-serif;
+	font-family: "Roboto", Helvetica, Arial, sans-serif;
 	background-color: #FFF;
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -3574,7 +3574,7 @@ html.dark .datepicker.datepicker-primary {
 .select2-search input {
 	border-radius: 4px;
 	color: #555;
-	font-family: "Georgia", Helvetica, Arial, sans-serif;
+	font-family: "Roboto", Helvetica, Arial, sans-serif;
 	background-color: #FFF;
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -3938,7 +3938,7 @@ html.dark .select2-search input.select2-active {
 }
 
 html.dark .select2-search:before {
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: "\f002";
 	position: absolute;
 	right: 15px;
@@ -4768,7 +4768,7 @@ html.dark .form-wizard .pager .disabled > a, html.dark .form-wizard .pager .disa
 	background: #FFF;
 	border: none;
 	border-radius: 0 0 4px 4px;
-	font-family: Georgia, Helvetica, Sans-serif;
+	font-family: Roboto, Helvetica, Sans-serif;
 }
 .note-editor .note-statusbar {
 	background: #FFF;

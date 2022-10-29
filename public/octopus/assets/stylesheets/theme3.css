@@ -12,7 +12,7 @@ html {
 
 body {
 	color: #777;
-	font-family: "Georgia", Arial, sans-serif;
+	font-family: "Roboto", Arial, sans-serif;
 	line-height: 22px;
 	margin: 0;
 	font-size: 13px;
@@ -2392,7 +2392,7 @@ ul.nav-main li.nav-parent > a {
 }
 
 ul.nav-main li.nav-parent > a:after {
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: '\f107';
 	font-size: 16px;
 	font-size: 1.6rem;
@@ -2630,7 +2630,7 @@ h6,
 /* Alternative Font Style */
 .alternative-font {
 	color: #cccccc;
-	font-family: "Georgia", cursive;
+	font-family: "Roboto", cursive;
 	font-size: 1.6em;
 }
 
@@ -2642,7 +2642,7 @@ p.drop-caps:first-child:first-letter {
 	padding: 4px;
 	margin-right: 5px;
 	margin-top: 5px;
-	font-family: Georgia;
+	font-family: Roboto;
 	color: #171717;
 }
 
@@ -3895,7 +3895,7 @@ input.input-rounded {
 .checkbox-custom input[type="checkbox"]:checked + label:after {
 	position: absolute;
 	display: inline-block;
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: '\F00C';
 	top: 50%;
 	left: 4px;
@@ -4221,7 +4221,7 @@ div.validation-message ul label.error {
 }
 
 div.validation-message ul label.error:before {
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: '\f00d';
 	position: absolute;
 	top: 0;
@@ -8865,7 +8865,7 @@ html.dark .modal-footer {
 /* Close */
 .mfp-close,
 .mfp-close-btn-in .mfp-close {
-	font-family: "Georgia", Arial, sans-serif;
+	font-family: "Roboto", Arial, sans-serif;
 	font-weight: 600;
 	font-size: 22px;
 	color: #838383;
@@ -11308,7 +11308,7 @@ ul.simple-todo-list li.completed:before {
 	position: absolute;
 	top: 3px;
 	left: 0;
-	font-family: Georgia;
+	font-family: Roboto;
 	content: "\f00c";
 	z-index: 1;
 }
@@ -12164,7 +12164,7 @@ ul.widget-todo-list li:last-child {
 	line-height: 1.6;
 	padding: 15px 0;
 	margin: 0 0 10px;
-	font-family: Georgia, serif;
+	font-family: Roboto, serif;
 }
 
 .widget-twitter-profile .profile-quote blockquote p:before {
@@ -12175,7 +12175,7 @@ ul.widget-todo-list li:last-child {
 	font-size: 80px;
 	font-size: 8rem;
 	line-height: 1;
-	font-family: Georgia, serif;
+	font-family: Roboto, serif;
 	font-style: normal;
 }
 
@@ -12770,7 +12770,7 @@ html.dark div.DTTT .btn {
 	box-shadow: 0 5px 20px #ddd inset, 0 3px 0 #999 inset;
 	color: #cccccc;
 	display: block;
-	font: bold 25px / 100px Georgia, Serif;
+	font: bold 25px / 100px Roboto, Serif;
 	height: 100px;
 	margin: 20px auto -65px;
 	width: 100px;
@@ -12948,12 +12948,12 @@ html.dark .pricing-table .plan {
 
 .datepicker table thead tr th.prev {
 	content: '\f0d9';
-	font-family: Georgia;
+	font-family: Roboto;
 }
 
 .datepicker table thead tr th.next {
 	content: '\f0da';
-	font-family: Georgia;
+	font-family: Roboto;
 }
 
 .datepicker table td {
@@ -13130,7 +13130,7 @@ html.dark .datepicker.datepicker-primary {
 	background: none;
 	border-radius: 4px;
 	color: #555;
-	font-family: "Georgia", Georgia,Helvetica, Arial, sans-serif;
+	font-family: "Roboto", Roboto,Helvetica, Arial, sans-serif;
 	background-color: #FFF;
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -13142,7 +13142,7 @@ html.dark .datepicker.datepicker-primary {
 .select2-search input {
 	border-radius: 4px;
 	color: #555;
-	font-family: "Georgia",Georgia; Helvetica, Arial, sans-serif;
+	font-family: "Roboto",Roboto; Helvetica, Arial, sans-serif;
 	background-color: #FFF;
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -13506,7 +13506,7 @@ html.dark .select2-search input.select2-active {
 }
 
 html.dark .select2-search:before {
-	font-family: 'Georgia';
+	font-family: 'Roboto';
 	content: "\f002";
 	position: absolute;
 	right: 15px;
@@ -14336,7 +14336,7 @@ html.dark .form-wizard .pager .disabled > a, html.dark .form-wizard .pager .disa
 	background: #FFF;
 	border: none;
 	border-radius: 0 0 4px 4px;
-	font-family: Georgia,Arial, Helvetica, Sans-serif;
+	font-family: Roboto,Arial, Helvetica, Sans-serif;
 }
 .note-editor .note-statusbar {
 	background: #FFF;
@@ -15926,7 +15926,7 @@ table.fc-border-separate {
 	color: #cccccc;
 	content: "\f073";
 	display: inline-block;
-	font-family: Georgia;
+	font-family: Roboto;
 	font-size: 30px;
 	font-size: 3rem;
 	font-style: normal;
@@ -16594,7 +16594,7 @@ html.dark .media-gallery .mg-files .thumbnail .mg-title small {
 .log-viewer {
 	line-height: 26px;
 	line-height: 2.6rem;
-	font-family: Georgia;
+	font-family: Roboto;
 	font-size: 14px;
 	font-size: 1.4rem;
 }

@@ -26,7 +26,7 @@
                                         <a href="#categorie" data-toggle="tab" class="text-center"><i class="fa fa-star"></i> CATEGORIE</a>
                                     </li>
                                     <li>
-                                        <a href="#produit" data-toggle="tab" class="text-center">FANILLE DE PRODUIT</a>
+                                        <a href="#produit" data-toggle="tab" class="text-center">FAMILLE DE PRODUIT</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
