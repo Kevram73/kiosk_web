@@ -220,6 +220,11 @@
                                                     PRODUITS
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="{{route('transferts')}}">
+                                                    TRANSFERTS
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                     @if (Auth::user()->boutique->settings->where('tag', 'inventaire')->first() && Auth::user()->boutique->settings->where('tag', 'inventaire')->first()->pivot->is_active)

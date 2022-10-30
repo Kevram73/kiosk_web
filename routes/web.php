@@ -384,3 +384,15 @@ Route::get('/verouillage-{id}', 'UserController@verrouillage');
 
 Route::get('/sets', 'SettingController@index');
 Route::post('/export-db', 'SettingController@export_db');
+
+Route::get('/transferts', 'TransfertsController@liste')->name('transferts');
+Route::get('/recuperertransfert', 'TransfertsController@transfert');
+Route::get('/recupererreception', 'TransfertsController@reception');
+Route::get('/alltransfert', 'TransfertsController@indexTransfert');
+Route::get('/allreception', 'TransfertsController@indexReception');
+Route::get('/deletetransfert-{id}', 'TransfertsController@destroy');
+Route::post('/ajouttransfert', 'TransfertsController@store');
+Route::post('/updatetransfert', 'TransfertsController@update');
+Route::get('/showtransfert-{id}', 'TransfertsController@show');
+Route::get('/showtransfertreception-{id}', 'TransfertsController@indexUpdate');
+Route::get('/recuperermodeleboutique-{famille}', 'TransfertsController@showBoutiqueProduit');
