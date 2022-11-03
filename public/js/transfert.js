@@ -1,4 +1,5 @@
-
+var newReception;
+var BreakException = {};
 
 var transfertTable;
 var receptionTable;
@@ -408,6 +409,7 @@ function showreception(id){
                 $('#r2statut').text('Marqué comme recu');
             }
 
+            newReception = data.transfert_lignes;
             produitReceptionTable = $('#produitReceptionTable').DataTable({
                 'paging': true,
                 'lengthChange': true,
@@ -453,10 +455,6 @@ function showreception(id){
                     { data: 'modele_qte' },
                     { data: 'action' },
                 ]
-            });
-
-            $( "#ajout_reception" ).on('shown', function(){
-                alert("I want this to appear after the modal has opened!");
             });
 
             $('#btnupdate').text('Valider réception');
@@ -534,6 +532,52 @@ $('#btnadd').on('click',function (e) {
         }
     });
 })
+$('#btnupdate').on('click',function (e) {
+    let updateCount = 0;
+        for (var i=0; i<newReception.length; i++) {
+            if(newReception[i]?.id && $('#modele'+newReception[i].id).val()){
+                newReception[i].modele_reception_id = $('#modele'+newReception[i].id).val() * 1;
+                updateCount++;
+            } else {
+                sweetToast('warning', 'Veuillez renseigner tous les produits');
+                break;
+            }
+        };
+    if(newReception.length === updateCount){
+        Swal.fire({
+            position: 'center',
+            title: 'Voulez-vous valider la réception du transfert?',
+            text:"",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor:'#d33',
+            confirmButtonText:'Oui '
+        }).then ((result)=>{
+    
+            if (result.value){
+                let url = '/updatetransfert';
+
+                e.preventDefault();
+
+                if (e.isDefaultPrevented()){
+                    $.ajax({
+                        url :url,
+                        type : "post",
+                        headers: {'X-CSRF-TOKEN': $('#idtransfert').attr('content')},
+                        data: {data: JSON.stringify(newReception)},
+                        success : function(data) {
+                            window.location='/transferts';
+                        },
+                        error : function(data){
+                            sweetToast('warning',data.responseJSON.msg);
+                        }
+                    });
+                }
+            }
+        });
+    }
+})
 
 
 //
@@ -591,9 +635,11 @@ function showtransfert2(id){
             if(data.transfert.status === 0){
                 $('#rstatut').addClass('text-warning');
                 $('#rstatut').text('Traitement en cours..');
+                $('#titlerecevoir').text('Quantité à recevoir');
             } else {
                 $('#rstatut').addClass('text-success');
                 $('#rstatut').text('Marqué comme recu');
+                $('#titlerecevoir').text('Quantité recu');
             }
 
             data.transfert_lignes.forEach(tl => {

@@ -133,7 +133,7 @@
                                                             <br>
                                                             <div class="modal-footer">
                                                                 <div class="col-md-12 text-right">
-                                                                    <!-- <button type="button" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button> -->
+                                                                    <button type="button" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>
                                                                     <button type="button" class="mb-xs mt-xs mr-xs btn btn-default" id="btnclosereception" data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
                                                                 </div>
                                                             </div>
@@ -210,8 +210,7 @@
                                                     <div class="modal-body" id="produitReceptiontForm">
                                                         <form method="POST" class="	 form-validate form-horizontal" enctype="multipart/form-data">
                                                         <input type="hidden" name="produitReceptiontData" id="produitReceptiontData"/>
-                                                        <input type="hidden" name="idtransfert" id="idtransfert"/>
-                                                            {{csrf_field()}}
+                                                        <input type="hidden" name="idtransfert" id="idtransfert" content="{{ csrf_token() }}"/>
 
 
                                                             <ul class="list-group">
@@ -284,7 +283,7 @@
                                                                 <tr>
                                                                     <th class="center hidden-phone" style="display: table-column;"></th>
                                                                     <th class="center hidden-phone">Libellé produit</th>
-                                                                    <th class="center hidden-phone">Quantité à recevoir</th>
+                                                                    <th class="center hidden-phone" id="titlerecevoir">Quantité à recevoir</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody class="center hidden-phone hideIds">

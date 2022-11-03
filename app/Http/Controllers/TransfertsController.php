@@ -36,7 +36,7 @@ class TransfertsController extends Controller
         return datatables()->of($transfert)
             ->addColumn('action', function ($clt){
 
-                $boutons = ' <a class="btn btn-info " onclick="showtransfert('.$clt->id.')" ><i class="fa  fa-info"></i></a>';
+                $boutons = ' <a class="btn '.($clt->status == 0 ? 'btn-info' : 'btn-success').' " onclick="showtransfert('.$clt->id.')" ><i class="fa  fa-info"></i></a>';
                 if($clt->status == 0){
                     $boutons = $boutons.'    <a class="btn btn-danger" onclick="deletetransfert('.$clt->id.')"><i class="fa fa-trash-o"></i></a> ';
                 }
@@ -51,7 +51,7 @@ class TransfertsController extends Controller
         return datatables()->of($transfert)
             ->addColumn('action', function ($clt){
 
-                $boutons = ' <a class="btn btn-info " onclick="showtransfert2('.$clt->id.')" ><i class="fa  fa-info"></i></a>';
+                $boutons = ' <a class="btn '.($clt->status == 0 ? 'btn-info' : 'btn-success').' " onclick="showtransfert2('.$clt->id.')" ><i class="fa  fa-info"></i></a>';
                 if($clt->status == 0){
                     $boutons = $boutons.'    <a class="btn btn-success" onclick="showreception('.$clt->id.')"><i class="fa fa-check"></i></a> ';
                 }
@@ -169,7 +169,32 @@ class TransfertsController extends Controller
      */
     public function update(Request $request)
     {
-        // not implemented
+        $data = json_decode($request->data);
+        try {
+            $transfertId = $data[0]->transfert_id;
+            DB::beginTransaction();
+            for ($i=0; $i < count($data); $i++) { 
+                DB::table('transfert_lignes')
+                ->where('id',$data[$i]->id)
+                ->update([
+                    'modele_reception_id' => $data[$i]->modele_reception_id
+                ]);
+                DB::table('modeles')
+                ->where('id', $data[$i]->modele_reception_id)
+                ->increment('quantite', $data[$i]->modele_qte);
+            }
+            $transfert = Transfert::findOrFail($transfertId);
+            DB::table('transferts')
+                ->where('id', $transfertId)
+                ->update(['status' => 1]);
+            DB::commit();
+            return $data;
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Alert::warning("Une erreur est survenu", "Récuperation transfert impossible");
+            return $th;
+        }
     }
 
     public function indexUpdate($id)
@@ -204,6 +229,25 @@ class TransfertsController extends Controller
                         <optgroup></optgroup>
                     </select>
                 </div>
+                <script>
+                    $("#famille'.$tl->id.'").on("change",function ( ) {
+                        $.ajax({
+                            url: "/recuperermodeleboutique-" + $("#famille'.$tl->id.'").val(),
+                            type: "get",
+                            success: function (data) {
+                                $("#modele'.$tl->id.'").empty();
+                                $("#modele'.$tl->id.'").append("<option disabled=\'disabled\' selected=\'selected\' value=\'\'></option>");
+                                for (var i = 0; i < data.length; i++) {
+                                    $("#modele'.$tl->id.'").append("<option value="+data[i].id+">"+data[i].libelle+"</option>");
+                                }
+                    
+                            },
+                            error: function (data) {
+                                console.log("erreur")
+                            },
+                        })
+                    })
+                </script>
             ';
             return $boutons;
         })

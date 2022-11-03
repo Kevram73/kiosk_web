@@ -1036,7 +1036,7 @@ class VentesController extends Controller
             $prevente ->prixtotal = $allcommande[$i+3]*$allcommande[$i+2] - $allcommande[$i+4];
             $prevente ->vente_id=$vente->id;
             $prevente->save();
-            $modele= Modele::findOrFail($allcommande[0]);
+            $modele= Modele::findOrFail($allcommande[$i]);
             if($modele->quantite < $prevente->quantite)
             {
                 DB::rollback();
@@ -1176,7 +1176,7 @@ class VentesController extends Controller
             $prevente ->prixtotal =$prevente ->prix *$prevente ->quantite - $prevente->reduction;
             $prevente ->vente_id=$vente->id;
             $prevente->save();
-            $modele= Modele::findOrFail($allcommande[0]);
+            $modele= Modele::findOrFail($allcommande[$i]);
             if($modele->quantite < $prevente ->quantite)
             {
                 DB::rollback();
@@ -1393,7 +1393,7 @@ class VentesController extends Controller
             $prevente ->prixtotal =$prevente ->prix *$prevente ->quantite - $prevente->reduction;
             $prevente ->vente_id=$vente->id;
             $prevente->save();
-            $modele= Modele::findOrFail($allcommande[0]);
+            $modele= Modele::findOrFail($allcommande[$i]);
             if($modele->quantite < $prevente ->quantite)
             {
                 DB::rollback();

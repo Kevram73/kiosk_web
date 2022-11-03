@@ -142,11 +142,11 @@
                                                     {{ Str::upper(__('msg.sales')) }}
                                                 </a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="{{route('prestations')}}">
                                                     SERVICES
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             @if (Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()->pivot->is_active)
                                             <li>
                                                 <a href="{{route('livraisons2')}}">
@@ -327,11 +327,11 @@
                                                     {{ Str::upper(__('msg.sales')) }}
                                                 </a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="{{route('prestations')}}">
                                                     SERVICES
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             @if (Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()->pivot->is_active)
                                             <li>
                                                 <a href="{{route('livraisons2')}}">
@@ -380,11 +380,11 @@
                                                     {{ Str::upper(__('msg.sales')) }}
                                                 </a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="{{route('prestations')}}">
                                                     SERVICES
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             @if (Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()->pivot->is_active)
                                             <li>
                                                 <a href="{{route('livraisons2')}}">
@@ -433,11 +433,11 @@
                                                     {{ Str::upper(__('msg.sales')) }}
                                                 </a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="{{route('prestations')}}">
                                                     SERVICES
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             @if (Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()->pivot->is_active)
                                             <li>
                                                 <a href="{{route('livraisons2')}}">
