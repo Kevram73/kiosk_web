@@ -24,7 +24,7 @@
                         <ul class="list-group">
                             <li class="list-group-item">Vente N*:<b> <span class="text-danger" id="sId">{{ isset($livraison[0]) ? $livraison[0]->numero : 0}}</span> </b></li>
                             <li class="list-group-item">Date de vente :<b> <span class="text-danger" id="sNom">{{isset($livraison[0]) ? $livraison[0]->dateC : ''}}</span> </b></li>
-                            <li class="list-group-item">Client :<b> <span class="text-danger" id="sAdresse">{{isset($livraison[0]) ? $livraison[0]->client : ''}}-{{isset($livraison[0]) ? $livraison[0]->prenom : ''}}</span> </b></li>
+                            <li class="list-group-item">Client :<b> <span class="text-danger" id="sAdresse">{{isset($livraison[0]) ? $livraison[0]->client : ''}}</span> </b></li>
                             <li class="list-group-item">Date de livraison :<b> <span class="text-danger " id="sEmail" >{{isset($livraison[0]) ? $livraison[0]->dateL : ''}}</span></b></li>
                         </ul>
 

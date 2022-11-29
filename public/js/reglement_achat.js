@@ -89,7 +89,6 @@ $(function () {
         "columns": [
 
             {data: "nom",name : 'nom'},
-            {data: "prenom",name: 'prenom'},
             {data :  "total",name : 'total'},
             {data :  "montant_donne",name : 'montant_donne'},
             {data :  "montant_restant",name : 'montant_restant'},

@@ -345,17 +345,22 @@ class FournisseursController extends Controller
     }
     public function produit2($id)
     {
-        $produit = DB::table('modele_fournisseurs')
-            ->join('modeles', function ($join) {
-                $join->on('modeles.id', '=', 'modele_fournisseurs.modele_id');
-            })
-            ->join('produits', function ($join) {
-                $join->on('produits.id', '=', 'modeles.produit_id');
-            })
-            // ->where('modele_fournisseurs.fournisseur_id', '=', $id)
+        $produit = DB::table('produits')
             ->select('produits.nom as produit', 'produits.id as id')
             ->groupBy('produits.id', 'produits.nom')
             ->get();
         return $produit;
+        // $produit = DB::table('modele_fournisseurs')
+        //     ->join('modeles', function ($join) {
+        //         $join->on('modeles.id', '=', 'modele_fournisseurs.modele_id');
+        //     })
+        //     ->join('produits', function ($join) {
+        //         $join->on('produits.id', '=', 'modeles.produit_id');
+        //     })
+        //     // ->where('modele_fournisseurs.fournisseur_id', '=', $id)
+        //     ->select('produits.nom as produit', 'produits.id as id')
+        //     ->groupBy('produits.id', 'produits.nom')
+        //     ->get();
+        // return $produit;
     }
 }

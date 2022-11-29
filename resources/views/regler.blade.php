@@ -37,7 +37,6 @@
                                         <thead>
                                         <tr>
                                             <th class="center hidden-phone">Nom</th>
-                                            <th class="center hidden-phone">Prenoms</th>
                                             <th class="center hidden-phone">Total</th>
                                             <th class="center hidden-phone">Montant payé</th>
                                             <th class="center hidden-phone">Restant</th>
@@ -57,8 +56,8 @@
                                         <thead>
                                         <tr>
                                             <th class="center hidden-phone">Nom</th>
-                                            <th class="center hidden-phone">Prenoms</th>
                                             <th class="center hidden-phone">Contact</th>
+                                            <th class="center hidden-phone">Adresse</th>
                                             <th class="center hidden-phone">Montant</th>
                                         </tr>
                                         </thead>

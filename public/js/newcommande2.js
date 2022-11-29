@@ -92,7 +92,8 @@ $('#produit2').on('change',function ( ) {
 
 $('#modele2').on('change',function ( ) {
     $.ajax({
-        url: '/recupefournisseur-' + $('#modele2').val(),
+        // url: '/recupefournisseur-' + $('#modele2').val(),
+        url: '/recupefournisseurmodele-' + $('#modele2').val() + '-' + $('#fournisseur2').val(),
         type: "get",
         success: function (data) {
                 $('#prix').val(null);

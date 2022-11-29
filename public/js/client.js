@@ -58,10 +58,9 @@ $(function () {
         ajax: '/allclient',
         "columns": [
             {data: "nom",name : 'nom'},
-            {data: "prenom",name: 'prenom'},
-            {data :  "sexe",name : 'sexe'},
             {data :  "email",name : 'email'},
             {data :  "contact",name : 'contact'},
+            {data :  "adresse",name : 'adresse'},
             {data: "action", name : 'action' , orderable: false, searchable: false}
         ]
     });
@@ -69,17 +68,15 @@ $(function () {
 
 });
 $('#btnclient').on('click', function(){
-
-    $('.modal-title-user').text('ENREGISTREMENT DU CLIENT');
-    $('#idclient').val(null);
-    $('#nom').val(null);
+    $('.modal-title-user').text('ENREGISTREMENT DU CLIENT (Particulier/Entreprise');
     $('#btnadd').text('Valider');
     $('#btnadd').removeClass('btn-warning');
     $('#btnadd').addClass('btn-primary');
-    $('#prenoms').val(null);
+    $('#idclient').val(null);
+    $('#nom').val(null);
     $('#email').val(null);
     $('#contact').val(null);
-    $('#sexe').val(null);
+    $('#adresse').val(null);
     $('#ajout_client').modal('show');
 });
 
@@ -132,7 +129,6 @@ function showclt(id){
             $('#modal-user-title').text('CLIENT : '+data.nom+' '+data.prenom);
             $('#sId').text(data.id);
             $('#sNom').text(data.nom);
-            $('#sPrenom').text(data.prenom);
             if(data.sexe ===  'M'){
                 $('#sSexe').text('Masculin');
             }else if(data.sexe === 'F'){
@@ -141,6 +137,7 @@ function showclt(id){
 
             $('#sEmail').text(data.email);
             $('#sContact').text(data.contact);
+            $('#sAdresse').text(data.adresse);
             $('#sCreate').text(data.created_at);
             $('#sUpdate').text(data.updated_at);
             $('#detailClient').modal('show');
@@ -164,11 +161,10 @@ function editclt(id){
             $('#btnadd').text('Modifier');
             $('#btnadd').removeClass('btn-primary');
             $('#btnadd').addClass('btn-warning');
-            $('.modal-title-user').text('Modifier les informations de : '+data.nom+' '+data.prenom);
-            $('#prenoms').val(data.prenom);
+            $('.modal-title-user').text('Modifier les informations de : '+data.nom);
             $('#email').val(data.email);
             $('#contact').val(data.contact);
-            $('#sexe').val(data.sexe);
+            $('#adresse').val(data.adresse);
             $('#ajout_client').modal('show');
 
         },

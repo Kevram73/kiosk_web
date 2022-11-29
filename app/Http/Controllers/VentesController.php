@@ -83,8 +83,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -147,8 +147,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -218,8 +218,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -289,8 +289,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -369,7 +369,7 @@ class VentesController extends Controller
                 $join->on('devis_lignes_ventes.devis_id', '=', 'devis_ventes.id');
             })
             ->join('modeles', function ($join) {
-                $join->on('modeles.id', '=', 'preventes.modele_fournisseur_id');
+                $join->on('modeles.id', '=', 'devis_lignes_ventes.modele_fournisseur_id');
             })
             ->join('produits', function ($join) {
                 $join->on('produits.id', '=', 'modeles.produit_id');
@@ -428,7 +428,7 @@ class VentesController extends Controller
             'preventes.reduction as reduction',
             'preventes.prixtotal as prixtotal',
             'clients.nom as nom',
-            'clients.prenom as prenom',
+            
             'clients.contact as contact',
             'reglements.montant_donne as donne',
             'reglements.montant_restant as restant',
@@ -451,8 +451,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -518,7 +518,6 @@ class VentesController extends Controller
             'preventes.reduction as reduction',
             'preventes.prixtotal as prixtotal',
             'clients.nom as nom',
-            'clients.prenom as prenom',
             'clients.contact as contact',
             'reglements.montant_donne as donne',
             'reglements.montant_restant as restant',
@@ -541,8 +540,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -620,8 +619,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -677,8 +676,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $vente = Vente::find($id);
         return view('fictive', compact('vente', 'categorie', 'client', 'clients'));
@@ -819,8 +818,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -858,8 +857,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -897,8 +896,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -1085,8 +1084,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -1130,8 +1129,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -1243,8 +1242,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -1347,8 +1346,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -1460,8 +1459,8 @@ class VentesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -1558,7 +1557,6 @@ class VentesController extends Controller
                     'preventes.prix as prix',
                     'preventes.prixtotal as prixtotal',
                     'clients.nom as Nclient',
-                    'clients.prenom as Pclient',
                     'ventes.created_at as create',
                     'ventes.updated_at as update')
                 ->get();
@@ -1663,7 +1661,7 @@ class VentesController extends Controller
             $data = Reglement::where('clients.id', $client->id)
             ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
             ->join('clients', 'reglements.client_id', '=', 'clients.id')
-            ->select ('clients.nom', 'clients.prenom', 'clients.contact', 'reglements.montant_restant','reglements.created_at')
+            ->select ('clients.nom', 'clients.contact', 'reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();
 

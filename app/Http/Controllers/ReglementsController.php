@@ -39,7 +39,7 @@ class ReglementsController extends Controller
             ->join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
-            ->select('reglements.*', 'clients.nom', 'clients.prenom')
+            ->select('reglements.*', 'clients.nom')
             ->get();
         return datatables()->of($reglement)
             ->addColumn('action', function ($clt) {
@@ -58,8 +58,8 @@ class ReglementsController extends Controller
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
             ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
-            -> select ('clients.id','clients.nom','clients.prenom')
-            -> groupby ('clients.id', 'clients.nom', 'clients.prenom')
+            -> select ('clients.id','clients.nom')
+            -> groupby ('clients.id', 'clients.nom')
             ->get();
         $historique = new Historique();
         $historique->actions = "liste";
@@ -76,22 +76,22 @@ class ReglementsController extends Controller
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
             ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
-            -> select ('clients.id','clients.nom','clients.prenom')
-            -> groupby ('clients.id', 'clients.nom', 'clients.prenom')
+            -> select ('clients.id','clients.nom')
+            -> groupby ('clients.id', 'clients.nom')
             ->get();
 
         $reglements=Reglement::join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
-            ->selectRaw('clients.id, clients.nom, clients.prenom, SUM(reglements.montant_donne) as donner')
-            ->groupBy('clients.id', 'clients.nom', 'clients.prenom')
+            ->selectRaw('clients.id, clients.nom, SUM(reglements.montant_donne) as donner')
+            ->groupBy('clients.id', 'clients.nom')
             ->get();
 
         $ventes = vente::with('boutique')->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->join('clients', function ($join) {
                 $join->on('ventes.client_id', '=', 'clients.id');
-            })->selectRaw('clients.id, clients.nom, clients.prenom, SUM(ventes.totaux) as total')
-            ->groupBy('clients.id', 'clients.nom', 'clients.prenom')
+            })->selectRaw('clients.id, clients.nom, SUM(ventes.totaux) as total')
+            ->groupBy('clients.id', 'clients.nom')
             ->get();
 
 
@@ -138,8 +138,8 @@ class ReglementsController extends Controller
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
             ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
-            -> select ('clients.id','clients.nom','clients.prenom')
-            -> groupby ('clients.id', 'clients.nom', 'clients.prenom')
+            -> select ('clients.id','clients.nom')
+            -> groupby ('clients.id', 'clients.nom')
             ->get();
 
 
@@ -149,8 +149,8 @@ class ReglementsController extends Controller
         ->join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
-            ->selectRaw('clients.id, clients.nom, clients.prenom, SUM(reglements.montant_donne) as donner')
-            ->groupBy('clients.id', 'clients.nom', 'clients.prenom')
+            ->selectRaw('clients.id, clients.nom, SUM(reglements.montant_donne) as donner')
+            ->groupBy('clients.id', 'clients.nom')
             ->first();
 
         $venteClient = vente::with('boutique')
@@ -158,8 +158,8 @@ class ReglementsController extends Controller
         ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->join('clients', function ($join) {
                 $join->on('ventes.client_id', '=', 'clients.id');
-            })->selectRaw('clients.id, clients.nom, clients.prenom, SUM(ventes.totaux) as total')
-            ->groupBy('clients.id', 'clients.nom', 'clients.prenom')
+            })->selectRaw('clients.id, clients.nom, SUM(ventes.totaux) as total')
+            ->groupBy('clients.id', 'clients.nom')
             ->first();
 
 
@@ -336,8 +336,8 @@ class ReglementsController extends Controller
             ->join('ventes', function ($join) {
                 $join->on('ventes.client_id', '=', 'clients.id');
             })
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($client);$i++) {
@@ -499,7 +499,6 @@ class ReglementsController extends Controller
                 'reglements.total as total',
                 'reglements.montant_restant as restant',
                 'clients.nom as nom',
-                'clients.prenom as prenom'
                 )
             -> where ('reglements.id','=',$id)
             ->get();

@@ -63,8 +63,8 @@
                                         <thead>
                                         <tr>
                                             <th class="center hidden-phone">Nom</th>
-                                            <th class="center hidden-phone">Prenoms</th>
                                             <th class="center hidden-phone">Contact</th>
+                                            <th class="center hidden-phone">Adresse</th>
                                             <th class="center hidden-phone">Montant</th>
                                         </tr>
                                         </thead>

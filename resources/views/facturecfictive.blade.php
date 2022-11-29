@@ -27,11 +27,11 @@
                             <h6><strong>INFORMATIONS DU CLIENT</strong></h6>
                             <address>
                                 <b>Nom : <span class="text-danger" >{{$client->nom}} </span> </b><br>
-                                @if (isset($client->prenom))
-                                <b>Prenoms : <span class="text-danger" >{{$client->prenom}} </span> </b><br>
-                                @endif
                                 @if (isset($client->contact))
                                 <b>Contact : <span class="text-danger" >{{$client->contact}}</span> </b><br>
+                                @endif
+                                @if (isset($client->adresse))
+                                <b>Adresse : <span class="text-danger" >{{$client->adresse}}</span> </b><br>
                                 @endif
                                 {{-- <b>Montant restant : <span class="text-danger prix" >{{$vente[0]->restant}} FCFA</span> </b> --}}
                             </address>
@@ -55,7 +55,6 @@
                         <h6><strong>INFORMATIONS DU CLIENT</strong></h6>
                         <address>
                             <b> Nom : <span class="text-danger" ></span> </b><br>
-                            <b>Prenoms : <span class="text-danger" > </span> </b><br>
                             <b>Contact : <span class="text-danger" ></span> </b><br>
                         </address>
                     </div> --}}
@@ -89,8 +88,8 @@
                     <h6><strong>INFORMATIONS DU CLIENT</strong></h6>
                     <address>
                         <b> Nom : <span class="text-danger" >{{$vente[0]->nom}} </span> </b><br>
-                        <b>Prenoms : <span class="text-danger" >{{$vente[0]->prenom}} </span> </b><br>
                         <b>Contact : <span class="text-danger" >{{$vente[0]->contact}}</span> </b><br>
+                        <b>Adresse : <span class="text-danger" >{{$vente[0]->adresse}}</span> </b><br>
                         <b>Montant restant : <span class="text-danger" >{{$vente[0]->restant}} fcfa</span> </b>
                     </address>
                 </div>

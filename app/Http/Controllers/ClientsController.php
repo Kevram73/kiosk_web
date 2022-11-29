@@ -69,10 +69,9 @@ class ClientsController extends Controller
     {
         $client = new Client;
         $client->nom = $request->input('nom');
-        $client->prenom = $request->input('prenoms');
-        $client->sexe = $request->input('sexe');
         $client->email = $request->input('email');
         $client->contact = $request->input('contact');
+        $client->adresse = $request->input('adresse');
         $client->boutique_id = Auth::user()->boutique->id;
         $client->save();
         $historique = new Historique();
@@ -123,10 +122,9 @@ class ClientsController extends Controller
     {
         $client = Client::findOrFail($request->input('idclient'));
         $client->nom = $request->input('nom');
-        $client->prenom = $request->input('prenoms');
-        $client->sexe = $request->input('sexe');
         $client->email = $request->input('email');
         $client->contact = $request->input('contact');
+        $client->adresse = $request->input('adresse');
         $client->update();
         $historique = new Historique();
         $historique->actions = "Modifier";

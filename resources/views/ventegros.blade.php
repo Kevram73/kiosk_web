@@ -31,7 +31,7 @@
                                                         <optgroup label="Choisir le client">
                                                             <option value=""></option>
                                                             @foreach($client as $clt)
-                                                                <option value="{{$clt->id}}">{{$clt->nom}} - {{$clt->prenom}}</option>
+                                                                <option value="{{$clt->id}}">{{$clt->nom}}</option>
                                                             @endforeach
                                                         </optgroup>
                                                     </select>
@@ -196,16 +196,10 @@
                     <form id="form" action="" method="POST" class="	form-validate form-horizontal mb-lg" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group mt-lg">
-                            <label class="col-sm-3 control-label">Nom</label>
+                            <label class="col-sm-3 control-label">Nom/Raison sociale</label>
                             <div class="col-sm-9">
-                                <input type="text" name="nom"  id="nom" class="form-control" placeholder="LJ" required/>
+                                <input type="text" name="nom"  id="nom" class="form-control" placeholder=" ATO Kodjo, BTD Construction" required/>
                                 <input type="hidden" name="idclient" id="idclient"/>
-                            </div>
-                        </div>
-                        <div class="form-group mt-lg">
-                            <label class="col-sm-3 control-label">Prenoms</label>
-                            <div class="col-sm-9">
-                                <input type="text" name="prenoms" id="prenoms" class="form-control" placeholder="Kodjo" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -217,18 +211,13 @@
                         <div class="form-group mt-lg">
                             <label class="col-sm-3 control-label">Contact</label>
                             <div class="col-sm-9">
-                                <input type="integer" name="contact" id="contact" class="form-control" placeholder="92658797" />
+                                <input type="integer" name="contact" id="contact" class="form-control" placeholder="92658797"/>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Sexe</label>
-                            <div class="col-md-9">
-                                <select  name="sexe" id="sexe" class="form-control populate">
-                                    <optgroup label="Choisir un sexe">
-                                        <option value="M">Masculin</option>
-                                        <option value="F">Feminin</option>
-                                    </optgroup>
-                                </select>
+                        <div class="form-group mt-lg">
+                            <label class="col-sm-3 control-label">Adresse</label>
+                            <div class="col-sm-9">
+                                <input type="integer" name="adresse" id="adresse" class="form-control" placeholder="Adidogome, Lome"/>
                             </div>
                         </div>
                         <div class="modal-footer">

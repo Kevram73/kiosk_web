@@ -151,8 +151,8 @@ class CommandesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -189,8 +189,8 @@ class CommandesController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -251,16 +251,18 @@ class CommandesController extends Controller
                 ->where('modele_fournisseurs.id', '=', $allcommande[$i])
                 ->select('modeles.id as modele')
                 ->first();
+            $modeleId = $verification ? $verification->modele : $allcommande[$i];
+
             $commandemodele = new commandeModele();
             $commandemodele ->commande_id=$commande ->id;
-            $commandemodele ->modele_fournisseur_id=$allcommande[$i];
+            $commandemodele ->modele_fournisseur_id= $verification ? $allcommande[$i] : null;
             $commandemodele ->prix =$allcommande[$i+1];
             $commandemodele -> quantite= $allcommande[$i+2];
             $commandemodele -> total= $allcommande[$i+1]*$allcommande[$i+2];
-            $commandemodele -> modele=$verification->modele;
+            $commandemodele -> modele=$modeleId;
             $commandemodele->save();
 
-            $modele= Modele::findOrFail($verification->modele);
+            $modele= Modele::findOrFail($modeleId);
             if($modele->quantite <= 0)
             {
                 $modele->quantite = $allcommande[$i+2];

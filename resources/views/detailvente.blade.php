@@ -24,7 +24,7 @@
                         <ul class="list-group">
                             <li class="list-group-item">Vente N*:<b> <span class="text-danger" >{{$vente[0]->numero}}</span> </b></li>
                             <li class="list-group-item">Date de vente :<b> <span class="text-danger" >{{$vente[0]->date}}</span> </b></li>
-                            <li class="list-group-item">Client :<b> <span class="text-danger" >{{$vente[0]->Nclient}} - {{$vente[0]->Pclient}}</span> </b></li>
+                            <li class="list-group-item">Client :<b> <span class="text-danger" >{{$vente[0]->Nclient}}</span> </b></li>
                                 <li class="list-group-item">Montant total :<b> <span class="text-danger prix"  >{{ $all_vente->totaux }} FCFA</span></b></li>
                         </ul>
 

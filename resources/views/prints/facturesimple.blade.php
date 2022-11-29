@@ -26,7 +26,6 @@
                     <h6><strong>INFORMATIONS DU CLIENT</strong></h6>
                     <address>
                         <b> Nom : <span class="text-danger" ></span> </b><br>
-                        <b>Prenoms : <span class="text-danger" > </span> </b><br>
                         <b>Contact : <span class="text-danger" ></span> </b><br>
                     </address>
                 </div> --}}

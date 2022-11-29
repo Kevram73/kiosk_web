@@ -393,17 +393,15 @@ $('#quantite').on('change',function ( ) {
 
 
 $('#btnclient').on('click', function(){
-
-    $('.modal-title-user').text('ENREGISTREMENT DU CLIENT');
-    $('#idclient').val(null);
-    $('#nom').val(null);
+    $('.modal-title-user').text('ENREGISTREMENT DU CLIENT (Particulier/Entreprise');
     $('#btnadd').text('Valider');
     $('#btnadd').removeClass('btn-warning');
     $('#btnadd').addClass('btn-primary');
-    $('#prenoms').val(null);
+    $('#idclient').val(null);
+    $('#nom').val(null);
     $('#email').val(null);
     $('#contact').val(null);
-    $('#sexe').val(null);
+    $('#adresse').val(null);
     $('#ajout_client').modal('show');
 });
 //post des données

@@ -85,8 +85,8 @@ class BordsController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -188,8 +188,8 @@ class BordsController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {

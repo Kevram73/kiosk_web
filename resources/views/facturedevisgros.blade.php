@@ -22,8 +22,8 @@
                     <h6><strong>INFORMATIONS DU CLIENT</strong></h6>
                     <address>
                         <b> Nom : <span class="text-danger" >{{$client->nom}}</span> </b><br>
-                        <b>Prenoms : <span class="text-danger" >{{$client->prenom}}</span> </b><br>
                         <b>Contact : <span class="text-danger" >{{$client->contact}}</span> </b><br>
+                        <b>Adresse : <span class="text-danger" >{{$client->adresse}}</span> </b><br>
                     </address>
                 </div>
                 <!-- /.col -->

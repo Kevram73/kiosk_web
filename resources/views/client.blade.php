@@ -32,16 +32,10 @@
                                         <form id="form" action="" method="POST" class="	form-validate form-horizontal mb-lg" enctype="multipart/form-data">
                                             {{csrf_field()}}
                                             <div class="form-group mt-lg">
-                                                <label class="col-sm-3 control-label">Nom</label>
+                                                <label class="col-sm-3 control-label">Nom/Raison sociale</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" name="nom"  id="nom" class="form-control" placeholder="LJ" required/>
+                                                    <input type="text" name="nom"  id="nom" class="form-control" placeholder=" ATO Kodjo, BTD Construction" required/>
                                                     <input type="hidden" name="idclient" id="idclient"/>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-lg">
-                                                <label class="col-sm-3 control-label">Prenoms</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" name="prenoms" id="prenoms" class="form-control" placeholder="Kodjo"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -56,15 +50,10 @@
                                                     <input type="integer" name="contact" id="contact" class="form-control" placeholder="92658797"/>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-md-3 control-label">Sexe</label>
-                                                <div class="col-md-9">
-                                                    <select  name="sexe" id="sexe" class="form-control populate">
-                                                        <optgroup label="Choisir un sexe">
-                                                            <option value="M">Masculin</option>
-                                                            <option value="F">Feminin</option>
-                                                        </optgroup>
-                                                    </select>
+                                            <div class="form-group mt-lg">
+                                                <label class="col-sm-3 control-label">Adresse</label>
+                                                <div class="col-sm-9">
+                                                    <input type="integer" name="adresse" id="adresse" class="form-control" placeholder="Adidogome, Lome"/>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -82,10 +71,9 @@
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Nom</th>
-                                <th class="center hidden-phone">Prenoms</th>
-                                <th class="center hidden-phone">Sexe</th>
                                 <th class="center hidden-phone">Email</th>
                                 <th class="center hidden-phone">Contact</th>
+                                <th class="center hidden-phone">Adresse</th>
                                 <th class="center hidden-phone">Action</th>
                             </tr>
                             </thead>
@@ -112,10 +100,9 @@
                     <ul class="list-group">
                         <li class="list-group-item">Identifiant:<b> <span class="text-danger" id="sId"></span> </b></li>
                         <li class="list-group-item">Nom :<b> <span class="text-danger" id="sNom"></span> </b></li>
-                        <li class="list-group-item">Prenoms :<b> <span class="text-danger" id="sPrenom"></span> </b></li>
-                        <li class="list-group-item">Sexe :<b> <span class="text-danger " id="sSexe" ></span></b></li>
                         <li class="list-group-item">Email :<b> <span class="text-danger " id="sEmail" ></span></b></li>
                         <li class="list-group-item">Contact :<b> <span class="text-danger " id="sContact" ></span></b></li>
+                        <li class="list-group-item">Adresse :<b> <span class="text-danger " id="sAdresse" ></span></b></li>
 
                         <li class="list-group-item">
                             crée le :<b> <span class="text-danger" id="sCreate"></span></b> </li>
