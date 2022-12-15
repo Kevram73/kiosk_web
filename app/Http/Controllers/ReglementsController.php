@@ -498,7 +498,7 @@ class ReglementsController extends Controller
                 'reglements.montant_donne as donne',
                 'reglements.total as total',
                 'reglements.montant_restant as restant',
-                'clients.nom as nom',
+                'clients.nom as nom'
                 )
             -> where ('reglements.id','=',$id)
             ->get();

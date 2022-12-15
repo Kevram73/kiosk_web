@@ -1661,7 +1661,7 @@ class VentesController extends Controller
             $data = Reglement::where('clients.id', $client->id)
             ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
             ->join('clients', 'reglements.client_id', '=', 'clients.id')
-            ->select ('clients.nom', 'clients.contact', 'reglements.montant_restant','reglements.created_at')
+            ->select ('clients.nom', 'clients.contact', 'clients.adresse', 'reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();
 

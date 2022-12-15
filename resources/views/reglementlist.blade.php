@@ -36,7 +36,7 @@
                                     <table class="table table-bordered table-striped mb-none"  data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                         <thead>
                                         <tr>
-                                            <th class="center hidden-phone">Nom & Prénom</th>
+                                            <th class="center hidden-phone">Nom</th>
                                             <th class="center hidden-phone">Total Vente</th>
                                             <th class="center hidden-phone">Total Payé</th>
                                             <th class="center hidden-phone">Restant</th>
@@ -47,7 +47,7 @@
                                             @if (isset($ventes) && count($ventes) > 0 && isset($reglements) && count($reglements) > 0 && count($ventes) == count($reglements))
                                                 @foreach ($ventes as $index => $item)
                                                     <tr>
-                                                        <td>{{ $item->nom .' '}} {{ $item->prenom ? $item->prenom : '' }}</td>
+                                                        <td>{{ $item->nom }}</td>
                                                         <td class="prix">{{ $item->total }}</td>
                                                         <td class="prix">{{ $reglements[$index]->donner }}</td>
                                                         <td class="prix">{{ $item->total - $reglements[$index]->donner < 1 ? '-' : $item->total - $reglements[$index]->donner }}</td>
@@ -94,7 +94,7 @@
                                                         <optgroup label="Choisir une categorie">
                                                             <option value=""></option>
                                                             @foreach($client as $cli)
-                                                                <option value="{{$cli->id}}">{{$cli->nom}} - {{$cli->prenom}}</option>
+                                                                <option value="{{$cli->id}}">{{$cli->nom}}</option>
                                                             @endforeach
                                                         </optgroup>
                                                     </select>

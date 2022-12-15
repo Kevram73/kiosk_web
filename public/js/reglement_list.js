@@ -144,8 +144,8 @@ $(function () {
         "columns": [
 
             {data: "nom",name : 'nom'},
-            {data: "prenom",name: 'prenom'},
             {data: "contact",name: 'contact'},
+            {data: "adresse",name: 'adresse'},
             {data :  "montant_restant",name : 'montant_restant'},
         ]
     });

@@ -84,7 +84,7 @@
                                                     <optgroup label="Choisir une categorie">
                                                         <option value=""></option>
                                                         @foreach($clients as $cli)
-                                                            <option value="{{$cli->id}}">{{$cli->nom}} - {{$cli->prenom}}</option>
+                                                            <option value="{{$cli->id}}">{{$cli->nom}}</option>
                                                         @endforeach
                                                     </optgroup>
                                                 </select>
