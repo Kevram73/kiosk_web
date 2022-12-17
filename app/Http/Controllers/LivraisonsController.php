@@ -75,8 +75,8 @@ class LivraisonsController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.nom as prenom','clients.id as id')
+            ->groupBy('id', 'clients.nom', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -114,8 +114,8 @@ class LivraisonsController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.nom as prenom','clients.id as id')
+            ->groupBy('id', 'clients.nom', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -149,6 +149,7 @@ class LivraisonsController extends Controller
             })
             ->where ('commande_modeles.modele_fournisseur_id', '!=', null)
             ->where ('commande_modeles.etat', '=', false)
+            ->where ('commandes.type_commande', '<>', 1)
             ->select('commandes.id as id','commandes.numero as numero')
             ->groupBy('commandes.id', 'commandes.numero')
             ->orderBy('commandes.created_at', 'DESC')
@@ -170,8 +171,8 @@ class LivraisonsController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.nom as prenom','clients.id as id')
+            ->groupBy('id', 'clients.nom', 'clients.nom')
             ->get();
 
         $credit=array();
@@ -468,8 +469,8 @@ class LivraisonsController extends Controller
             })
             ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
             ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.prenom as prenom','clients.id as id')
-            ->groupBy('id', 'clients.nom', 'clients.prenom')
+            ->select('clients.nom as nom','clients.nom as prenom','clients.id as id')
+            ->groupBy('id', 'clients.nom', 'clients.nom')
             ->get();
         $credit=array();
         for ($i =0 ;$i<count($clients);$i++) {
@@ -526,7 +527,7 @@ class LivraisonsController extends Controller
                 'produits.nom as produit',
                 'livraison_ventes.quantite_livre as quantiteL',
                 'clients.nom as client',
-                'clients.prenom as prenom',
+                'clients.nom as prenom',
                 'preventes.etat as etat',
                 'preventes.quantite as quantiteC',
                 'livraison_ventes.quantite_restante as quantiteR'

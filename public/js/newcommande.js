@@ -92,9 +92,9 @@ $('#fournisseur').on('change', function(){
 });
 
 $('#modele').on('change',function ( ) {
-
+    const fourn = $('#fournisseur').val() !== "" ? $('#fournisseur').val() : 0;
     $.ajax({
-        url: '/recupefournisseurmodele-' + $('#modele').val() + '-' + $('#fournisseur').val(),
+        url: '/recupefournisseurmodele-' + $('#modele').val() + '-' +  fourn,
         type: "get",
         success: function (data) {
             // if (data == ""){
@@ -274,51 +274,46 @@ $('#valider').on('click',function (e) {
 
             e.preventDefault()
 
-            if ($('#fournisseur_id').val().length <= 0 ){
+            if ($table2.data().length <= 0 ){
                 let message;
-                message='Impossible ... Choisir un fournisseur!!!'
+                message='Impossible ... Tableau vide!!!'
                 sweetToast('warning',message);
             }else{
-                if ($table2.data().length <= 0 ){
-                    let message;
-                    message='Impossible ... Tableau vide!!!'
-                    sweetToast('warning',message);
-                }else{
-                    let content =''
-                    for(let i = 0; i <  $table2.data().length; i++){
-                        if (i!=$table2.data().length-1){
-                            content +=   $table2.data()[i].id+","+ $table2.data()[i].prix+","+ $table2.data()[i].quantite+","
+                let content =''
+                for(let i = 0; i <  $table2.data().length; i++){
+                    if (i!=$table2.data().length-1){
+                        content +=   $table2.data()[i].id+","+ $table2.data()[i].prix+","+ $table2.data()[i].quantite+","
 
-                        }else{
-                            content +=  $table2.data()[i].id+","+ $table2.data()[i].prix+","+ $table2.data()[i].quantite
+                    }else{
+                        content +=  $table2.data()[i].id+","+ $table2.data()[i].prix+","+ $table2.data()[i].quantite
 
 
-                        }
-                    }
-                    $('#comTable').val(content)
-                    e.preventDefault();
-                    if (e.isDefaultPrevented()){
-                        $.ajax({
-                            url :url,
-                            type : "post",
-                            // data : $('#modal-form-user').serialize(),
-                            data: new FormData($("#comform form")[0]),
-                            //data: new FormData($("#modal-form-user")[0]),
-                            contentType: false,
-                            processData: false,
-                            success : function(data) {
-                                Swal.fire('Effectué',
-                                'Commande bien enregistrée');
-                                window.location='/provisions'
-                            },
-                            error : function(data){
-                                let message='Erreur ';
-                                sweetToast('warning',message);
-                            }
-                        });
                     }
                 }
+                $('#comTable').val(content)
+                e.preventDefault();
+                if (e.isDefaultPrevented()){
+                    $.ajax({
+                        url :url,
+                        type : "post",
+                        // data : $('#modal-form-user').serialize(),
+                        data: new FormData($("#comform form")[0]),
+                        //data: new FormData($("#modal-form-user")[0]),
+                        contentType: false,
+                        processData: false,
+                        success : function(data) {
+                            Swal.fire('Effectué',
+                            'Commande bien enregistrée');
+                            window.location='/provisions'
+                        },
+                        error : function(data){
+                            let message='Erreur ';
+                            sweetToast('warning',message);
+                        }
+                    });
+                }
             }
+            
         }
     });
 })

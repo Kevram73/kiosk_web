@@ -24,7 +24,9 @@
                         <ul class="list-group">
                             <li class="list-group-item">Commande N*:<b> <span class="text-danger" id="sId"> {{$commande[0]->numero}}</span> </b></li>
                             <li class="list-group-item">Date de commande :<b> <span class="text-danger" id="sNom">{{$commande[0]->date}}</span> </b></li>
-                            <li class="list-group-item">Fournisseur :<b> <span class="text-danger" id="sAdresse">{{$commande[0]->fournisseur}}</span> </b></li>
+                            @if(isset($commande[0]->fournisseur))
+                                <li class="list-group-item">Fournisseur :<b> <span class="text-danger" id="sAdresse">{{$commande[0]->fournisseur}}</span> </b></li>
+                            @endif
                         </ul>
 
 

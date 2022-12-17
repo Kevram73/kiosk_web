@@ -279,8 +279,63 @@ class FournisseursController extends Controller
             ->get();
         return $modele;
     }
-    
+
     public function fournisseurmodele($modele, $fournisseur)
+    {
+        if($fournisseur == 0) {
+            $data1 = DB::table('modeles')->where('id', $modele)->first();
+
+            $data3 = array();
+            $data3['fournisseur'] = null;
+            $data3['id'] = null;
+            $data3['prix'] = $data1->prix;
+            $data3['stock'] = $data1->quantite;
+            $data3['modele'] = $data1->id;
+            $data3['prix_vente'] = $data1->prix;
+            
+            $result = [];
+            $result[] = $data3;
+            return $result;
+
+        } else {
+           $result = DB::table('modele_fournisseurs')
+            ->join('fournisseurs', function ($join) {
+                $join->on('fournisseurs.id', '=', 'modele_fournisseurs.fournisseur_id');
+            })
+            ->join('modeles', function ($join) {
+                $join->on('modeles.id', '=', 'modele_fournisseurs.modele_id');
+            })
+            ->where ('modele_fournisseurs.modele_id', '=', $modele)
+            ->where ('modele_fournisseurs.fournisseur_id', '=', $fournisseur)
+            ->select (
+                'fournisseurs.nom as fournisseur',
+                'fournisseurs.id as id',
+                'modele_fournisseurs.prix as prix',
+                'modeles.quantite as stock',
+                'modeles.id as modele',
+                'modeles.prix as prix_vente')
+            ->get();
+
+            if(count($result) === 0){
+                $data1 = DB::table('modeles')->where('id', $modele)->first();
+                $data2 = DB::table('fournisseurs')->where('id', $fournisseur)->first();
+
+                $data3 = array();
+                $data3['fournisseur'] = $data2->nom;
+                $data3['id'] = $data2->id;
+                $data3['prix'] = $data1->prix;
+                $data3['stock'] = $data1->quantite;
+                $data3['modele'] = $modele;
+                $data3['prix_vente'] = $data1->prix;
+                
+                $result = [];
+                $result[] = $data3;
+            }
+            return $result;
+        }
+    }
+    
+    public function fournisseurmodeleOld($modele, $fournisseur)
     {
         $result = DB::table('modele_fournisseurs')
             ->join('fournisseurs', function ($join) {

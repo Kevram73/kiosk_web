@@ -226,6 +226,8 @@ class CommandesController extends Controller
             ->get();
         return $verification;
     }
+
+
     public function store(Request $request)
     {
         $id=DB::table('commandes')->max('id');
@@ -248,14 +250,15 @@ class CommandesController extends Controller
                 ->join('modeles', function ($join) {
                     $join->on('modele_fournisseurs.modele_id', '=', 'modeles.id');
                 })
-                ->where('modele_fournisseurs.id', '=', $allcommande[$i])
-                ->select('modeles.id as modele')
+                ->where('modele_fournisseurs.fournisseur_id', '=', $request->input('fournisseur'))
+                ->where('modele_fournisseurs.modele_id', '=', $allcommande[$i])
+                ->select('modele_fournisseurs.id as modele_fournisseurs_id')
                 ->first();
-            $modeleId = $verification ? $verification->modele : $allcommande[$i];
+            $modeleId = $allcommande[$i];
 
             $commandemodele = new commandeModele();
             $commandemodele ->commande_id=$commande ->id;
-            $commandemodele ->modele_fournisseur_id= $verification ? $allcommande[$i] : null;
+            $commandemodele ->modele_fournisseur_id= $verification ? $verification->modele_fournisseurs_id : null;
             $commandemodele ->prix =$allcommande[$i+1];
             $commandemodele -> quantite= $allcommande[$i+2];
             $commandemodele -> total= $allcommande[$i+1]*$allcommande[$i+2];
@@ -284,44 +287,44 @@ class CommandesController extends Controller
         $historique->save();
     return view('provision');
     }
+
+
     public function store2(Request $request)
     {
         $id=DB::table('commandes')->max('id');
         $ad=DB::table('journal_achats')->max('id');
+
         $ed=1+$id;
         $commande = new Commande();
         $commande ->numero="COM".now()->format('Y')."-".$ed;
         $commande ->date_commande= now();
         $commande ->journal_achat_id= $ad;
         $commande ->boutique_id= Auth::user()->boutique->id;
-        $commande ->type_commande= 2;
-        $commande ->fournisseur_id= $request->input('fournisseur');
+        $commande ->type_commande= 1;
+        $commande ->fournisseur_id= null;
         $commande ->credit = $request->input('credit') == "on" ? true : false;
         $commande->save();
         $allcommande= explode( ',', $request->input('comTable') );
-        for ($i =0 ;$i<count($allcommande);$i+=3) {
-            $verification = DB::table('modele_fournisseurs')
-                ->join('modeles', function ($join) {
-                    $join->on('modele_fournisseurs.modele_id', '=', 'modeles.id');
-                })
-                ->where('modele_fournisseurs.id', '=', $allcommande[$i])
-                ->select('modeles.id as modele')
-                ->first();
+
+        for ($i =0;$i<count($allcommande);$i+=3) {
             $commandemodele = new commandeModele();
             $commandemodele ->commande_id=$commande ->id;
-            $commandemodele ->modele_fournisseur_id=$allcommande[$i];
+            $commandemodele ->modele_fournisseur_id= null;
             $commandemodele ->prix =$allcommande[$i+1];
             $commandemodele -> quantite= $allcommande[$i+2];
             $commandemodele -> total= $allcommande[$i+1]*$allcommande[$i+2];
-            $commandemodele -> modele=$verification->modele;
+            $commandemodele -> modele=$allcommande[$i];
             $commandemodele->save();
-            // $modele_id = DB::table('modeles')
-            //     ->where('modeles.id','=',$allcommande[$i])
-            //     ->select('modeles.id as id')
-            //     ->get();
-            // $modele= Modele::findOrFail($modele_id[0]->id);
-            // $modele->quantite=$modele->quantite+  $allcommande[$i+2];
-            // $modele->update();
+
+            $modele= Modele::findOrFail($allcommande[$i]);
+            if($modele->quantite <= 0)
+            {
+                $modele->quantite = $allcommande[$i+2];
+            }else{
+                $modele->quantite=$modele->quantite +  $allcommande[$i+2];
+            }
+
+            $modele->update();
 
             $commande= Commande::findOrFail($commande ->id);
             $commande->totaux=$commande->totaux+  $commandemodele -> total;
@@ -330,11 +333,14 @@ class CommandesController extends Controller
 
         $historique=new Historique();
         $historique->actions = "Creer";
-        $historique->cible = "Commandes indirecte";
+        $historique->cible = "Commandes directe";
         $historique->user_id =Auth::user()->id;
         $historique->save();
     return view('provision');
     }
+
+    
+
 
     /**
      * Display the specified resource.
@@ -343,7 +349,86 @@ class CommandesController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-             public function show($id)
+     public function show($id)
+     {
+        $commandeExist = DB::table('commandes')->find($id);
+        if($commandeExist) {
+
+            $commande = [];
+
+            if($commandeExist->fournisseur_id !== null) {
+                $commande =  DB::table('commande_modeles')
+                    ->join('commandes', function ($join) {
+                        $join->on('commandes.id', '=', 'commande_modeles.commande_id');
+                    })
+                    ->join('fournisseurs', function ($join) {
+                        $join->on('fournisseurs.id', '=', 'commandes.fournisseur_id');
+                    })
+                    ->join('modeles', function ($join) {
+                        $join->on('modeles.id', '=', 'commande_modeles.modele');
+                    })
+                    ->join('produits', function ($join) {
+                        $join->on('produits.id', '=', 'modeles.produit_id');
+                    })
+                    ->where('commandes.id','=',$id)
+                    ->select(
+                        'commandes.numero as numero',
+                        'commandes.date_commande as date',
+                        'fournisseurs.nom as fournisseur',
+                        'modeles.libelle as modele',
+                        'produits.nom as produit',
+                        'commande_modeles.quantite as quantite',
+                        'commande_modeles.prix as prix',
+                        'commandes.created_at as create',
+                        'commandes.updated_at as update')
+                    ->get();
+
+
+            } else {
+                $commande =  DB::table('commande_modeles')
+                    ->join('commandes', function ($join) {
+                        $join->on('commandes.id', '=', 'commande_modeles.commande_id');
+                    })
+                    ->join('modeles', function ($join) {
+                        $join->on('modeles.id', '=', 'commande_modeles.modele');
+                    })
+                    ->join('produits', function ($join) {
+                        $join->on('produits.id', '=', 'modeles.produit_id');
+                    })
+                    ->where('commandes.id','=',$id)
+                    ->select(
+                        'commandes.numero as numero',
+                        'commandes.date_commande as date',
+                        'modeles.libelle as modele',
+                        'produits.nom as produit',
+                        'commande_modeles.quantite as quantite',
+                        'commande_modeles.prix as prix',
+                        'commandes.created_at as create',
+                        'commandes.updated_at as update')
+                    ->get();
+            }
+
+            $historique=new Historique();
+            $historique->actions = "Detail";
+            $historique->cible = "Commandes";
+            $historique->user_id =Auth::user()->id;
+            $historique->save();
+
+            return view('detailcommande',compact('commande'));
+
+        } else {
+            return redirect()->back();
+        }
+     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+             public function showOld($id)
     {
              $verification = DB::table('commandes')
             ->join('commande_modeles', function ($join) {
