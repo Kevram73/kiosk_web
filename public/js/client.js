@@ -176,23 +176,36 @@ alert('erreur')
 
 function deleteclt(id){
 
-    $.ajax({
-        url : '/deleteclient-'+id,
-        type : "get",
-
-        contentType: false,
-        processData: false,
-        success : function(data) {
-
-       console.log(data)
-
-            clientTable.ajax.reload();
-
-        },
-        error : function(data){
-            console.log(data)
+    Swal.fire({
+        position: 'center',
+        title: 'Voulez-vous supprimer ce client?',
+        text:"",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor:'#3085d6',
+        cancelButtonColor:'#d33',
+        confirmButtonText:'Oui '
+    }).then ((result)=>{
+        if (result.value){
+            $.ajax({
+                url : '/deleteclient-'+id,
+                type : "get",
+        
+                contentType: false,
+                processData: false,
+                success : function(data) {
+        
+               console.log(data)
+        
+                    clientTable.ajax.reload();
+        
+                },
+                error : function(data){
+                    console.log(data)
+                }
+            });
         }
-    });
+    })
 }
 
 
