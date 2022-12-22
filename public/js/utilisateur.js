@@ -209,3 +209,32 @@ function changeState(id){
         }
     });
 }
+
+function resetPwd(id){
+    Swal.fire({
+        position: 'center',
+        title: 'Voulez-vous renitialiser le mot de passe de cet employé?',
+        text:"le mot de passe par défaut sera 'password'",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor:'#3085d6',
+        cancelButtonColor:'#d33',
+        confirmButtonText:'Oui '
+    }).then ((result)=>{
+        if (result.value){
+            $.ajax({
+                url : '/changeUserPwd-'+id,
+                type : "get",
+                success : function(data) {
+                    userTable.ajax.reload();
+
+                },
+                error : function(data){
+                }
+            });
+
+            Swal.fire('Effectué',
+                'Mot de passe de l\'employé modifié')
+        }
+    });
+}

@@ -250,11 +250,13 @@ class UserController extends Controller
                  if($role->flag_etat == false){
                 return ' <a class="btn btn-info " onclick="showUser('.$role->id.')" ><i class="fa  fa-info"></i></a>
                 <a class="btn btn-success" onclick="editUser('.$role->id.')"> <i class="fa fa-pencil"></i></a>
+                <a class="btn btn-warning" onclick="resetPwd('.$role->id.')"> <i class="fa fa-refresh"></i></a>
                 <a class="btn btn-primary" onclick="changeState('.$role->id.')"><i class="fa  fa-unlock"></i></a> ';
                 }
                 elseif ($role->flag_etat == true){
                 return ' <a class="btn btn-info " onclick="showUser('.$role->id.')" ><i class="fa  fa-info"></i></a>
                 <a class="btn btn-success" onclick="editUser('.$role->id.')"> <i class="fa fa-pencil"></i></a>
+                <a class="btn btn-warning" onclick="resetPwd('.$role->id.')"> <i class="fa fa-refresh"></i></a>
                 <a class="btn btn-danger" onclick="changeState('.$role->id.')"><i class="fa   fa-unlock-alt"></i></a> ';
                 }
 
@@ -274,6 +276,21 @@ class UserController extends Controller
         }
         $historique=new Historique();
         $historique->actions = "Bloqué";
+        $historique->cible = "Utilisateurs";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+
+        return [];
+    }
+
+    public function changePwd($id){
+
+        $user = User::findOrFail($id);
+        $user->password = Hash::make('password');
+        $user->update();
+
+        $historique=new Historique();
+        $historique->actions = "Renitialisé mot de passe";
         $historique->cible = "Utilisateurs";
         $historique->user_id =Auth::user()->id;
         $historique->save();

@@ -81,6 +81,7 @@ Route::get('/showUser-{id}', 'UserController@show');
 Route::get('/show', 'UserController@create');
 Route::get('/compte', 'UserController@compte')->name('compte');
 Route::get('/changeUserState-{id}', 'UserController@changeState');
+Route::get('/changeUserPwd-{id}', 'UserController@changePwd');
 
 
 
@@ -168,6 +169,7 @@ Route::get('/newcommande', 'CommandesController@create')->name('newcommande');
 Route::get('/newcommande2', 'CommandesController@create2')->name('newcommande2');
 Route::post('/storecommande', 'CommandesController@store');
 Route::post('/storecommande2', 'CommandesController@store2');
+Route::post('/storecommandeindirecte', 'CommandesController@storeindirecte');
 Route::get('/allcommande', 'CommandesController@index');
 Route::get('/deletecommande-{id}', 'CommandesController@destroy');
 Route::post('/updatecommande', 'CommandesController@update');
