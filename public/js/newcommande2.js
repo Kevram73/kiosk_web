@@ -3,12 +3,13 @@ $('#info').on('click', function(){
     $('.modal-title-user').text('LISTE DES PRODUITS A APPROVISIONNER');
     $('#infoproduit').modal('show');
 });
-
 $('#credit').on('click', function(){
 
     $('.modal-title-user').text('LISTE DES CREANCIERS');
     $('#infocredit').modal('show');
 });
+
+
 var $table2
 
 
@@ -23,43 +24,38 @@ function sweetToast(type,text){
     });
 }
 
-$("#fournisseur2").select2( {
+$("#fournisseur").select2( {
     placeholder: "Choisir un fournisseur",
     //allowClear: true
 } );
 
-$("#produit2").select2( {
+$("#produit").select2( {
     placeholder: "Choisir un produit",
     //allowClear: true
 } );
 
-$("#categorie2").select2( {
+$("#categorie").select2( {
     placeholder: "Choisir la catégorie",
     //allowClear: true
 } );
 
-$("#modele2").select2( {
+$("#modele").select2( {
     placeholder: "Choisir le modele",
     allowClear: true
 } );
 
-
-$('#fournisseur2').on('change',function ( ) {
-    $('#fournisseur_id').val($('#fournisseur2').val());
-
+$('#categorie').on('change',function ( ) {
     $.ajax({
-        url: '/recupererproduit2-' + $('#fournisseur2').val(),
+        url: '/recupererproduit-' + $('#categorie').val(),
         type: "get",
         success: function (data) {
-            $('#produit2').empty();
-            $('#modele2').empty();
-            $('#prix').empty();
-            $('#quantite').empty();
-            $('#produit2').append('<option value=""></option>')
+            $('#produit').empty();
+            $('#modele').empty();
+            $('#produit').append('<option value=""></option>')
 
             for (var i = 0; i < data.length; i++) {
 
-                $('#produit2').append('<option value="'+data[i].id+'">'+data[i].produit+'</option>')
+                $('#produit').append('<option value="'+data[i].id+'">'+data[i].nom+'</option>')
             }
 
         },
@@ -70,17 +66,18 @@ $('#fournisseur2').on('change',function ( ) {
 })
 
 
-$('#produit2').on('change',function ( ) {
+
+$('#produit').on('change',function ( ) {
     $.ajax({
-        url: '/recuperermodele2-' + $('#produit2').val(),
+        url: '/recuperermodele2-' + $('#produit').val(),
         type: "get",
         success: function (data) {
-            $('#modele2').empty();
-            $('#modele2').append('<option value=""></option>')
+            $('#modele').empty();
+            $('#modele').append('<option value=""></option>')
 
             for (var i = 0; i < data.length; i++) {
 
-                $('#modele2').append('<option value="'+data[i].id+'">'+data[i].libelle+'</option>')
+                $('#modele').append('<option value="'+data[i].id+'">'+data[i].libelle+'</option>')
             }
 
         },
@@ -90,23 +87,44 @@ $('#produit2').on('change',function ( ) {
     })
 })
 
-$('#modele2').on('change',function ( ) {
+$('#fournisseur').on('change', function(){
+    $('#fournisseur_id').val($('#fournisseur').val());
+});
+
+$('#modele').on('change',function ( ) {
+    const fourn = $('#fournisseur').val() !== "" ? $('#fournisseur').val() : 0;
     $.ajax({
-        // url: '/recupefournisseur-' + $('#modele2').val(),
-        url: '/recupefournisseurmodele-' + $('#modele2').val() + '-' + $('#fournisseur2').val(),
+        url: '/recupefournisseurmodele-' + $('#modele').val() + '-' +  fourn,
         type: "get",
         success: function (data) {
+            // if (data == ""){
+            //     $('#fournisseur').empty();
+            //     $('#prix').val(null);
+            //     $('#fournisseur').append('<option value="">Pas de fournisseur</option>')
+
+            // }
+            // else {
+                document.getElementById('four').style.display='block';
+                // $('#fournisseur').empty();
                 $('#prix').val(null);
+
                 for (var i = 0; i < data.length; i++) {
+
+                    // $('#fournisseur').append('<option value="'+data[i].id+'">'+data[i].fournisseur+'</option>')
                     $('#prix').val(data[i].prix);
                     $('#mod').val(data[i].modele);
                 }
+            // }
+
+
         },
         error: function (data) {
             console.log("erreur")
         },
     })
 })
+
+
 
 
 $(function( ) {
@@ -173,9 +191,10 @@ $(function( ) {
     });
 
 })
+
 $('#ajout').on('click',function () {
     let message;
-    if($('#fournisseur2').val()  ==''  ||  $('#modele2').val() ==null   ||  $('#quanite').val() <= 0 || $('#quanite').val()  ==''  ||  $('#prix').val() <= 0 || $('#prix').val()  =='' ){
+    if($('#categorie').val()  ==='' ||  $('#modele').val() ==null   ||  $('#quanite').val() <= 0 || $('#quanite').val()  ==''  ||  $('#prix').val() <= 0 || $('#prix').val()  =='' ){
     message='Veuillez remplir tous les champs svp...'
         sweetToast('warning',message);
 
@@ -185,15 +204,15 @@ $('#ajout').on('click',function () {
         let trouveEmporte = false;
         for(let i = 0; i <  $table2.data().length; i++){
             let  data = $table2.data()[i]
-            if (data.id == $('#modele2').val()) {
+            if (data.id == $('#modele').val()) {
                 trouveEmporte = true;
                 position = i;
             }
         }
 
         if ( trouveEmporte === false) {
-            var d=document.getElementById('produit2')
-            var b=document.getElementById('modele2')
+            var d=document.getElementById('produit')
+            var b=document.getElementById('modele')
             var produit=d.options[d.selectedIndex].text;
             var modele=b.options[b.selectedIndex].text;
             $table2.row.add({
@@ -245,22 +264,21 @@ $('#valider').on('click',function (e) {
         confirmButtonText:'Oui '
     }).then ((result)=>{
         if (result.value){
-            let url;
+            let url = '/storecommandeindirecte';
 
-            url = '/storecommande2'
             e.preventDefault()
 
             if ($('#fournisseur_id').val().length <= 0 ){
                 let message;
                 message='Impossible ... Choisir un fournisseur!!!'
                 sweetToast('warning',message);
-            }else{
+            } else {
+
                 if ($table2.data().length <= 0 ){
                     let message;
                     message='Impossible ... Tableau vide!!!'
                     sweetToast('warning',message);
-                }
-                else{
+                }else{
                     let content =''
                     for(let i = 0; i <  $table2.data().length; i++){
                         if (i!=$table2.data().length-1){
@@ -285,8 +303,8 @@ $('#valider').on('click',function (e) {
                             processData: false,
                             success : function(data) {
                                 Swal.fire('Effectué',
-                                    'Commande bien enregistrée');
-                                window.location='/provisions';
+                                'Commande bien enregistrée');
+                                window.location='/provisions'
                             },
                             error : function(data){
                                 let message='Erreur ';
@@ -296,11 +314,68 @@ $('#valider').on('click',function (e) {
                     }
                 }
             }
-
-
+            
         }
     });
 })
+
+
+$('#btnfournisseur').on('click', function(){
+
+    $('.modal-title-user').text('ENREGISTREMENT DU FOURNISSEUR');
+    $('#btnadd').text('Valider');
+    $('#btnadd').removeClass('btn-warning');
+    $('#btnadd').addClass('btn-primary');
+    $('#idfournisseur').val(null);
+    $('#nom').val(null);
+    $('#adresse').val(null);
+    $('#email').val(null);
+    $('#contact').val(null);
+    $('#description').val(null);
+    $('#ajout_fournisseur').modal('show');
+});
+
+//post des données
+$('#ajout_fournisseur form').on('submit', function (e) {
+
+    let url,message;
+    if (!$('#idfournisseur').val()){
+        url = '/ajoutfournisseur'
+        message = 'Fournisseur enregistré'
+
+
+    }
+    else{
+        url = '/updatefournisseur'
+        message = 'Fournisseur enregistré'
+
+
+    }
+    e.preventDefault();
+    if (e.isDefaultPrevented()){
+        $.ajax({
+            url : url ,
+            type : "post",
+            // data : $('#modal-form-user').serialize(),
+            data: new FormData($("#ajout_fournisseur form")[0]),
+            //data: new FormData($("#modal-form-user")[0]),
+            contentType: false,
+            processData: false,
+            success : function(data) {
+                sweetToast('success',message);
+
+                $('#ajout_fournisseur').modal('hide');
+                window.location='/newcommande2';
+
+
+            },
+            error : function(data){
+                alert('erreur')
+            }
+        });
+    }
+
+});
 var index;
 
 $('#commandeTable tbody').on( 'click', 'tr', function () {
@@ -339,5 +414,4 @@ $('#sup').on('click',function () {
     let  message='Supprimer'
     $table2.row('.selected').remove().draw( false );
     sweetToast('success',message);
-
 })

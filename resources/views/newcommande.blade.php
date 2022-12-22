@@ -7,7 +7,7 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Commande</h2>
+                <h2>Commande directe</h2>
             </header>
 
             <div class="row">
@@ -17,7 +17,7 @@
                             <a href="#" class="fa fa-caret-down"></a>
                         </div>
 
-                        <h1 class="panel-title">ENREGISTREMENT DE LA COMMANDE</h1>
+                        <h1 class="panel-title">ENREGISTREMENT DE LA COMMANDE DIRECTE</h1>
                     </header>
 
                     <div class="panel-body">

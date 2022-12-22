@@ -37,7 +37,7 @@
                                 <th class="center hidden-phone">Quantite commandée</th>
                                 <th class="center hidden-phone">Quantite livrée</th>
                                 <th class="center hidden-phone">Quantité restante</th>
-                                <th class="center hidden-phone">Etat</th>
+                                <th class="center hidden-phone">Etat actuel</th>
                             </tr>
                             </thead>
                             <tbody class="center hidden-phone">

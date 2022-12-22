@@ -144,7 +144,7 @@ $('#ajout').on('click',function () {
             success: function (data) {
                 quantite=$('#quantite').val()-data
                 if ( quantite>0){
-                    message='La quantité saisie est supérieure a la celle commandée ou restante...'
+                    message='Quantité saisie supérieure a la commande'
                     sweetToast('warning',message);
                 }
                 else {
@@ -170,7 +170,7 @@ $('#ajout').on('click',function () {
                         }).draw()
                         let message;
                         message='Ajouter au tableau'
-                        sweetToast('success',message);
+                        // sweetToast('success',message);
                         $('#quantite').val(null);
 
                     }else{
@@ -180,7 +180,7 @@ $('#ajout').on('click',function () {
 
                         trouveEmporte = true;
                         let message;
-                        message='Rajouter au tableau'
+                        message='Quantite mise a jour'
                         sweetToast('info',message);
                     }
                 }
@@ -203,6 +203,8 @@ $('#annuler').on('click',function () {
 
     $('#quantite').val(null);
 })
+
+
 $('#valider').on('click',function (e) {
 
     e.preventDefault()
@@ -212,32 +214,46 @@ $('#valider').on('click',function (e) {
         message='Impossible ... Tableau vide!!!'
         sweetToast('warning',message);
     }else{
-        let content =''
-        for(let i = 0; i <  $table2.data().length; i++){
-            if (i!=$table2.data().length-1){
-                content +=   $table2.data()[i].id+","+  $table2.data()[i].quantite+","
 
-            }else{
-                content +=  $table2.data()[i].id+","+  $table2.data()[i].quantite
-            }
-        }
-        $('#livTable').val(content)
-        $.ajax({
-            url :'storelivraison',
-            type : "post",
-            // data : $('#modal-form-user').serialize(),
-            data: new FormData($("#livform form")[0]),
-            //data: new FormData($("#modal-form-user")[0]),
-            contentType: false,
-            processData: false,
-            success : function(data) {
-let message='Livraison enregistrée';
-                sweetToast('success',message);
-                window.location='/livraisons'
+        Swal.fire({
+            position: 'center',
+            title: 'Voulez-vous enregistrer la livraison?',
+            text:"",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor:'#d33',
+            confirmButtonText:'Oui '
+        }).then ((result)=>{
+            if (result.value){
+                let content =''
+                for(let i = 0; i <  $table2.data().length; i++){
+                    if (i!=$table2.data().length-1){
+                        content +=   $table2.data()[i].id+","+  $table2.data()[i].quantite+","
 
-            },
-            error : function(data){
+                    }else{
+                        content +=  $table2.data()[i].id+","+  $table2.data()[i].quantite
+                    }
+                }
+                $('#livTable').val(content)
+                $.ajax({
+                    url :'storelivraison',
+                    type : "post",
+                    // data : $('#modal-form-user').serialize(),
+                    data: new FormData($("#livform form")[0]),
+                    //data: new FormData($("#modal-form-user")[0]),
+                    contentType: false,
+                    processData: false,
+                    success : function(data) {
+                    let message='Livraison enregistrée';
+                        sweetToast('success',message);
+                        window.location='/livraisons'
 
+                    },
+                    error : function(data){
+
+                    }
+                });
             }
         });
     }

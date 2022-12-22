@@ -214,6 +214,8 @@ class LivraisonsController extends Controller
         $historique->save();
        return  view('newlivraisonvente',compact('vente'));
     }
+
+
     /**
 
      * Store a newly created resource in storage.
@@ -222,6 +224,70 @@ class LivraisonsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $id=DB::table('livraisons')->max('id');
+            $ed=1+$id;
+            $livraison = new Livraison();
+            $livraison ->numero="LIV".now()->format('Y')."-".$ed;
+            $livraison ->date_livraison= now();
+            $livraison ->boutique_id= Auth::user()->boutique->id;
+            $livraison->save();
+    
+            $alllivraison= explode( ',', $request->input('livTable') );
+            for ($i =0 ;$i<count($alllivraison);$i+=2) {
+                $commande_modele = DB::table('commande_modeles')->find($alllivraison[$i]);
+                $quantite_livre= DB::table('livraison_commandes')
+                        ->where('commande_modele_id',$alllivraison[$i])
+                        ->sum('quantite_livre');
+                                    
+                $livraisoncommande = new livraisonCommande();
+                $livraisoncommande ->livraison_id=$livraison ->id;
+                $livraisoncommande  ->commande_modele_id=$alllivraison[$i];
+                $livraisoncommande ->quantite_livre =$alllivraison[$i+1];
+                $livraisoncommande->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i+1];
+                $livraisoncommande->save();
+    
+                $modele= Modele::findOrFail($commande_modele->modele);
+                $modele->quantite=$modele->quantite+ $livraisoncommande ->quantite_livre;
+                $modele->update();
+    
+                if ($livraisoncommande->quantite_restante==0){
+                    DB::table('commande_modeles')
+                        ->where('id',$alllivraison[$i])
+                        ->update(['etat' => true]);
+                }
+            }
+    
+            $historique=new Historique();
+            $historique->actions = "Creer";
+            $historique->cible = "Livraisons";
+            $historique->user_id =Auth::user()->id;
+            $historique->save();
+
+            DB::commit();
+            return $livraison;
+            
+            
+        } catch (\Execption $e) {
+            DB::rollback();
+            return $e;
+        }
+
+    }
+
+
+
+    /**
+
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function oldStore(Request $request)
     {
 
         $id=DB::table('livraisons')->max('id');
@@ -255,7 +321,7 @@ class LivraisonsController extends Controller
 
             $quantite= DB::table('livraison_commandes')
                 ->where('commande_modele_id',$alllivraison[$i] )
-                ->sum('quantite_livre');
+                ->sum('quantite_livre');               
     $livraisoncommande = new livraisonCommande();
     $livraisoncommande ->livraison_id=$livraison ->id;
     $livraisoncommande  ->commande_modele_id=$alllivraison[$i];
@@ -299,6 +365,8 @@ class LivraisonsController extends Controller
         return $commande;
 
     }
+
+
     public function store2(Request $request)
     {
 
@@ -357,7 +425,24 @@ class LivraisonsController extends Controller
         return $commande;
 
     }
+
+    
     public function verification($id)
+    {
+        try {
+            $commande_modele = DB::table('commande_modeles')->find($id);
+
+            $quantite= DB::table('livraison_commandes')
+                ->where('commande_modele_id',$id )
+                ->sum('quantite_livre');
+            return $commande_modele->quantite - $quantite;
+
+        } catch (\Exception $e){
+            return $e;
+        }
+    }
+
+    public function oldVerification($id)
     {
         $commande = DB::table('commandes')
             ->join('commande_modeles', function ($join) {
@@ -383,6 +468,8 @@ class LivraisonsController extends Controller
             ->sum('quantite_livre');
         return $commande[0]->quantite - $quantite;
     }
+
+
     public function verification2($id)
     {
         $commande = DB::table('ventes')
@@ -424,20 +511,17 @@ class LivraisonsController extends Controller
             ->join('commande_modeles', function ($join) {
                 $join->on('commande_modeles.id', '=', 'livraison_commandes.commande_modele_id');
             })
-            ->join('modele_fournisseurs', function ($join) {
-                $join->on('modele_fournisseurs.id', '=', 'commande_modeles.modele_fournisseur_id');
+            ->join('commandes', function ($join) {
+                $join->on('commandes.id', '=', 'commande_modeles.commande_id');
             })
             ->join('modeles', function ($join) {
-                $join->on('modeles.id', '=', 'modele_fournisseurs.modele_id');
+                $join->on('modeles.id', '=', 'commande_modeles.modele');
             })
             ->join('fournisseurs', function ($join) {
-                $join->on('fournisseurs.id', '=', 'modele_fournisseurs.fournisseur_id');
+                $join->on('fournisseurs.id', '=', 'commandes.fournisseur_id');
             })
             ->join('produits', function ($join) {
                 $join->on('produits.id', '=', 'modeles.produit_id');
-            })
-            ->join('commandes', function ($join) {
-                $join->on('commandes.id', '=', 'commande_modeles.commande_id');
             })
             ->where('livraisons.id','=',$id)
             ->select('commandes.numero as numero',

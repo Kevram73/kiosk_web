@@ -51,6 +51,7 @@ class CommandesController extends Controller
             ->get();
         return $provision;
     }
+    
     public function commande($id)
     {
         $commande = DB::table('commandes')
@@ -169,7 +170,8 @@ class CommandesController extends Controller
     }
   public function create2()
     {
-    $fournisseur=Fournisseur::all();
+
+   $fournisseurs=Fournisseur::all();
     $categorie=Categorie::all();
     $produits=Produit::all();
     $modeles=Modele::all();
@@ -203,7 +205,7 @@ class CommandesController extends Controller
             $credit[$i] = $total;
         }
         $cre=count($clients);
-        return view('newcommande2',compact('categorie', 'produits', 'modeles', 'fournisseur','mod','modele2','clients','credit','cre'));
+        return view('newcommande2',compact('categorie', 'produits', 'modeles', 'fournisseurs', 'mod','modele2','clients','credit','cre'));
     }
 
     /**
@@ -339,7 +341,55 @@ class CommandesController extends Controller
     return view('provision');
     }
 
-    
+    public function storeindirecte(Request $request)
+    {
+        $id=DB::table('commandes')->max('id');
+        $ad=DB::table('journal_achats')->max('id');
+
+        $ed=1+$id;
+        $commande = new Commande();
+        $commande ->numero="COM".now()->format('Y')."-".$ed;
+        $commande ->date_commande= now();
+        $commande ->journal_achat_id= $ad;
+        $commande ->boutique_id= Auth::user()->boutique->id;
+        $commande ->type_commande= 2;
+        $commande ->fournisseur_id= $request->input('fournisseur');
+        $commande ->credit = $request->input('credit') == "on" ? true : false;
+        $commande->save();
+        $allcommande= explode( ',', $request->input('comTable') );
+
+        for ($i =0;$i<count($allcommande);$i+=3) {
+            $verification = DB::table('modele_fournisseurs')
+                ->join('modeles', function ($join) {
+                    $join->on('modele_fournisseurs.modele_id', '=', 'modeles.id');
+                })
+                ->where('modele_fournisseurs.fournisseur_id', '=', $request->input('fournisseur'))
+                ->where('modele_fournisseurs.modele_id', '=', $allcommande[$i])
+                ->select('modele_fournisseurs.id as modele_fournisseurs_id')
+                ->first();
+            $modeleId = $allcommande[$i];
+
+            $commandemodele = new commandeModele();
+            $commandemodele ->commande_id=$commande ->id;
+            $commandemodele ->modele_fournisseur_id= $verification ? $verification->modele_fournisseurs_id : null;
+            $commandemodele ->prix =$allcommande[$i+1];
+            $commandemodele -> quantite= $allcommande[$i+2];
+            $commandemodele -> total= $allcommande[$i+1]*$allcommande[$i+2];
+            $commandemodele -> modele=$modeleId;
+            $commandemodele->save();
+
+            $commande= Commande::findOrFail($commande ->id);
+            $commande->totaux=$commande->totaux+  $commandemodele -> total;
+            $commande->update();
+        }
+
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Commandes indirecte";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+    return view('provision');
+    }
 
 
     /**
@@ -373,6 +423,7 @@ class CommandesController extends Controller
                     ->where('commandes.id','=',$id)
                     ->select(
                         'commandes.numero as numero',
+                        'commandes.type_commande as type',
                         'commandes.date_commande as date',
                         'fournisseurs.nom as fournisseur',
                         'modeles.libelle as modele',
@@ -398,6 +449,7 @@ class CommandesController extends Controller
                     ->where('commandes.id','=',$id)
                     ->select(
                         'commandes.numero as numero',
+                        'commandes.type_commande as type',
                         'commandes.date_commande as date',
                         'modeles.libelle as modele',
                         'produits.nom as produit',
