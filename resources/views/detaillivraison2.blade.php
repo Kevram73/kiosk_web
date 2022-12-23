@@ -50,10 +50,10 @@
                                     <td class="center hidden-phone">{{$liv->quantiteL}}</td>
                                     <td class="center hidden-phone">{{$liv->quantiteR}}</td>
                                     @if($liv->etat==false)
-                                        <td class="center hidden-phone">  <a class="btn btn-danger" >Livré </a></td>
+                                        <td class="center hidden-phone">  <a class="btn btn-success" >Livré </a></td>
                                     @endif
                                     @if($liv->etat==true)
-                                        <td class="center hidden-phone">  <a class="btn btn-success" >Non Livré </a></td>
+                                        <td class="center hidden-phone">  <a class="btn btn-danger" >Non Livré </a></td>
                                     @endif
                                 </tr>
                             @endforeach

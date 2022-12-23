@@ -2044,6 +2044,7 @@ class VentesController extends Controller
         $boutiques=Boutique::all();
         return view('adminhistoriquevente',compact('boutiques'));
     }
+
     public function vente($id)
     {
         $commande = DB::table('ventes')
@@ -2057,6 +2058,29 @@ class VentesController extends Controller
                 $join->on('produits.id', '=', 'modeles.produit_id');
             })
             ->where('ventes.id','=',$id)
+            ->select(
+                'modeles.libelle as modele',
+                // 'preventes.etat as etat',
+                'produits.nom as produit',
+                'preventes.id as id')
+            ->get();
+        return $commande;
+    }
+
+    public function livraisonvente($id)
+    {
+        $commande = DB::table('ventes')
+            ->join('preventes', function ($join) {
+                $join->on('preventes.vente_id', '=', 'ventes.id');
+            })
+            ->join('modeles', function ($join) {
+                $join->on('modeles.id', '=', 'preventes.modele_fournisseur_id');
+            })
+            ->join('produits', function ($join) {
+                $join->on('produits.id', '=', 'modeles.produit_id');
+            })
+            ->where('ventes.id','=',$id)
+            ->where('preventes.etat','=',1)
             ->select(
                 'modeles.libelle as modele',
                 // 'preventes.etat as etat',

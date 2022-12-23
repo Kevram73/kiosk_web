@@ -202,7 +202,7 @@ class LivraisonsController extends Controller
             ->where ('ventes.type_vente', '=', 3)
             ->where ('preventes.etat', '=', 1)
             ->select('ventes.id as id','ventes.numero as numero')
-            ->groupBy('preventes.id', 'ventes.id', 'ventes.numero')
+            ->groupBy('ventes.id', 'ventes.numero')
             ->orderBy('ventes.created_at', 'DESC')
             ->limit(25)
             ->get();
@@ -321,41 +321,41 @@ class LivraisonsController extends Controller
 
             $quantite= DB::table('livraison_commandes')
                 ->where('commande_modele_id',$alllivraison[$i] )
-                ->sum('quantite_livre');               
-    $livraisoncommande = new livraisonCommande();
-    $livraisoncommande ->livraison_id=$livraison ->id;
-    $livraisoncommande  ->commande_modele_id=$alllivraison[$i];
-    $livraisoncommande ->quantite_livre =$alllivraison[$i+1];
-    $livraisoncommande->quantite_restante =$commande[0]->quantite - $quantite-$alllivraison[$i+1];
-    $livraisoncommande->save();
-    $modele_id = DB::table('modeles')
-        ->join('modele_fournisseurs', function ($join) {
-            $join->on('modele_fournisseurs.modele_id', '=', 'modeles.id');
-        })
-        ->join('commande_modeles', function ($join) {
-            $join->on('commande_modeles.modele_fournisseur_id', '=', 'modele_fournisseurs.id');
-        })
+                    ->sum('quantite_livre');               
+        $livraisoncommande = new livraisonCommande();
+        $livraisoncommande ->livraison_id=$livraison ->id;
+        $livraisoncommande  ->commande_modele_id=$alllivraison[$i];
+        $livraisoncommande ->quantite_livre =$alllivraison[$i+1];
+        $livraisoncommande->quantite_restante =$commande[0]->quantite - $quantite-$alllivraison[$i+1];
+        $livraisoncommande->save();
+        $modele_id = DB::table('modeles')
+            ->join('modele_fournisseurs', function ($join) {
+                $join->on('modele_fournisseurs.modele_id', '=', 'modeles.id');
+            })
+            ->join('commande_modeles', function ($join) {
+                $join->on('commande_modeles.modele_fournisseur_id', '=', 'modele_fournisseurs.id');
+            })
 
-        ->join('livraison_commandes', function ($join) {
-            $join->on('livraison_commandes.commande_modele_id', '=', 'commande_modeles.id');
-        })
-        ->where('livraison_commandes.id','=',$livraisoncommande->id)
-        ->select('modeles.id as id')
-        ->get();
-    $modele= Modele::findOrFail($modele_id[0]->id);
-    $modele->quantite=$modele->quantite+ $livraisoncommande ->quantite_livre;
-    $modele->update();
+            ->join('livraison_commandes', function ($join) {
+                $join->on('livraison_commandes.commande_modele_id', '=', 'commande_modeles.id');
+            })
+            ->where('livraison_commandes.id','=',$livraisoncommande->id)
+            ->select('modeles.id as id')
+            ->get();
+        $modele= Modele::findOrFail($modele_id[0]->id);
+        $modele->quantite=$modele->quantite+ $livraisoncommande ->quantite_livre;
+        $modele->update();
 
-    $liv= DB::table('livraison_commandes')
-        ->where('commande_modele_id',$commande[0]->idC )
-        ->latest('created_at')
-        ->get();
+        $liv= DB::table('livraison_commandes')
+            ->where('commande_modele_id',$commande[0]->idC )
+            ->latest('created_at')
+            ->get();
 
-    if ($liv[0]->quantite_restante==0){
-        DB::table('commande_modeles')
-            ->where('id',$commande[0]->idC)
-            ->update(['etat' => true]);
-    }
+        if ($liv[0]->quantite_restante==0){
+            DB::table('commande_modeles')
+                ->where('id',$commande[0]->idC)
+                ->update(['etat' => true]);
+        }
         }
         $historique=new Historique();
         $historique->actions = "Creer";
@@ -366,8 +366,70 @@ class LivraisonsController extends Controller
 
     }
 
+    /**
 
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store2(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $id=DB::table('livraison_v_s')->max('id');
+            $ed=1+$id;
+            $livraison = new LivraisonV();
+            $livraison ->numero="LIV-VENT".now()->format('Y')."-".$ed;
+            $livraison ->date_livraison= now();
+            $livraison ->boutique_id= Auth::user()->boutique->id;
+            $livraison->save();
+    
+            $alllivraison= explode( ',', $request->input('livTable') );
+            for ($i =0 ;$i<count($alllivraison);$i+=2) {
+                $commande_modele = DB::table('preventes')->find($alllivraison[$i]);
+                $quantite_livre= DB::table('livraison_ventes')
+                        ->where('prevente_id', $alllivraison[$i])
+                        ->sum('quantite_livre');
+                                    
+                $livraisonvente = new Livraison_vente();
+                $livraisonvente->livraison_v_id=$livraison ->id;
+                $livraisonvente->prevente_id=$alllivraison[$i];
+                $livraisonvente->quantite_livre =$alllivraison[$i+1];
+                $livraisonvente->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i+1];
+                $livraisonvente->save();
+    
+                $modele= Modele::findOrFail($commande_modele->modele_fournisseur_id);
+                $modele->quantite=$modele->quantite- $livraisonvente ->quantite_livre;
+                $modele->update();
+    
+                if ($livraisonvente->quantite_restante==0){
+                    DB::table('preventes')
+                        ->where('id',$alllivraison[$i])
+                        ->update(['etat' => false]);
+                }
+            }
+    
+            $historique=new Historique();
+            $historique->actions = "Creer";
+            $historique->cible = "Livraisons";
+            $historique->user_id =Auth::user()->id;
+            $historique->save();
+
+            DB::commit();
+            return $livraison;
+            
+            
+        } catch (\Execption $e) {
+            DB::rollback();
+            return $e;
+        }
+
+    }
+
+
+    public function oldStore2(Request $request)
     {
 
         $id=DB::table('livraison_v_s')->max('id');
@@ -442,6 +504,21 @@ class LivraisonsController extends Controller
         }
     }
 
+    public function verification2($id)
+    {
+        try {
+            $commande_modele = DB::table('preventes')->find($id);
+
+            $quantite= DB::table('livraison_ventes')
+                ->where('prevente_id',$id )
+                ->sum('quantite_livre');
+            return $commande_modele->quantite - $quantite;
+
+        } catch (\Exception $e){
+            return $e;
+        }
+    }
+
     public function oldVerification($id)
     {
         $commande = DB::table('commandes')
@@ -470,7 +547,7 @@ class LivraisonsController extends Controller
     }
 
 
-    public function verification2($id)
+    public function oldVerification2($id)
     {
         $commande = DB::table('ventes')
             ->join('preventes', function ($join) {
@@ -584,14 +661,8 @@ class LivraisonsController extends Controller
             ->join('preventes', function ($join) {
                 $join->on('preventes.id', '=', 'livraison_ventes.prevente_id');
             })
-            ->join('modele_fournisseurs', function ($join) {
-                $join->on('modele_fournisseurs.id', '=', 'preventes.modele_fournisseur_id');
-            })
             ->join('modeles', function ($join) {
-                $join->on('modeles.id', '=', 'modele_fournisseurs.modele_id');
-            })
-            ->join('fournisseurs', function ($join) {
-                $join->on('fournisseurs.id', '=', 'modele_fournisseurs.fournisseur_id');
+                $join->on('modeles.id', '=', 'preventes.modele_fournisseur_id');
             })
             ->join('produits', function ($join) {
                 $join->on('produits.id', '=', 'modeles.produit_id');

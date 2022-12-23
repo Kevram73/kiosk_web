@@ -200,6 +200,7 @@ Route::get('/adminhistoriqueachat', 'CommandesController@adminhistorique')->name
 
 
 Route::get('/recupererventemodele-{id}', 'VentesController@vente');
+Route::get('/recupererlivraisonventemodele-{id}', 'VentesController@livraisonvente');
 Route::get('/recuperercredit-{id}', 'VentesController@credit');
 Route::get('/devisvente', 'VentesController@createdevis')->name('devisvente');
 Route::get('/devisventegros', 'VentesController@createdevisgros')->name('devisventegros');

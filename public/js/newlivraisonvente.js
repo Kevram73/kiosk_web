@@ -43,7 +43,7 @@ $("#modele").select2( {
 
 $('#vente').on('change',function ( ) {
     $.ajax({
-        url: '/recupererventemodele-' + $('#vente').val(),
+        url: '/recupererlivraisonventemodele-' + $('#vente').val(),
         type: "get",
         success: function (data) {
             $('#quantite').empty();
@@ -208,34 +208,49 @@ $('#valider').on('click',function (e) {
         message='Impossible ... Tableau vide!!!'
         sweetToast('warning',message);
     }else{
-        let content =''
-        for(let i = 0; i <  $table2.data().length; i++){
-            if (i!=$table2.data().length-1){
-                content +=   $table2.data()[i].id+","+  $table2.data()[i].quantite+","
-
-            }else{
-                content +=  $table2.data()[i].id+","+  $table2.data()[i].quantite
 
 
-            }
-        }
-        $('#livTable').val(content)
-        $.ajax({
-            url :'storelivraison2',
-            type : "post",
-            // data : $('#modal-form-user').serialize(),
-            data: new FormData($("#livform form")[0]),
-            //data: new FormData($("#modal-form-user")[0]),
-            contentType: false,
-            processData: false,
-            success : function(data) {
-let message='Livraison enregistrée';
-                sweetToast('success',message);
-                window.location='/livraisons2'
+        Swal.fire({
+            position: 'center',
+            title: 'Voulez-vous enregistrer la livraison?',
+            text:"",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor:'#3085d6',
+            cancelButtonColor:'#d33',
+            confirmButtonText:'Oui '
+        }).then ((result)=>{
+            if (result.value){
+                let content =''
+                for(let i = 0; i <  $table2.data().length; i++){
+                    if (i!=$table2.data().length-1){
+                        content +=   $table2.data()[i].id+","+  $table2.data()[i].quantite+","
 
-            },
-            error : function(data){
+                    }else{
+                        content +=  $table2.data()[i].id+","+  $table2.data()[i].quantite
 
+
+                    }
+                }
+                $('#livTable').val(content)
+                $.ajax({
+                    url :'storelivraison2',
+                    type : "post",
+                    // data : $('#modal-form-user').serialize(),
+                    data: new FormData($("#livform form")[0]),
+                    //data: new FormData($("#modal-form-user")[0]),
+                    contentType: false,
+                    processData: false,
+                    success : function(data) {
+                    let message='Livraison enregistrée';
+                        sweetToast('success',message);
+                        window.location='/livraisons2'
+
+                    },
+                    error : function(data){
+
+                    }
+                });
             }
         });
     }
