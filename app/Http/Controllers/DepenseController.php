@@ -20,7 +20,16 @@ class DepenseController extends Controller
 
     public function liste()
     {
-        $sold = Sold::findorfail(1);
+        $sold = Sold::where('boutique_id', Auth::user()->boutique->id)->first();
+        if(!$sold){
+            $sold = new Sold();
+        $sold->montant = 0;
+        $sold->seuil = 0;
+        $sold->boutique_id = Auth::user()->boutique->id;
+        $sold->montant = 0;
+        $sold->save();
+        }
+
         $historique = new Historique();
         $historique->actions = "liste";
         $historique->cible = "Depense";
@@ -61,7 +70,7 @@ class DepenseController extends Controller
 
     public function create_depot()
     {
-        $sold = Sold::findorfail(1);
+        $sold = Sold::where('boutique_id', Auth::user()->boutique->id)->first();
         $historique = new Historique();
         $historique->actions = "Créer";
         $historique->cible = "Dépot";
@@ -72,7 +81,7 @@ class DepenseController extends Controller
 
     public function create_depense_file($id)
     {
-        $sold = Sold::findorfail(1);
+        $sold = Sold::where('boutique_id', Auth::user()->boutique->id)->first();
         $depense = Depense::findorfail($id);
         $files = DepenseFile::where(['depense_id' => $depense->id])->get();
         $historique = new Historique();

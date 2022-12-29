@@ -106,6 +106,12 @@ class BordsController extends Controller
         $historique->user_id =Auth::user()->id;
         $historique->save();
 
+        if($role[0]->name == 'SUPER ADMINISTRATEUR'){
+            $client=Client::with('boutique')->count ();
+            $employe=User::with('boutique')->count ();
+            $produit=Modele::with('boutique')->count ();
+        }
+
         return view('bord.index',compact('vente','client','caisse','fournisseur', 'employe','mod','modele2','categorie','produit','commande','livraison','role','cre','clients','credit','boutique'));
     }
 

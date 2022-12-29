@@ -35,6 +35,7 @@
                                     <div class="row">
                                         <div class="col-md-12 text-right">
                                             <a href="{{ route('ventes') }}" class="btn btn-danger" ></i> Fermer</i></a>
+                                            <input type="hidden" name="typeVente" id="typeVente" value="{{$all_vente->type_vente}}"/>
                                             <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider et imprimer la facture <i class="fa  fa-file-pdf-o"></i></button>
                                         </div>
                                     </div>
@@ -124,6 +125,7 @@
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="js/facturegros.js"></script>
+    <script src="js/facture-paye-complet.js"></script>
     <script>
         function setNumeralHtml(element, format, surfix="", type="html")
         {

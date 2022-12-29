@@ -77,6 +77,7 @@ class ResultatsController extends Controller
                 $join->on('charges.journal_divers_id', '=', 'journal_divers.id');
             })
             ->where ('journal_divers.annee', '=',$id)
+            ->where('charges.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('charges.montant as charge')
             ->sum ('charges.montant');
         $ca = DB::table('ventes')
@@ -84,6 +85,7 @@ class ResultatsController extends Controller
                 $join->on('ventes.journal_id', '=', 'journals.id');
             })
             ->where ('journals.annee', '=',$id)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('ventes.totaux as vente')
             ->sum ('ventes.totaux');
 
@@ -97,6 +99,7 @@ class ResultatsController extends Controller
             })
             ->where ('journals.annee', '=',$id)
             ->where ('ventes.type_vente', '=',2)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('ventes.totaux as vente,reglements.montant_restant')
             ->sum ('reglements.montant_restant');
 
@@ -114,6 +117,7 @@ class ResultatsController extends Controller
                 $join->on('ventes.journal_id', '=', 'journals.id');
             })
             ->where ('journals.annee', '=',$id)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('preventes.quantite as quantite','modele_fournisseurs.prix as prix')
             ->get();
         for ($i = 0; $i <count($det); $i++) 
@@ -126,6 +130,7 @@ class ResultatsController extends Controller
                 $join->on('charges.journal_divers_id', '=', 'journal_divers.id');
             })
             ->where ('journal_divers.annee', '=',$id)
+            ->where('charges.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('charges.montant as impot')
             ->where ('charges.type','=','impots')
             ->sum ('charges.montant');
@@ -148,6 +153,7 @@ class ResultatsController extends Controller
                 $join->on('ventes.journal_id', '=', 'journals.id');
             })
             ->where ('journals.annee', '=',$id)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('preventes.quantite as quantite','modele_fournisseurs.prix as prix')
             ->get();
         for ($i = 0; $i <count($det); $i++) {
@@ -162,10 +168,12 @@ class ResultatsController extends Controller
         $table=array();
         $c = DB::table('charges')
             ->whereDate('created_at', '=',$id)
+            ->where('boutique_id', '=',Auth::user()->boutique->id)
             ->select ('charges.montant as charge')
             ->sum ('charges.montant');
         $ca = DB::table('ventes')
             ->whereDate('created_at', '=',$id)
+            ->where('boutique_id', '=',Auth::user()->boutique->id)
             ->select ('ventes.totaux as vente')
             ->sum ('ventes.totaux');
         $table=array();
@@ -181,6 +189,7 @@ class ResultatsController extends Controller
                 $join->on('ventes.journal_id', '=', 'journals.id');
             })
             ->whereDate ('ventes.created_at', '=',$id)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('preventes.quantite as quantite','modele_fournisseurs.prix as prix')
             ->get();
         for ($i = 0; $i <count($det); $i++) {
@@ -189,6 +198,7 @@ class ResultatsController extends Controller
         }
         $i = DB::table('charges')
             ->whereDate('created_at', '=',$id)
+            ->where('boutique_id', '=',Auth::user()->boutique->id)
             ->select ('charges.montant as impot')
             ->where ('charges.type','=','impots')
             ->sum ('charges.montant');
@@ -206,6 +216,7 @@ class ResultatsController extends Controller
             })
             ->where ('journal_divers.annee', '=',$ed)
             ->where('journal_divers.mois', '=', $id)
+            ->where('charges.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('charges.montant as charge')
             ->sum ('charges.montant');
         $ca = DB::table('ventes')
@@ -214,6 +225,7 @@ class ResultatsController extends Controller
             })
             ->where ('journals.annee', '=',$ed)
             ->where('journals.mois', '=', $id)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('ventes.totaux as vente')
             ->sum ('ventes.totaux');
         $table=array();
@@ -230,6 +242,7 @@ class ResultatsController extends Controller
             })
             ->where ('journals.annee', '=',$ed)
             ->where('journals.mois', '=', $id)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->select ('preventes.quantite as quantite','modele_fournisseurs.prix as prix')
             ->get();
         for ($i = 0; $i <count($det); $i++) {
@@ -243,6 +256,7 @@ class ResultatsController extends Controller
             ->where ('journal_divers.annee', '=',$ed)
             ->where('journal_divers.mois', '=', $id)
             ->select ('charges.montant as impot')
+            ->where('charges.boutique_id', '=',Auth::user()->boutique->id)
             ->where ('charges.type','=','impots')
             ->sum ('charges.montant');
         $table=[$c,$ca,$cpv,$i];

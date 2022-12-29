@@ -505,9 +505,6 @@ class VentesController extends Controller
             ->join('clients', function ($join) {
             $join->on('clients.id', '=', 'ventes.client_id');
         })
-            ->join('reglements', function ($join) {
-            $join->on('ventes.id', '=', 'reglements.vente_id');
-        })
         ->where('ventes.id','=',$id)
         ->select('ventes.numero as numero',
             'ventes.date_vente as date',
@@ -519,8 +516,6 @@ class VentesController extends Controller
             'preventes.prixtotal as prixtotal',
             'clients.nom as nom',
             'clients.contact as contact',
-            'reglements.montant_donne as donne',
-            'reglements.montant_restant as restant',
             'ventes.created_at as create',
             'ventes.updated_at as update')
         ->get();
@@ -565,7 +560,7 @@ class VentesController extends Controller
             $pdf = null;
             $all_vente = Vente::find($id);
             try{
-                $pdf = PDF::loadView('facturegros',compact('all_vente', 'vente','modele2','mod','total','clients','credit','cre'))
+                $pdf = PDF::loadView('facturegros',compact('all_vente', 'vente','modele2','mod','total','clients','cre'))
                         ->setPaper('a4')
                         ->save(public_path("factures/".$name));
                 DB::table('ventes')->where('id',$id)->update(['facture' => $name]);
@@ -1337,29 +1332,29 @@ class VentesController extends Controller
         $facture->vente_id =$vente->id;
         $facture ->numero="FACT".now()->format('Y')."-".$ed;
         $facture->save();
-        $clients=DB::table('clients')
-            ->join('ventes', function ($join) {
-                $join->on('ventes.client_id', '=', 'clients.id');
-            })
-            ->join('reglements', function ($join) {
-                $join->on('reglements.vente_id', '=', 'ventes.id');
-            })
-            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
-            ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.id as id')
-            ->groupBy('id', 'clients.nom')
-            ->get();
-        $credit=array();
-        for ($i =0 ;$i<count($clients);$i++) {
-            $total = DB::table('reglements')
-                ->join('ventes', function ($join) {
-                    $join->on('reglements.vente_id', '=', 'ventes.id');
-                })
-                ->where('ventes.client_id', '=', $clients[$i]->id)
-                ->SUM('reglements.montant_restant');
-            $credit[$i] = $total;
-        }
-        $cre=count($clients);
+        // $clients=DB::table('clients')
+        //     ->join('ventes', function ($join) {
+        //         $join->on('ventes.client_id', '=', 'clients.id');
+        //     })
+        //     ->join('reglements', function ($join) {
+        //         $join->on('reglements.vente_id', '=', 'ventes.id');
+        //     })
+        //     ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
+        //     ->where('reglements.montant_restant', '>', 0)
+        //     ->select('clients.nom as nom','clients.id as id')
+        //     ->groupBy('id', 'clients.nom')
+        //     ->get();
+        // $credit=array();
+        // for ($i =0 ;$i<count($clients);$i++) {
+        //     $total = DB::table('reglements')
+        //         ->join('ventes', function ($join) {
+        //             $join->on('reglements.vente_id', '=', 'ventes.id');
+        //         })
+        //         ->where('ventes.client_id', '=', $clients[$i]->id)
+        //         ->SUM('reglements.montant_restant');
+        //     $credit[$i] = $total;
+        // }
+        // $cre=count($clients);
         // return view('vente',compact('modele2','mod','clients','credit','cre'));
         return $vente;
     }
@@ -1653,14 +1648,14 @@ class VentesController extends Controller
 
     public function debiteurs()
     {
-        $clients = Client::all();
+        $clients = Client::where ('clients.boutique_id', '=',Auth::user()->boutique->id )->get();
 
         $array = [];
         foreach($clients as $client)
         {
             $data = Reglement::where('clients.id', $client->id)
-            ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
             ->join('clients', 'reglements.client_id', '=', 'clients.id')
+            ->join('ventes', 'reglements.vente_id', '=', 'ventes.id')
             ->select ('clients.nom', 'clients.contact', 'clients.adresse', 'reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();

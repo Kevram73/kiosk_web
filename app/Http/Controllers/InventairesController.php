@@ -35,7 +35,7 @@ class InventairesController extends Controller
     public function index()
     {
         $inventaire = DB::table('inventaires')
-            ->where(['inventaires.etat' => 1])
+            ->where(['inventaires.etat' => 1, 'inventaires.boutique_id' => Auth::user()->boutique->id])
             ->join('users', function ($join) {
                 $join->on('inventaires.user_id', '=', 'users.id');
             })
@@ -51,7 +51,7 @@ class InventairesController extends Controller
     public function indexPending()
     {
         $inventaire = DB::table('inventaires')
-        ->where(['inventaires.etat' => 0])
+        ->where(['inventaires.etat' => 0, 'inventaires.boutique_id' => Auth::user()->boutique->id])
         ->join('users', function ($join) {
             $join->on('inventaires.user_id', '=', 'users.id');
         })
@@ -90,6 +90,7 @@ class InventairesController extends Controller
             $inventaire=new Inventaires();
             $inventaire->numero ="INVENT".now()->format('Y')."-1";
             $inventaire->user_id =Auth::user()->id;
+            $inventaire->boutique_id = Auth::user()->boutique->id;
             $inventaire->save();
             return view('newinventaire');
         }
@@ -98,6 +99,7 @@ class InventairesController extends Controller
             $inventaire=new Inventaires();
             $inventaire->numero ="INVENT".now()->format('Y')."-".$ed;
             $inventaire->user_id =Auth::user()->id;
+            $inventaire->boutique_id = Auth::user()->boutique->id;
             $inventaire->save();
             return view('newinventaire');
         }
@@ -128,6 +130,7 @@ class InventairesController extends Controller
             $inventaire->numero ="INVENT".now()->format('Y')."-".$ed;
             $inventaire->user_id =Auth::user()->id;
         }
+        $inventaire->boutique_id = Auth::user()->boutique->id;
         $inventaire->date_inventaire = now();
         $inventaire->date_inventaire_prevu = $request->input('date_prev');
         $modele = $request->input('choix');
@@ -415,6 +418,7 @@ class InventairesController extends Controller
                 'produits.nom as produit',
                 'categories.nom as categorie'
             )
+            ->where('modeles.boutique_id', '=', Auth::user()->boutique->id)
             ->get();
         return datatables()->of($modele)
             ->addColumn('action', function ($clt){
@@ -433,6 +437,7 @@ class InventairesController extends Controller
                 $join->on('produits.categorie_id', '=', 'categories.id');
             })
             ->where('categories.id','=',$id)
+            ->where('modeles.boutique_id','=', Auth::user()->boutique->id)
             ->select('modeles.id as id',
                 'modeles.libelle as modele',
                 'modeles.quantite as quantite',

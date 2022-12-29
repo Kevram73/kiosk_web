@@ -33,10 +33,12 @@
                             <div class="tab-content">
                                 <div id="reglements" class="tab-pane active">
                                     <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btnreglement"><i class="fa fa-plus"></i>Ajouter un reglement</a>
-                                    <table class="table table-bordered table-striped mb-none"  data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                    <table class="table table-bordered table-striped mb-none" id="reglementTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                         <thead>
                                         <tr>
-                                            <th class="center hidden-phone">Nom</th>
+                                            <th class="center hidden-phone">Client</th>
+                                            <th class="center hidden-phone">Contact</th>
+                                            <th class="center hidden-phone">Numero Vente</th>
                                             <th class="center hidden-phone">Total Vente</th>
                                             <th class="center hidden-phone">Total Payé</th>
                                             <th class="center hidden-phone">Restant</th>
@@ -44,14 +46,16 @@
                                         </tr>
                                         </thead>
                                         <tbody class="center hidden-phone">
-                                            @if (isset($ventes) && count($ventes) > 0 && isset($reglements) && count($reglements) > 0 && count($ventes) == count($reglements))
-                                                @foreach ($ventes as $index => $item)
+                                            @if (isset($reglements) && count($reglements) > 0)
+                                                @foreach ($reglements as $index => $item)
                                                     <tr>
                                                         <td>{{ $item->nom }}</td>
-                                                        <td class="prix">{{ $item->total }}</td>
-                                                        <td class="prix">{{ $reglements[$index]->donner }}</td>
-                                                        <td class="prix">{{ $item->total - $reglements[$index]->donner < 1 ? '-' : $item->total - $reglements[$index]->donner }}</td>
-                                                        <td><a class="btn btn-info" href="/reglementlist-{{ $item->id }}"> <i class="fa fa-arrow-right"></i>
+                                                        <td>{{ $item->contact }}</td>
+                                                        <td>{{ $item->numero }}</td>
+                                                        <td class="prix">{{ $item->totaux }}</td>
+                                                        <td class="prix">{{ $item->donner }}</td>
+                                                        <td class="prix">{{ $item->totaux - $item->donner }}</td>
+                                                        <td><a class="btn btn-info" href="/reglementlist-{{ $item->venteId }}"> <i class="fa fa-arrow-right"></i>
                                                 @endforeach
                                             @endif
                                         </tbody>

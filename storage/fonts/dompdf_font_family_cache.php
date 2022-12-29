@@ -78,9 +78,9 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'glyphicons halflings' => array(
-    'normal' => $fontDir . '/glyphicons-halflings-normal_2c9935d5f15d9d393b4e0557b8e4f9da',
+    'normal' => $fontDir . '/glyphicons-halflings-normal_1ae38ee94e1f6723f0823cc13f41d4d2',
   ),
   'fontawesome' => array(
-    'normal' => $fontDir . '/fontawesome-normal_734b33441bc6390d02d65d8e3a5ad65c',
+    'normal' => $fontDir . '/fontawesome-normal_2e90af2f64d345221fa838ac71f3091f',
   ),
 ) ?>

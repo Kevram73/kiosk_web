@@ -51,19 +51,22 @@
                                 @endif
                             </ul>
                         </div>
-                        <table class="table table-bordered table-striped mb-none" id="venteTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
+                        <table class="table table-bordered table-striped mb-none" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Numero</th>
                                 <th class="center hidden-phone">Montant Total</th>
                                 <th class="center hidden-phone">Date de vente</th>
-                                <th class="center hidden-phone">Action</th>
                             </tr>
                             </thead>
                             <tbody class="center hidden-phone">
-
-
-
+                            @if (isset($venteClient))
+                                                    <tr>
+                                                        <td>{{ $venteClient->numero }}</td>
+                                                        <td>{{ $venteClient->total }}</td>
+                                                        <td>{{ $venteClient->date }}</td>
+                                                    </tr>
+                                            @endif
                             </tbody>
                         </table>
                     </div>
@@ -83,9 +86,6 @@
                                                 <select  name="client" id="client"   class="form-control populate">
                                                     <optgroup label="Choisir une categorie">
                                                         <option value=""></option>
-                                                        @foreach($clients as $cli)
-                                                            <option value="{{$cli->id}}">{{$cli->nom}}</option>
-                                                        @endforeach
                                                     </optgroup>
                                                 </select>
                                             </div>

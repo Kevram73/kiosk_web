@@ -142,7 +142,19 @@ $('#ajout_reglement  form').on('submit', function (e) {
             contentType: false,
             processData: false,
             success : function(data) {
-                window.location='/facturegros-'+$('#id').val();
+
+                Swal.fire('Patientez',
+                        'Enregistrement en cours...',
+                        'info')
+            window.location='/facturegros-'+$('#id').val();
+            setTimeout(() => {
+                Swal.fire('Confirmé',
+                        'Vente encaissée avec succes',
+                        'success')
+                    setTimeout(() => {
+                        window.location = '/ventes';
+                    }, 3000);
+            }, 10000);
             },
             error : function(data){
                 alert('attention')

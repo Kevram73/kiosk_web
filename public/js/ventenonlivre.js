@@ -323,7 +323,7 @@ $('#valider').on('click',function (e) {
                         contentType: false,
                         processData: false,
                         success : function(data) {
-                            window.location='/reglementcredit-'+data.id;
+                            window.location='/reglements-'+data.id;
                         },
                         error : function(data){
                             let message='Erreur ';

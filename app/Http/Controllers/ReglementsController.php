@@ -83,16 +83,19 @@ class ReglementsController extends Controller
         $reglements=Reglement::join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
-            ->selectRaw('clients.id, clients.nom, SUM(reglements.montant_donne) as donner')
-            ->groupBy('clients.id', 'clients.nom')
+            ->join('ventes', function ($join) {
+                $join->on('reglements.vente_id', '=', 'ventes.id');
+            })
+            ->selectRaw('clients.id, ventes.id as venteId, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
+            ->groupBy('clients.id', 'clients.nom', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
             ->get();
 
-        $ventes = vente::with('boutique')->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
-            ->join('clients', function ($join) {
-                $join->on('ventes.client_id', '=', 'clients.id');
-            })->selectRaw('clients.id, clients.nom, SUM(ventes.totaux) as total')
-            ->groupBy('clients.id', 'clients.nom')
-            ->get();
+        // $ventes = vente::with('boutique')->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
+        //     ->join('clients', function ($join) {
+        //         $join->on('ventes.client_id', '=', 'clients.id');
+        //     })->selectRaw('clients.id, clients.nom, SUM(ventes.totaux) as total')
+        //     ->groupBy('clients.id', 'clients.nom')
+        //     ->get();
 
 
         $historique = new Historique();
@@ -133,33 +136,34 @@ class ReglementsController extends Controller
 
     public function reglementlistshow($id)
     {
-        $clients=DB::table('clients')
-            ->join('reglements', function ($join) {
-                $join->on('reglements.client_id', '=', 'clients.id');
-            })
-            ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
-            -> select ('clients.id','clients.nom')
-            -> groupby ('clients.id', 'clients.nom')
-            ->get();
+        // $clients=DB::table('clients')
+        //     ->join('reglements', function ($join) {
+        //         $join->on('reglements.client_id', '=', 'clients.id');
+        //     })
+        //     ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
+        //     -> select ('clients.id','clients.nom')
+        //     -> groupby ('clients.id', 'clients.nom')
+        //     ->get();
 
+        try {
+            $vente = DB::table('ventes')->find($id);
+            $client=Client::find($vente->client_id);
 
-        $client=Client::find($id);
-
-        $reglementClient=Reglement::where(['reglements.client_id' => $id])
-        ->join('clients', function ($join) {
+            $reglementClient=Reglement::where(['reglements.vente_id' => $id])
+            ->join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
             ->selectRaw('clients.id, clients.nom, SUM(reglements.montant_donne) as donner')
             ->groupBy('clients.id', 'clients.nom')
             ->first();
 
-        $venteClient = vente::with('boutique')
-        ->where(['ventes.client_id' => $id])
-        ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
+            $venteClient = vente::with('boutique')
             ->join('clients', function ($join) {
                 $join->on('ventes.client_id', '=', 'clients.id');
-            })->selectRaw('clients.id, clients.nom, SUM(ventes.totaux) as total')
-            ->groupBy('clients.id', 'clients.nom')
+            })
+            ->selectRaw('ventes.numero, ventes.created_at as date, clients.id, clients.nom, ventes.totaux as total')
+            ->where(['ventes.id' => $id])
+            ->groupBy('clients.id', 'clients.nom', 'ventes.numero', 'ventes.created_at', 'ventes.totaux')
             ->first();
 
 
@@ -169,6 +173,10 @@ class ReglementsController extends Controller
         $historique->user_id = Auth::user()->id;
         $historique->save();
         return view('reglementlistshow',compact('clients', 'client', 'reglementClient', 'venteClient'));
+
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 
     public function reglementachatlistshow($id)
@@ -300,6 +308,9 @@ class ReglementsController extends Controller
         $total=DB::table('clients')
             ->join('reglements', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
+            })
+            ->join('ventes', function ($join) {
+                $join->on('reglements.vente_id', '=', 'ventes.id');
             })
             -> where ('reglements.client_id', '=',$id)
             -> select ('reglements.montant_restant','reglements.created_at')
@@ -442,8 +453,13 @@ class ReglementsController extends Controller
     }
     public function store3(Request $request, $id)
     {
-        // $id=DB::table('ventes')->max('id');
-        $client=DB::table('ventes')
+        $vente=DB::table('ventes')->find('id');
+        if($vente && $vente->type_vente == 4) {
+            return $request ->input();
+        }
+
+        if($vente) {
+            $client=DB::table('ventes')
             ->where('ventes.id', '=',$id)
             ->select('ventes.client_id as client')
             ->get();
@@ -458,6 +474,7 @@ class ReglementsController extends Controller
         $reglement=new Reglement();
         $reglement->montant_donne = $request->input('donne');
         $reglement->client_id = $client[0]->client;
+        $reglement->vente_id = $vente->id;
         if ($request->input('reste')>0)
         {
             if ($total==null){
@@ -477,6 +494,7 @@ class ReglementsController extends Controller
             $reglement->vente_id =$id;
             $reglement->save();
             return $request ->input();
+        }
         }
 
 

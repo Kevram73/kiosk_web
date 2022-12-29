@@ -199,6 +199,7 @@ class LivraisonsController extends Controller
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');
             })
+            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->where ('ventes.type_vente', '=', 3)
             ->where ('preventes.etat', '=', 1)
             ->select('ventes.id as id','ventes.numero as numero')
@@ -705,48 +706,48 @@ class LivraisonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
-    {
+    // public function edit()
+    // {
 
-        $liv= DB::table('livraison_commandes')
-            ->where('commande_modele_id',1 )
-            ->latest('created_at')
-            ->get();
+    //     $liv= DB::table('livraison_commandes')
+    //         ->where('commande_modele_id',1 )
+    //         ->latest('created_at')
+    //         ->get();
 
-        if ($liv[0]->quantite_restante==0){
-            DB::table('commande_modeles')
-                ->where('id',1 )
-            ->update(['etat' => true]);
+    //     if ($liv[0]->quantite_restante==0){
+    //         DB::table('commande_modeles')
+    //             ->where('id',1 )
+    //         ->update(['etat' => true]);
 
-        }
-        $historique=new Historique();
-        $historique->actions = "Modifier";
-        $historique->cible = "Livraisons";
-        $historique->user_id =Auth::user()->id;
-        $historique->save();
-        return $liv[0]->quantite_restante;
-    }
-    public function edit2()
-    {
+    //     }
+    //     $historique=new Historique();
+    //     $historique->actions = "Modifier";
+    //     $historique->cible = "Livraisons";
+    //     $historique->user_id =Auth::user()->id;
+    //     $historique->save();
+    //     return $liv[0]->quantite_restante;
+    // }
+    // public function edit2()
+    // {
 
-        $liv= DB::table('livraison_ventes')
-            ->where('prevente_id',1 )
-            ->latest('created_at')
-            ->get();
+    //     $liv= DB::table('livraison_ventes')
+    //         ->where('prevente_id',1 )
+    //         ->latest('created_at')
+    //         ->get();
 
-        if ($liv[0]->quantite_restante==0){
-            DB::table('preventes')
-                ->where('id',1 )
-            ->update(['etat' => false]);
+    //     if ($liv[0]->quantite_restante==0){
+    //         DB::table('preventes')
+    //             ->where('id',1 )
+    //         ->update(['etat' => false]);
 
-        }
-        $historique=new Historique();
-        $historique->actions = "Modifier";
-        $historique->cible = "Livraisons";
-        $historique->user_id =Auth::user()->id;
-        $historique->save();
-        return $liv[0]->quantite_restante;
-    }
+    //     }
+    //     $historique=new Historique();
+    //     $historique->actions = "Modifier";
+    //     $historique->cible = "Livraisons";
+    //     $historique->user_id =Auth::user()->id;
+    //     $historique->save();
+    //     return $liv[0]->quantite_restante;
+    // }
 
     /**
      * Update the specified resource in storage.

@@ -24,6 +24,30 @@ $('#donne').on('value change',function ( ) {
 
 $('#valider').on('click',function ( ) {
     if($('#typeVente').val() == 1 || $('#typeVente').val() == 3 || $('#typeVente').val() == 4){
+        if ( $('#restant').val() && $('#restant').val()>0) {
+            event.preventDefault();
+            Swal.fire('Montant insufisant',
+                            'Le montant du reglement est inférieur au montant de la vente',
+                            'error');
+        } else {
+            Swal.fire('Patientez',
+                        'Enregistrement en cours...',
+                        'info')
+            window.location = $('#urlFacture').val();
+            setTimeout(() => {
+                Swal.fire('Confirmé',
+                        'Vente encaissée avec succes',
+                        'success')
+                    setTimeout(() => {
+                        window.location = '/ventes';
+                    }, 3000);
+            }, 10000);
+        }
+    }
+})
+
+$('#btnadd').on('click',function ( ) {
+    if($('#typeVente').val() == 1 || $('#typeVente').val() == 3 || $('#typeVente').val() == 4){
         if ( $('#restant').val()>0) {
             event.preventDefault();
             Swal.fire('Montant insufisant',

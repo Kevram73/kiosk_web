@@ -33,7 +33,8 @@
                 </div>
                 <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-danger"  href="{{route('ventes')}}"><i class="fa fa-close"></i> Fermer </i></a>
                 <input type="hidden" name="typeVente" id="typeVente" value="{{$all_vente->type_vente}}"/>
-                <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-primary" id="valider"  href="{{ '/facturesimple-'.$all_vente->id }}"><i class="fa fa-check"></i> Valider et imprimer la facture <i class="fa  fa-file-pdf-o"></i></a>
+                <input type="hidden" name="urlFacture" id="urlFacture" value="{{'/facturesimple-'.$all_vente->id}}"/>
+                <spann class=" btn btn-default mb-xs mt-xs mr-xs btn btn-primary" id="valider"><i class="fa fa-check"></i> Valider et imprimer la facture <i class="fa  fa-file-pdf-o"></i></spann>
                 
                 <section class="panel">
                     <header class="panel-heading">

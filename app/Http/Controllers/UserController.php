@@ -241,10 +241,15 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::with('boutique')
-		->where ('boutique_id', '=',Auth::user()->boutique->id )
-		->whereNotIn('id', [1, 2])
-		->get();
+        $users = null;
+        if (Auth::user()->hasRole('SUPER ADMINISTRATEUR')){
+            $users = User::with('boutique')->get();
+        } else {
+            $users = User::with('boutique')
+            ->where ('boutique_id', '=',Auth::user()->boutique->id )
+            ->get();;
+        }
+        
         return datatables()->of($users)
             ->addColumn('action', function ($role){
                  if($role->flag_etat == false){
