@@ -32,7 +32,9 @@
                             @if (isset($vente[0]->adresse))
                             <b>Adresse : <span class="text-danger" >{{$vente[0]->adresse}}</span> </b><br>
                             @endif
+                            @if (isset($vente[0]->restant))
                             <b>Montant restant : <span class="text-danger prix" >{{$vente[0]->restant}} FCFA</span> </b>
+                            @endif
                         </address>
                     </td>
                     <td class="text-center">
@@ -41,7 +43,7 @@
                             <b>Vente N*: <span class="text-danger" >{{$vente[0]->numero}}</span> </b><br>
                             <b>Date de vente : <span class="text-danger" >{{$vente[0]->date}}</span> </b><br>
                             <b>Montant total : <span class="text-danger prix" >{{ $all_vente->totaux }} FCFA</span> </b><br>
-                            <b>Montant recu : <span class="text-danger prix" >{{$vente[0]->donne}} FCFA</span> </b>
+                            <b>Montant recu : <span class="text-danger prix" >{{ $all_vente->totaux }} FCFA</span> </b>
                         </address>
                     </td>
 

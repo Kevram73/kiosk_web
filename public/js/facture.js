@@ -129,8 +129,7 @@ function deletepro(id){
 }
 
 $('#ajout_reglement  form').on('submit', function (e) {
-    let url;
-        url = '/regler-'+$('#id').val();
+    let url = '/regler-'+$('#id').val();
     e.preventDefault();
     if (e.isDefaultPrevented()){
         $.ajax({
@@ -142,19 +141,18 @@ $('#ajout_reglement  form').on('submit', function (e) {
             contentType: false,
             processData: false,
             success : function(data) {
-
                 Swal.fire('Patientez',
                         'Enregistrement en cours...',
                         'info')
-            window.location='/facturecredit-'+$('#id').val();
-            setTimeout(() => {
-                Swal.fire('Confirmé',
-                        'Vente encaissée avec succes',
-                        'success')
-                    setTimeout(() => {
-                        window.location = '/ventes';
-                    }, 3000);
-            }, 10000);
+                window.location='/facturecredit-'+$('#id').val();
+                setTimeout(() => {
+                    Swal.fire('Confirmé',
+                            'Vente encaissée avec succes',
+                            'success')
+                        setTimeout(() => {
+                            window.location = '/ventes';
+                        }, 3000);
+                }, 10000);
             },
             error : function(data){
                 alert('attention')

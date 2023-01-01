@@ -71,14 +71,17 @@ class ReglementsController extends Controller
 
     public function reglementlist()
     {
-        $client=DB::table('clients')
-            ->join('reglements', function ($join) {
-                $join->on('reglements.client_id', '=', 'clients.id');
-            })
-            ->where ('clients.boutique_id', '=',Auth::user()->boutique->id )
-            -> select ('clients.id','clients.nom')
-            -> groupby ('clients.id', 'clients.nom')
-            ->get();
+        $clients = Reglement::join('clients', function ($join) {
+            $join->on('reglements.client_id', '=', 'clients.id');
+        })
+        ->join('ventes', function ($join) {
+            $join->on('reglements.vente_id', '=', 'ventes.id');
+        })
+        ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
+        ->selectRaw('clients.id, ventes.id as venteId, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
+        ->groupBy('clients.id', 'clients.nom', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
+        ->havingRaw('(totaux - donner) > 0.0')
+        ->get();
 
         $reglements=Reglement::join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
@@ -86,6 +89,8 @@ class ReglementsController extends Controller
             ->join('ventes', function ($join) {
                 $join->on('reglements.vente_id', '=', 'ventes.id');
             })
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
+            ->orderBy('reglements.created_at', 'desc')
             ->selectRaw('clients.id, ventes.id as venteId, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
             ->groupBy('clients.id', 'clients.nom', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
             ->get();
@@ -103,7 +108,7 @@ class ReglementsController extends Controller
         $historique->cible = "Reglements";
         $historique->user_id = Auth::user()->id;
         $historique->save();
-        return view('reglementlist',compact('client', 'reglements', 'ventes'));
+        return view('reglementlist',compact('clients', 'reglements', 'ventes'));
     }
 
     public function reglementachatlist()
@@ -313,7 +318,7 @@ class ReglementsController extends Controller
                 $join->on('reglements.vente_id', '=', 'ventes.id');
             })
             -> where ('reglements.client_id', '=',$id)
-            -> select ('reglements.montant_restant','reglements.created_at')
+            -> select ('ventes.id as venteId', 'reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();
 
@@ -418,6 +423,7 @@ class ReglementsController extends Controller
         $reglement=new Reglement();
         $reglement->montant_donne = $request->input('donne');
         $reglement->client_id = $request->input('client');
+        $reglement->vente_id = $request->input('idvente');
         $reglement->total = $request->input('total');
         if ($request->input('reste')>0)
         {
@@ -453,30 +459,25 @@ class ReglementsController extends Controller
     }
     public function store3(Request $request, $id)
     {
-        $vente=DB::table('ventes')->find('id');
+        $vente=DB::table('ventes')->find($id);
         if($vente && $vente->type_vente == 4) {
             return $request ->input();
         }
 
         if($vente) {
-            $client=DB::table('ventes')
-            ->where('ventes.id', '=',$id)
-            ->select('ventes.client_id as client')
-            ->get();
         $total=DB::table('clients')
             ->join('reglements', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
             })
-            -> where ('reglements.client_id', '=',$client[0]->client)
+            -> where ('reglements.client_id', '=',$vente->client_id)
             -> select ('reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();
         $reglement=new Reglement();
         $reglement->montant_donne = $request->input('donne');
-        $reglement->client_id = $client[0]->client;
+        $reglement->client_id = $vente->client_id;
         $reglement->vente_id = $vente->id;
-        if ($request->input('reste')>0)
-        {
+        if ($request->input('reste')>0){
             if ($total==null){
                 $reglement->total =$request->input('total');
                 $reglement->montant_restant =$request->input('restant');
@@ -495,7 +496,7 @@ class ReglementsController extends Controller
             $reglement->save();
             return $request ->input();
         }
-        }
+    }
 
 
     }

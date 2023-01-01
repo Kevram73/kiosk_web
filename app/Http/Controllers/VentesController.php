@@ -412,10 +412,10 @@ class VentesController extends Controller
         ->join('produits', function ($join) {
             $join->on('produits.id', '=', 'modeles.produit_id');
         })
-            ->join('clients', function ($join) {
+        ->join('clients', function ($join) {
             $join->on('clients.id', '=', 'ventes.client_id');
         })
-            ->join('reglements', function ($join) {
+        ->join('reglements', function ($join) {
             $join->on('ventes.id', '=', 'reglements.vente_id');
         })
         ->where('ventes.id','=',$id)
@@ -428,7 +428,6 @@ class VentesController extends Controller
             'preventes.reduction as reduction',
             'preventes.prixtotal as prixtotal',
             'clients.nom as nom',
-            
             'clients.contact as contact',
             'reglements.montant_donne as donne',
             'reglements.montant_restant as restant',
@@ -555,7 +554,7 @@ class VentesController extends Controller
             })
             ->where('ventes.id','=',$id)
             ->SUM('preventes.prixtotal');
-
+            
             $name = "facture_".date('Y-m-d_H-i-s', strtotime(now())).".pdf";
             $pdf = null;
             $all_vente = Vente::find($id);
@@ -1182,7 +1181,7 @@ class VentesController extends Controller
             $total = $total + $prevente->prixtotal;
             $allReduction = $allReduction + $prevente->reduction;
         }
-        DB::commit();
+        
         $vente=vente::findOrFail($vente->id);
         $vente->montant_reduction = $allReduction;
 
@@ -1228,30 +1227,31 @@ class VentesController extends Controller
         $facture->vente_id =$vente->id;
         $facture ->numero="FACT".now()->format('Y')."-".$ed;
         $facture->save();
-        $clients=DB::table('clients')
-            ->join('ventes', function ($join) {
-                $join->on('ventes.client_id', '=', 'clients.id');
-            })
-            ->join('reglements', function ($join) {
-                $join->on('reglements.vente_id', '=', 'ventes.id');
-            })
-            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
-            ->where('reglements.montant_restant', '>', 0)
-            ->select('clients.nom as nom','clients.id as id')
-            ->groupBy('id', 'clients.nom')
-            ->get();
-        $credit=array();
-        for ($i =0 ;$i<count($clients);$i++) {
-            $total = DB::table('reglements')
-                ->join('ventes', function ($join) {
-                    $join->on('reglements.vente_id', '=', 'ventes.id');
-                })
-                ->where('ventes.client_id', '=', $clients[$i]->id)
-                ->SUM('reglements.montant_restant');
-            $credit[$i] = $total;
-        }
-        $cre=count($clients);
-        // return view('vente',compact('modele2','mod','clients','credit','cre'));
+        DB::commit();
+        // $clients=DB::table('clients')
+        //     ->join('ventes', function ($join) {
+        //         $join->on('ventes.client_id', '=', 'clients.id');
+        //     })
+        //     ->join('reglements', function ($join) {
+        //         $join->on('reglements.vente_id', '=', 'ventes.id');
+        //     })
+        //     ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
+        //     ->where('reglements.montant_restant', '>', 0)
+        //     ->select('clients.nom as nom','clients.id as id')
+        //     ->groupBy('id', 'clients.nom')
+        //     ->get();
+        // $credit=array();
+        // for ($i =0 ;$i<count($clients);$i++) {
+        //     $total = DB::table('reglements')
+        //         ->join('ventes', function ($join) {
+        //             $join->on('reglements.vente_id', '=', 'ventes.id');
+        //         })
+        //         ->where('ventes.client_id', '=', $clients[$i]->id)
+        //         ->SUM('reglements.montant_restant');
+        //     $credit[$i] = $total;
+        // }
+        // $cre=count($clients);
+        // // return view('vente',compact('modele2','mod','clients','credit','cre'));
         return $vente;
     }
     public function store3(Request $request)
@@ -1399,7 +1399,6 @@ class VentesController extends Controller
             $total = $total + $prevente->prixtotal;
             $allReduction = $allReduction + $prevente->reduction;
         }
-        DB::commit();
         $vente=vente::findOrFail($vente->id);
         $vente->montant_reduction = $allReduction;
 
@@ -1468,6 +1467,7 @@ class VentesController extends Controller
             $credit[$i] = $total;
         }
         $cre=count($clients);
+        DB::commit();
         // return view('vente',compact('modele2','mod','clients','credit','cre'));
         return $vente;
     }

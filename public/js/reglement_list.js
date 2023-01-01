@@ -17,7 +17,9 @@ $('#client').on('change',function ( ) {
         type: "get",
         success: function (data) {
             $('#total').empty();
+            $('#idvente').empty();
             $('#total').val(data.montant_restant)
+            $('#idvente').val(data.venteId)
 
         },
         error: function (data) {
@@ -197,7 +199,7 @@ $('#ajout_reglement  form').on('submit', function (e) {
                 $('#ajout_reglement').modal('hide');
                 sweetToast('success',message);
 
-               reglementTable.ajax.reload();
+            //    reglementTable.ajax.reload();
                window.location.reload();
             },
             error : function(data){

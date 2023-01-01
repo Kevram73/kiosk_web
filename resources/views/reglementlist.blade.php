@@ -23,11 +23,10 @@
                         <div class="tabs">
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active">
-                                    <a href="#reglements" data-toggle="tab" class="text-center"><i class="fa fa-star"></i> Lists</a>
-
+                                    <a href="#reglements" data-toggle="tab" class="text-center" style="font-size: 2rem;"><i class="fa fa-star"></i> Lists</a>
                                 </li>
                                 <li>
-                                    <a href="#debiteurs" data-toggle="tab" class="text-center">Débiteurs</a>
+                                    <a href="#debiteurs" data-toggle="tab" class="text-center text-warning" style="font-size: 2rem;">Débiteurs</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -48,13 +47,13 @@
                                         <tbody class="center hidden-phone">
                                             @if (isset($reglements) && count($reglements) > 0)
                                                 @foreach ($reglements as $index => $item)
-                                                    <tr>
+                                                    <tr style="color: {{$item->totaux - $item->donner > 0 ? 'red' : 'black'}}">
                                                         <td>{{ $item->nom }}</td>
                                                         <td>{{ $item->contact }}</td>
                                                         <td>{{ $item->numero }}</td>
                                                         <td class="prix">{{ $item->totaux }}</td>
                                                         <td class="prix">{{ $item->donner }}</td>
-                                                        <td class="prix">{{ $item->totaux - $item->donner }}</td>
+                                                        <td class="prix" >{{ $item->totaux - $item->donner }}</td>
                                                         <td><a class="btn btn-info" href="/reglementlist-{{ $item->venteId }}"> <i class="fa fa-arrow-right"></i>
                                                 @endforeach
                                             @endif
@@ -97,7 +96,7 @@
                                                     <select  name="client" id="client"   class="form-control populate">
                                                         <optgroup label="Choisir une categorie">
                                                             <option value=""></option>
-                                                            @foreach($client as $cli)
+                                                            @foreach($clients as $cli)
                                                                 <option value="{{$cli->id}}">{{$cli->nom}}</option>
                                                             @endforeach
                                                         </optgroup>
@@ -109,6 +108,7 @@
                                                 <div class="col-sm-9">
                                                     <input type="number" name="total" id="total" class="form-control"  readonly="readonly" required/>
                                                     <input type="hidden" name="idreglement" id="idreglement"/>
+                                                    <input type="hidden" name="idvente" id="idvente"/>
                                                     <input type="hidden" name="reste" id="reste"/>
                                                 </div>
                                             </div>
