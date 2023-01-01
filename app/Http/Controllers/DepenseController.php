@@ -363,4 +363,135 @@ class DepenseController extends Controller
         
         return redirect()->back();
     }
+
+    public function historique()
+    {
+        return view('historiquedepenses');
+    }
+
+    public function recuperdatedivers()
+    {
+        $date = DB::table('depenses')
+            ->join('journal_depenses', function ($join) {
+                $join->on('depenses.journal_id', '=', 'journal_depenses.id');
+            })
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->select('journal_depenses.id as journal','journal_depenses.date_creation as date')
+            ->groupBy('journal', 'date')
+            ->get() ;
+        $a=array();
+        $d=array();
+        $c=array();
+        $table=array();
+        if($date==null){
+            return $date;
+        }
+        else{
+            for ($i = 0; $i <count($date); $i++) {
+                setlocale(LC_TIME,'fr_FR','fra_FRA');
+                $b=strftime('%A %d %B %G', strtotime($date[$i]->date));
+                $a[$i]=$b;
+                $d[$i]=$date[$i]->journal;
+                $c=mb_convert_encoding($a,'UTF-8','UTF-8');
+            }
+            $table["fran"]=$c;
+            $table["id"]=$d;
+            return $table;
+        }
+
+        return $table;
+    }
+
+    public function totaljour($id)
+    {
+        $depense = DB::table('depenses')
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->where('depenses.journal_id', '=', $id)
+            ->sum('depenses.montant');
+        return $depense;
+    }
+
+    public function diversdate($id)
+    {
+
+        $commande = DB::table('depenses')
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->where('depenses.journal_id', '=', $id)
+            ->select('depenses.motif as charge',
+                'depenses.montant as montant', 'depenses.name')
+            ->get();
+        return datatables()->of($commande)
+            ->make(true) ;
+    }
+
+    public function annee()
+    {
+
+        $date = DB::table('depenses')
+            ->join('journal_depenses', function ($join) {
+                $join->on('depenses.journal_id', '=', 'journal_depenses.id');
+            })
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->select('journal_depenses.annee as annee')
+            ->groupBy ('journal_depenses.annee')
+            ->get() ;
+        return $date;
+    }
+
+    public function totalmois($id,$ed)
+    {
+        $depense = DB::table('depenses')
+            ->join('journal_depenses', function ($join) {
+                $join->on('depenses.journal_id', '=', 'journal_depenses.id');
+            })
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->where('journal_depenses.mois', '=', $id)
+            ->where('journal_depenses.annee', '=', $ed)
+            ->sum('depenses.montant');
+        return $depense;
+    }
+
+    public function diversmois($id,$ed)
+    {
+        $commande = DB::table('depenses')
+            ->join('journal_depenses', function ($join) {
+                $join->on('depenses.journal_id', '=', 'journal_depenses.id');
+            })
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->where('journal_depenses.mois', '=', $id)
+            ->where('journal_depenses.annee', '=', $ed)
+            ->select('depenses.motif as charge',
+                'depenses.montant as montant', 'depenses.name')
+            ->get();
+        return datatables()->of($commande)
+            ->make(true) ;
+    }
+
+    public function totalannee($id)
+    {
+        $depense = DB::table('depenses')
+            ->join('journal_depenses', function ($join) {
+                $join->on('depenses.journal_id', '=', 'journal_depenses.id');
+            })
+            ->where ('depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->where('journal_depenses.annee', '=', $id)
+            ->sum('depenses.montant');
+        return $depense;
+    }
+
+    public function diversannee($id)
+    {
+
+        $commande = DB::table('depenses')
+            ->join('journal_depenses', function ($join) {
+                $join->on('depenses.journal_id', '=', 'journal_depenses.id');
+            })
+            ->where ('journal_depenses.boutique_id', '=',Auth::user()->boutique->id)
+            ->where('journal_depenses.annee', '=', $id)
+            ->select('depenses.motif as charge',
+                'depenses.montant as montant', 'depenses.name')
+            ->get();
+        return datatables()->of($commande)
+            ->make(true) ;
+    }
 }

@@ -327,6 +327,17 @@ Route::get('/deletecharge-{id}', 'ChargesController@destroy');
 Route::post('/ajoutcharge', 'ChargesController@store');
 Route::post('/updatecharge', 'ChargesController@update');
 Route::get('/showcharge-{id}', 'ChargesController@show');
+
+Route::get('/recupererdatediversdepenses', 'DepenseController@recuperdatedivers');
+Route::get('/diversjourdepenses-{id}', 'DepenseController@totaljour');
+Route::get('/recupererdiversdatedepenses-{id}', 'DepenseController@diversdate');
+Route::get('/anneediversdepenses', 'DepenseController@annee');
+Route::get('/diversmoisdepenses-{id}-{ed}', 'DepenseController@totalmois');
+Route::get('/recupererdiversmoisdepenses-{id}-{ed}', 'DepenseController@diversmois');
+Route::get('/diversanneedepenses-{id}', 'DepenseController@totalannee');
+Route::get('/recupererdiversanneedepenses-{id}', 'DepenseController@diversannee');
+Route::get('/historiquedepenses', 'DepenseController@historique');
+
 Route::get('/recupererdiversdate-{id}', 'ChargesController@diversdate');
 Route::get('/recupererdatedivers', 'ChargesController@recuperdatedivers');
 Route::get('/recupererdiversannee-{id}', 'ChargesController@diversannee');
@@ -335,7 +346,8 @@ Route::get('/diversjour-{id}', 'ChargesController@totaljour');
 Route::get('/diversmois-{id}-{ed}', 'ChargesController@totalmois');
 Route::get('/diversannee-{id}', 'ChargesController@totalannee');
 Route::get('/anneedivers', 'ChargesController@annee');
-Route::get('/historiquedivers', 'ChargesController@historique');
+Route::get('/historiquecharges', 'ChargesController@historique');
+
 Route::get('/adminrecupererdiversdate-{id}-{ed}', 'ChargesController@admindiversdate');
 Route::get('/adminrecupererdatedivers-{id}', 'ChargesController@adminrecuperdatedivers');
 Route::get('/adminrecupererdiversannee-{id}-{ed}', 'ChargesController@admindiversannee');

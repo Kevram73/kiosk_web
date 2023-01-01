@@ -161,6 +161,7 @@ class ChargesController extends Controller
             ->where ('charges.boutique_id', '=',Auth::user()->boutique->id)
             ->where('charges.journal_divers_id', '=', $id)
             ->select('charges.libelle as charge',
+                'charges.type',
                 'charges.montant as montant')
             ->get();
         return datatables()->of($commande)
@@ -174,6 +175,7 @@ class ChargesController extends Controller
             ->where ('charges.boutique_id', '=',$ed)
             ->where('charges.journal_divers_id', '=', $id)
             ->select('charges.libelle as charge',
+                'charges.type',
                 'charges.montant as montant')
             ->get();
         return datatables()->of($commande)
@@ -190,6 +192,7 @@ class ChargesController extends Controller
             ->where('journal_divers.mois', '=', $id)
             ->where('journal_divers.annee', '=', $ed)
             ->select('charges.libelle as charge',
+                'charges.type',
                 'charges.montant as montant')
             ->get();
         return datatables()->of($commande)
@@ -206,6 +209,7 @@ class ChargesController extends Controller
             ->where('journal_divers.mois', '=', $id)
             ->where('journal_divers.annee', '=', $ed)
             ->select('charges.libelle as charge',
+                'charges.type',
                 'charges.montant as montant')
             ->get();
         return datatables()->of($commande)
@@ -222,6 +226,7 @@ class ChargesController extends Controller
             ->where ('journal_divers.boutique_id', '=',Auth::user()->boutique->id)
             ->where('journal_divers.annee', '=', $id)
             ->select('charges.libelle as charge',
+                'charges.type',
                 'charges.montant as montant')
             ->get();
         return datatables()->of($commande)
@@ -238,6 +243,7 @@ class ChargesController extends Controller
             ->where ('journal_divers.boutique_id', '=',$ed)
             ->where('journal_divers.annee', '=', $id)
             ->select('charges.libelle as charge',
+                'charges.type',
                 'charges.montant as montant')
             ->get();
         return datatables()->of($commande)
@@ -321,8 +327,8 @@ class ChargesController extends Controller
                 $join->on('charges.journal_divers_id', '=', 'journal_divers.id');
             })
             ->where ('charges.boutique_id', '=',Auth::user()->boutique->id)
-            ->select('charges.journal_divers_id as journal','journal_divers.id as id','journal_divers.date_creation as date')
-            ->groupBy('journal')
+            ->select('journal_divers.id as journal','journal_divers.date_creation as date')
+            ->groupBy('journal_divers.id', 'journal_divers.date_creation')
             ->get() ;
         $a=array();
         $d=array();
@@ -336,7 +342,7 @@ class ChargesController extends Controller
                 setlocale(LC_TIME,'fr_FR','fra_FRA');
                 $b=strftime('%A %d %B %G', strtotime($date[$i]->date));
                 $a[$i]=$b;
-                $d[$i]=$date[$i]->id;
+                $d[$i]=$date[$i]->journal;
                 $c=mb_convert_encoding($a,'UTF-8','UTF-8');
             }
             $table["fran"]=$c;
@@ -354,8 +360,8 @@ class ChargesController extends Controller
                 $join->on('charges.journal_divers_id', '=', 'journal_divers.id');
             })
             ->where ('charges.boutique_id', '=',$id)
-            ->select('charges.journal_divers_id as journal','journal_divers.id as id','journal_divers.date_creation as date')
-            ->groupBy('journal')
+            ->select('journal_divers.id as journal','journal_divers.date_creation as date')
+            ->groupBy('journal_divers.id', 'journal_divers.date_creation')
             ->get() ;
         $a=array();
         $d=array();
@@ -369,7 +375,7 @@ class ChargesController extends Controller
                 setlocale(LC_TIME,'fr_FR','fra_FRA');
                 $b=strftime('%A %d %B %G', strtotime($date[$i]->date));
                 $a[$i]=$b;
-                $d[$i]=$date[$i]->id;
+                $d[$i]=$date[$i]->journal;
                 $c=mb_convert_encoding($a,'UTF-8','UTF-8');
             }
             $table["fran"]=$c;
@@ -410,8 +416,9 @@ class ChargesController extends Controller
 
     public function historique()
     {
-        return view('historiquedivers');
+        return view('historiquecharges');
     }
+
     public function adminhistorique()
     {
         $boutiques=Boutique::all();

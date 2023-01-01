@@ -15,7 +15,7 @@ function sweetToast(type,text){
 }
 
 $('#btnhistorique').on('click',function (e) {
-    window.location='/historiquedivers'
+    window.location='/historiquecharges'
 });
 
 var chargeTable;

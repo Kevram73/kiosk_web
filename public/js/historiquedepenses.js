@@ -24,7 +24,7 @@ $('#choix').on('change',function ( ) {
             '<option value="11">Novembre</option>',
             '<option value="12">Decembre</option>');
         $.ajax({
-            url: '/anneedivers',
+            url: '/anneediversdepenses',
             type: "get",
             success: function (data) {
 
@@ -41,7 +41,7 @@ $('#choix').on('change',function ( ) {
         })
         $('#mois').on('change',function ( ) {
             $.ajax({
-                url: '/diversmois-'+ $('#mois').val()+"-"+ $('#annee').val(),
+                url: '/diversmoisdepenses-'+ $('#mois').val()+"-"+ $('#annee').val(),
                 type: "get",
                 success: function (data) {
                     $('#depenses').val(data);
@@ -92,10 +92,10 @@ $('#choix').on('change',function ( ) {
                         }
                     },
 
-                    ajax: '/recupererdiversmois-'+ $('#mois').val()+"-"+ $('#annee').val(),
+                    ajax: '/recupererdiversmoisdepenses-'+ $('#mois').val()+"-"+ $('#annee').val(),
                     "columns": [
+                        {data:"name",name :'name'},
                         {data:"charge",name :'charge'},
-                        {data:"type",name :'type'},
                         {data:"montant",name :'montant'},
 
 
@@ -119,7 +119,7 @@ $('#choix').on('change',function ( ) {
             $('#depenses').val(null);
             $('#moi').hide();
             $.ajax({
-                url: '/recupererdatedivers',
+                url: '/recupererdatediversdepenses',
                 type: "get",
                 success: function (data) {
 
@@ -138,7 +138,7 @@ $('#choix').on('change',function ( ) {
             })
             $('#jour').on('change',function ( ) {
                 $.ajax({
-                    url: '/diversjour-'+ $('#jour').val(),
+                    url: '/diversjourdepenses-'+ $('#jour').val(),
                     type: "get",
                     success: function (data) {
                         $('#depenses').val(data);
@@ -190,10 +190,10 @@ $('#choix').on('change',function ( ) {
                         },
 
 
-                        ajax: '/recupererdiversdate-'+ $('#jour').val(),
+                        ajax: '/recupererdiversdatedepenses-'+ $('#jour').val(),
                         "columns": [
+                            {data:"name",name : 'name'},
                             {data:"charge",name : 'libelle'},
-                            {data:"type",name : 'type'},
                             {data:"montant",name : 'montant'},
 
 
@@ -211,7 +211,7 @@ $('#choix').on('change',function ( ) {
             $('#moi').hide();
             $('#an').show();
             $.ajax({
-                url: '/anneedivers',
+                url: '/anneediversdepenses',
                 type: "get",
                 success: function (data) {
 
@@ -230,7 +230,7 @@ $('#choix').on('change',function ( ) {
             $('#annee').on('change',function ( ) {
                 $('#depenses').val(null);
                 $.ajax({
-                    url: '/diversannee-'+ $('#annee').val(),
+                    url: '/diversanneedepenses-'+ $('#annee').val(),
                     type: "get",
                     success: function (data) {
                         $('#depenses').val(data);
@@ -282,10 +282,10 @@ $('#choix').on('change',function ( ) {
                         },
 
 
-                        ajax: '/recupererdiversannee-'+ $('#annee').val(),
+                        ajax: '/recupererdiversanneedepenses-'+ $('#annee').val(),
                         "columns": [
+                            {data:"name",name :'name'},
                             {data:"charge",name :'charge'},
-                            {data:"type",name :'type'},
                             {data:"montant",name :'montant'},
 
 

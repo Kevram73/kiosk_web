@@ -147,7 +147,7 @@ class LivraisonsController extends Controller
             ->join('commande_modeles', function ($join) {
                 $join->on('commande_modeles.commande_id', '=', 'commandes.id');
             })
-            ->where ('commande_modeles.modele_fournisseur_id', '!=', null)
+            // ->where ('commande_modeles.modele_fournisseur_id', '!=', null)
             ->where ('commande_modeles.etat', '=', false)
             ->where ('commandes.type_commande', '<>', 1)
             ->select('commandes.id as id','commandes.numero as numero')
