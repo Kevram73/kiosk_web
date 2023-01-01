@@ -37,6 +37,7 @@ $('#choix').on('change',function ( ) {
         })
         $('#mois').on('change',function ( ) {
             $('#c').text('');
+            $('#depensetotal').text('');
             $('#ca').text('');
             $('#cpv').text('');
             $('#i').text('');
@@ -47,13 +48,14 @@ $('#choix').on('change',function ( ) {
                 url: '/tableaumois-'+ $('#mois').val()+"-"+ $('#annee').val(),
                 type: "get",
                 success: function (data) {
-                    $('#c').text(data[0]+'   cfa');
-                    $('#ca').text(data[1]+'   cfa');
-                    $('#cpv').text(data[2]+'   cfa');
-                    $('#i').text(data[3]+'   cfa');
-                    $('#mb').text(data[1]-data[2]+'   cfa');
-                    $('#rai').text(data[1]-data[2]-data[0]+'   cfa');
-                    $('#rn').text(data[1]-data[2]-data[0]-data[3]+'   cfa');
+                    $('#depensetotal').text(data[5]+'   cfa');
+                        $('#c').text(data[0]+'   cfa');
+                        $('#ca').text(data[1]+'   cfa');
+                        $('#cpv').text(data[2]+'   cfa');
+                        $('#i').text(data[3]+'   cfa');
+                        $('#mb').text(data[1]-data[2]+'   cfa');
+                        $('#rai').text(data[1]-data[2]-data[0]-data[5]+'   cfa');
+                        $('#rn').text(data[1]-data[2]-data[0]-data[3]-data[5]+'   CFA');
                 },
                 error: function (data) {
                     console.log("erreur")
@@ -107,13 +109,14 @@ $('#choix').on('change',function ( ) {
                     url: '/tableaujr-'+ $('#jour').val(),
                     type: "get",
                     success: function (data) {
+                        $('#depensetotal').text(data[5]+'   cfa');
                         $('#c').text(data[0]+'   cfa');
                         $('#ca').text(data[1]+'   cfa');
                         $('#cpv').text(data[2]+'   cfa');
                         $('#i').text(data[3]+'   cfa');
                         $('#mb').text(data[1]-data[2]+'   cfa');
-                        $('#rai').text(data[1]-data[2]-data[0]+'   cfa');
-                        $('#rn').text(data[1]-data[2]-data[0]-data[3]+'   cfa');
+                        $('#rai').text(data[1]-data[2]-data[0]-data[5]+'   cfa');
+                        $('#rn').text(data[1]-data[2]-data[0]-data[3]-data[5]+'   CFA');
                     },
                     error: function (data) {
                         console.log("erreur")
@@ -158,13 +161,14 @@ $('#choix').on('change',function ( ) {
                     url: '/tableau-'+ $('#annee').val(),
                     type: "get",
                     success: function (data) {
+                        $('#depensetotal').text(data[5]+'   cfa');
                         $('#c').text(data[0]+'   cfa');
                         $('#ca').text(data[1]+'   cfa');
                         $('#cpv').text(data[2]+'   cfa');
                         $('#i').text(data[3]+'   cfa');
                         $('#mb').text(data[1]-data[2]+'   cfa');
-                        $('#rai').text(data[1]-data[2]-data[0]+'   cfa');
-                        $('#rn').text(data[1]-data[2]-data[0]-data[3]+'   cfa');
+                        $('#rai').text(data[1]-data[2]-data[0]-data[5]+'   cfa');
+                        $('#rn').text(data[1]-data[2]-data[0]-data[3]-data[5]+'   CFA');
                     },
                     error: function (data) {
                         console.log("erreur")

@@ -65,15 +65,35 @@
                         <div class="col-sm-16 invoice-col">
                             <h4 align="center"><strong>TABLEAU DE COMPTE DE RESULTAT</strong></h4>
                             <br>
-                            <address>
+
+                            <table class="table table-striped table-bordered" style="font-size: 2rem">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Libelle</th>
+                                    <th scope="col">Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr  style="background: #9fff9f; color: #090909;"><th scope="row">Chiffre d'affaire         </th><td>                  <span class="text-dark text-bold"  id="ca"></span></td></tr>
+                                    <tr style="background: #f5837d; color: #090909;" ><th scope="row">Cout des produits vendus  </th><td> <span class="text-dark text-bold"  id="cpv"></span></td></tr>
+                                    <tr style="background: #a4f6ee; color: #090909;" ><th scope="row">Marge brute               </th><td>                    <span class="text-dark text-bold" id="mb" ></span></td></tr>
+                                    <tr style="background: #f5837d; color: #090909;" ><th scope="row">Charges                   </th><td>                          <span class="text-dark text-bold"  id="c"></span></td></tr>
+                                    <tr style="background: #f5837d; color: #090909;" ><th scope="row">Depenses                  </th><td>                           <span class="text-dark text-bold"  id="depensetotal"></span></td></tr>
+                                    <tr style="background: #a4f6ee; color: #090909;" ><th scope="row">Resultat avant impot      </th><td>        <span class="text-dark text-bold"  id="rai"></span></td></tr>
+                                    <tr style="background: #f5837d; color: #090909;" ><th scope="row">Impots                    </th><td>                           <span class="text-dark text-bold"  id="i"></span></td></tr>
+                                    <tr style="background: #03a9f4; color: #090909;" ><th scope="row">Resultat net              </th><td>                     <span class="text-dark text-bold" style="color: white !important; font-size: 2.5rem"  id="rn"></span></td></tr>
+                                </tbody>
+                            </table>
+                            <!-- <address>
                                 <b class="list-group-item">Chiffre d'affaire                          : <span class="text-danger"  id="ca"></span> </b>
                                 <b class="list-group-item">Cout des produits vendus  : <span class="text-danger"  id="cpv"></span> </b>
                                 <b class="list-group-item">Marge brute                                  : <span class="text-danger" id="mb" ></span> </b>
                                 <b class="list-group-item">Charges                                            : <span class="text-danger"  id="c"></span> </b>
+                                <b class="list-group-item">Depenses                                            : <span class="text-danger"  id="depensetotal"></span> </b>
                                 <b class="list-group-item">Resultat avant impot             : <span class="text-danger"  id="rai"></span> </b>
                                 <b class="list-group-item">Impots                                              : <span class="text-danger"  id="i"></span> </b>
                                 <b class="list-group-item">Resultat net                                  : <span class="text-danger"  id="rn"></span> </b>
-                            </address>
+                            </address> -->
                         </div>
 
                     </div>

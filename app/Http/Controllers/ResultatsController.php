@@ -134,7 +134,12 @@ class ResultatsController extends Controller
             ->select ('charges.montant as impot')
             ->where ('charges.type','=','impots')
             ->sum ('charges.montant');
-        $table=[$c,$ca,$mnr,$cpv,$i];
+
+        $depensetotal = DB::table('depenses')
+        ->where('depenses.boutique_id', '=',Auth::user()->boutique->id)
+        ->sum('montant');
+
+        $table=[$c,$ca,$mnr,$cpv,$i, $depensetotal];
         return $table;
     }
 
@@ -202,7 +207,27 @@ class ResultatsController extends Controller
             ->select ('charges.montant as impot')
             ->where ('charges.type','=','impots')
             ->sum ('charges.montant');
-        $table=[$c,$ca,$cpv,$i];
+
+            $mnr = DB::table('ventes')
+        ->join('reglements', function ($join) {
+            $join->on('reglements.vente_id', '=', 'ventes.id');
+        })
+            ->join('journals', function ($join) {
+                $join->on('ventes.journal_id', '=', 'journals.id');
+            })
+            ->whereDate('ventes.created_at', '=',$id)
+            ->where ('ventes.type_vente', '=',2)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
+            ->select ('ventes.totaux as vente,reglements.montant_restant')
+            ->sum ('reglements.montant_restant');
+
+            $depensetotal = DB::table('depenses')
+        ->where('depenses.boutique_id', '=',Auth::user()->boutique->id)
+        ->whereDate('created_at', '=',$id)
+        ->sum('montant');
+
+
+        $table=[$c,$ca,$mnr, $cpv,$i, $depensetotal];
         return $table;
     }
 
@@ -259,7 +284,29 @@ class ResultatsController extends Controller
             ->where('charges.boutique_id', '=',Auth::user()->boutique->id)
             ->where ('charges.type','=','impots')
             ->sum ('charges.montant');
-        $table=[$c,$ca,$cpv,$i];
+
+            $datecalc = $ed.'-'.(strlen($id) == 1 ? '0'.$id : $id).'-%';
+
+            $depensetotal = DB::table('depenses')
+        ->where('depenses.boutique_id', '=',Auth::user()->boutique->id)
+        ->where('date_dep', 'like',$datecalc)
+        ->sum('montant');
+
+        $mnr = DB::table('ventes')
+        ->join('reglements', function ($join) {
+            $join->on('reglements.vente_id', '=', 'ventes.id');
+        })
+            ->join('journals', function ($join) {
+                $join->on('ventes.journal_id', '=', 'journals.id');
+            })
+            ->where ('journals.annee', '=',$ed)
+            ->where('journals.mois', '=', $id)
+            ->where ('ventes.type_vente', '=',2)
+            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
+            ->select ('ventes.totaux as vente,reglements.montant_restant')
+            ->sum ('reglements.montant_restant');
+
+        $table=[$c,$ca, $mnr, $cpv,$i, $depensetotal];
         return $table;
     }
 
