@@ -85,7 +85,19 @@ class ModelesController extends Controller
         $historique->user_id =Auth::user()->id;
         $historique->save();
         $categorie=Categorie::all();
-        return view('produit',compact('categorie'));
+
+        $valeur = [];
+        $valeur['boutique'] = Auth::user()->boutique->nom;
+        $result = Modele::where('modeles.boutique_id', '=', Auth::user()->boutique->id)
+        ->selectRaw('SUM(modeles.quantite * modeles.prix) as prix_total')
+        ->get();
+        if(count($result) > 0){
+            $valeur['prix'] = number_format($result[0]->prix_total, 0 , '.', '.').' Franc CFA';
+        } else {
+            $valeur['prix'] = '0.0 Franc CFA';
+        }
+        
+        return view('produit',compact('categorie', 'valeur'));
     }
 
     public function liste_reporting()
@@ -102,7 +114,7 @@ class ModelesController extends Controller
             })
             ->where ('modeles.boutique_id', '=',Auth::user()->boutique->id )
             ->select('modeles.*', 'produits.nom')
-            ->get();;
+            ->get();
 
         $clients = Client::all();
 

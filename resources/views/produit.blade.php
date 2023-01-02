@@ -20,6 +20,18 @@
                     </header>
 
                     <div class="panel-body">
+                        <div
+                        style="
+                        width: 100%;
+                        height: 50px;
+                        background: #e6e6e6;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        "
+                        >
+                        <b style="color: #000; font-size: 2rem; text-transform: uppercase;">Valeur nette du magasin <b style="color: #03a9f4">{{ $valeur['boutique'] }}</b> : <b style="color: red;font-size: 2.5rem">{{ $valeur['prix'] }}</b> &nbsp</b>
+                    </div>
 
                         <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btnproduit"><i class="fa fa-plus"></i>Ajouter un produit</a>
                         <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" href="/modeles-reporting" ><i class="fa fa-area-chart"></i>Rapport</a>
