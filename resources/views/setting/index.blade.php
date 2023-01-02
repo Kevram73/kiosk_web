@@ -32,7 +32,6 @@
                             <input type="hidden" name="boutique_id" value="{{ $boutique->id }}">
                             <div class="row">
                                 @foreach ($settings as $item)
-                                    @if($item->tag !== 'commande_a_credit')
                                     <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
                                     <div class="row">
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
@@ -48,7 +47,6 @@
                                         </div>
                                     </div>
                                     </div>
-                                    @endif
                                 @endforeach
                             </div>
                             <br>
