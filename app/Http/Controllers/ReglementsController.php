@@ -108,7 +108,7 @@ class ReglementsController extends Controller
         $historique->cible = "Reglements";
         $historique->user_id = Auth::user()->id;
         $historique->save();
-        return view('reglementlist',compact('clients', 'reglements', 'ventes'));
+        return view('reglementlist',compact('clients', 'reglements'));
     }
 
     public function reglementachatlist()
@@ -177,7 +177,7 @@ class ReglementsController extends Controller
         $historique->cible = "Reglements";
         $historique->user_id = Auth::user()->id;
         $historique->save();
-        return view('reglementlistshow',compact('clients', 'client', 'reglementClient', 'venteClient'));
+        return view('reglementlistshow',compact('client', 'reglementClient', 'venteClient'));
 
         } catch (\Exception $e) {
             return redirect()->back();
