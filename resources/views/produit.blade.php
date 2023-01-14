@@ -20,19 +20,6 @@
                     </header>
 
                     <div class="panel-body">
-                        <div
-                        style="
-                        width: 100%;
-                        height: 50px;
-                        background: #e6e6e6;
-                        display: flex;
-                        align-items: center;
-                        justify-content: flex-end;
-                        "
-                        >
-                        <b style="color: #000; font-size: 2rem; text-transform: uppercase;">Valeur nette du magasin <b style="color: #03a9f4">{{ $valeur['boutique'] }}</b> : <b style="color: red;font-size: 2.5rem">{{ $valeur['prix'] }}</b> &nbsp</b>
-                    </div>
-
                         <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btnproduit"><i class="fa fa-plus"></i>Ajouter un produit</a>
                         <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" href="/modeles-reporting" ><i class="fa fa-area-chart"></i>Rapport</a>
                         <div class="modal fade " id="ajout_produit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -95,6 +82,12 @@
                                                 </div>
                                             </div>
                                             <div class="form-group mt-lg">
+                                                <label class="col-sm-3 control-label">Prix d'achat</label>
+                                                <div class="col-sm-9">
+                                                    <input type="integer" name="prixAchat" id="prixAchat" class="form-control" placeholder="100" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group mt-lg">
                                                 <label class="col-sm-3 control-label">Quantité seuil</label>
                                                 <div class="col-sm-9">
                                                     <input type="integer" name="seuil" id="seuil" class="form-control" placeholder="100" required/>
@@ -119,6 +112,7 @@
                                 <th class="center hidden-phone">Quantité </th>
                                 <th class="center hidden-phone">Prix unitaire (détail)</th>
                                 <th class="center hidden-phone">Prix unitaire (de gros)</th>
+                                <th class="center hidden-phone">Prix d'achat (dernier)</th>
                                 <th class="center hidden-phone">Quantité seuil</th>
                                 <th class="center hidden-phone">Action</th>
                             </tr>
@@ -149,6 +143,7 @@
                         <li class="list-group-item">Quantité :<b> <span class="text-danger" id="sQuantite"></span> </b></li>
                         <li class="list-group-item">Prix (de détail) :<b> <span class="text-danger" id="sPrix"></span> </b></li>
                         <li class="list-group-item">Prix (de gros) :<b> <span class="text-danger" id="sPrixDeGros"></span> </b></li>
+                        <li class="list-group-item">Prix d'achat (dernier) :<b> <span class="text-danger" id="sPrixAchat"></span> </b></li>
                         <li class="list-group-item">Quantité seuil :<b> <span class="text-danger " id="sSeuil" ></span></b></li>
 
                         <li class="list-group-item">

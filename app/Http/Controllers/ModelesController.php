@@ -86,18 +86,7 @@ class ModelesController extends Controller
         $historique->save();
         $categorie=Categorie::all();
 
-        $valeur = [];
-        $valeur['boutique'] = Auth::user()->boutique->nom;
-        $result = Modele::where('modeles.boutique_id', '=', Auth::user()->boutique->id)
-        ->selectRaw('SUM(modeles.quantite * modeles.prix) as prix_total')
-        ->get();
-        if(count($result) > 0){
-            $valeur['prix'] = number_format($result[0]->prix_total, 0 , '.', '.').' Franc CFA';
-        } else {
-            $valeur['prix'] = '0.0 Franc CFA';
-        }
-        
-        return view('produit',compact('categorie', 'valeur'));
+        return view('produit',compact('categorie'));
     }
 
     public function liste_reporting()
@@ -278,6 +267,7 @@ class ModelesController extends Controller
         $modele->quantite = $request->input('quantite');
         $modele->prix = $request->input('prix');
         $modele->prix_de_gros = $request->input('prixDeGros');
+        $modele->prix_achat = $request->input('prixAchat') ?? 0;
         $modele->seuil = $request->input('seuil');
         $modele->numero ="MOD".now()->format('Y')."-".$ed;
         $modele->produit_id =$request->input('famille');
@@ -333,6 +323,7 @@ class ModelesController extends Controller
         $modele->quantite = $request->input('quantite');
         $modele->prix = $request->input('prix');
         $modele->prix_de_gros = $request->input('prixDeGros');
+        $modele->prix_achat = $request->input('prixAchat') ?? 0;
         $modele->seuil = $request->input('seuil');
         $modele->produit_id =$request->input('famille');
         $modele->update();

@@ -39,6 +39,7 @@ Route::get('/deleteboutique-{id}', 'BoutiquesController@destroy');
 Route::post('/ajoutboutique', 'BoutiquesController@store');
 Route::post('/updateboutique', 'BoutiquesController@update');
 Route::get('/showboutique-{id}', 'BoutiquesController@show');
+Route::get('/showboutiquevaleur-{id}', 'BoutiquesController@showValeur');
 Route::post('/settings', 'BoutiquesController@settingStore');
 Route::get('/settings-{id}', 'BoutiquesController@settingIndex');
 

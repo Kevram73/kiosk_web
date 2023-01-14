@@ -81,6 +81,7 @@ $(function () {
             {data: "quantite",name : 'quantite'},
             {data: "prix",name : 'prix'},
             {data: "prix_de_gros",name : 'prix_de_gros'},
+            {data: "prix_achat",name : 'prix_achat'},
             {data: "seuil",name: 'seuil'},
             {data: "action", name : 'action' , orderable: false, searchable: false}
         ]
@@ -101,6 +102,7 @@ $('#btnproduit').on('click', function(){
     $('#quantite').val(null);
     $('#prix').val(null);
     $('#prixDeGros').val(null);
+    $('#prixAchat').val(null);
     $('#seuil').val(null);
     $('#categorie').val(null);
     $('#ajout_produit').modal('show');
@@ -163,6 +165,7 @@ let message;
             $('#sQuantite').text(data.quantite);
             $('#sPrix').text(data.prix);
             $('#sPrixDeGros').text(data.prix_de_gros);
+            $('#sPrixAchat').text(data.prix_achat);
             $('#sSeuil').text(data.seuil);
             $('#sCreate').text(data.created_at);
             $('#sUpdate').text(data.updated_at);
@@ -242,6 +245,7 @@ function editmodele(id){
             $('#quantite').val(data.quantite);
             $('#prix').val(data.prix);
             $('#prixDeGros').val(data.prix_de_gros);
+            $('#prixAchat').val(data.prix_achat);
             $('#categorie').val(data.produit.categorie_id);
 			var produiId = data.produit.id;
 			
@@ -302,7 +306,7 @@ function deletemodele(id){
                 }
             });
             Swal.fire('Effacé',
-                'Fichier bien effacé',
+                'Produit bien effacé',
                 'success')
         }
     });

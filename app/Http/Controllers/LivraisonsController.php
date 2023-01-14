@@ -272,7 +272,7 @@ class LivraisonsController extends Controller
             return $livraison;
             
             
-        } catch (\Execption $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             return $e;
         }

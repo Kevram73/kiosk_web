@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Historique;
 use App\Boutique;
+use App\Modele;
 use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,7 @@ class BoutiquesController extends Controller
             ->addColumn('action', function ($clt){
 
                 return ' <a class="btn btn-info " onclick="showboutique('.$clt->id.')" ><i class="fa  fa-info"></i></a>
+                            <a class="btn btn-warning " onclick="showvaleur('.$clt->id.')" ><i class="fa fa-money"></i></a>
                                     <a class="btn btn-primary" href="/settings-'.$clt->id.'"> <i class="fa fa-cog"></i></a>
                                     <a class="btn btn-success" onclick="editboutique('.$clt->id.')"> <i class="fa fa-pencil"></i></a>
                                     <a class="btn btn-danger" onclick="deleteboutique('.$clt->id.')"><i class="fa fa-trash-o"></i></a> ';
@@ -117,6 +119,19 @@ class BoutiquesController extends Controller
         $historique->user_id =Auth::user()->id;
         $historique->save();
         $boutique= Boutique::findOrFail($id);
+        return $boutique;
+    }
+
+    public function showValeur($id)
+    {
+        $result = Modele::where('modeles.boutique_id', '=', $id)
+        ->selectRaw('SUM(modeles.quantite * modeles.prix_achat) as prix_total')
+        ->get();
+        $boutique['nom'] = Boutique::findOrFail($id)->nom;
+        $boutique['prix'] = '0.0 Franc CFA';
+        if (!empty($result)){
+            $boutique['prix'] = number_format($result[0]->prix_total, 0, '.', '.').' Franc CFA';
+        }
         return $boutique;
     }
 

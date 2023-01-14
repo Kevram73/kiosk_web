@@ -149,6 +149,22 @@ function showboutique(id){
         }
     })
 }
+
+function showvaleur(id){
+    $.ajax({
+        url: '/showboutiquevaleur-'+id,
+        type: "get",
+        success : function(data) {
+            Swal.fire(`La valeur nette de la boutique ${data?.nom} est ${data?.prix}`,
+            '',
+            'info');
+        },
+        error : function(data){
+            sweetToast('Une erreur c\'est produite. Veuillez recommancer')
+        }
+    })
+}
+
 function editboutique(id){
     $.ajax({
         url : '/showboutique-'+id,
