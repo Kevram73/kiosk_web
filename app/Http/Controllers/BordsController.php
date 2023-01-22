@@ -54,6 +54,8 @@ class BordsController extends Controller
             ->where('model_has_roles.model_id','=',Auth::user()->id)
             ->select('roles.name')
             ->get();
+
+
         $boutique= User::with('boutique')->where ('id', '=',Auth::user()->id )->get();
         $id=DB::table('journals')->max('id');
 
@@ -106,7 +108,17 @@ class BordsController extends Controller
         $historique->user_id =Auth::user()->id;
         $historique->save();
 
-        if($role[0]->name == 'SUPER ADMINISTRATEUR'){
+        if(empty($role) == false){
+            echo "role is empty";
+            if($role[0] == 'SUPER ADMINISTRATEUR'){
+
+                print_r($role[0]) ;
+
+                $client=0 ;
+                $employe=0;
+                $produit=0;
+            }
+        }else{
             $client=Client::with('boutique')->count ();
             $employe=User::with('boutique')->count ();
             $produit=Modele::with('boutique')->count ();
