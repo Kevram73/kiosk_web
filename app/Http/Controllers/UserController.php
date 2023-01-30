@@ -12,6 +12,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +102,7 @@ class UserController extends Controller
         $user->boutique_id = $request->input('boutique');
         $user->contact = $request->input('contact');
         $user->password = Hash::make('password');
+        $user->api_token = Str::random(80);
         $user->save();
 
         DB::table('model_has_roles')->insert([
@@ -249,7 +251,7 @@ class UserController extends Controller
             ->where ('boutique_id', '=',Auth::user()->boutique->id )
             ->get();;
         }
-        
+
         return datatables()->of($users)
             ->addColumn('action', function ($role){
                  if($role->flag_etat == false){

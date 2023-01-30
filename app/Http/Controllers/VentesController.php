@@ -62,10 +62,13 @@ class VentesController extends Controller
 
     public function liste()
     {
+
+        //get ventes joining on users
         $vente=vente::join('users', function ($join) {
             $join->on('ventes.user_id', '=', 'users.id');
         })->
         orderBy('ventes.created_at', 'DESC')->get();
+
         $modele2=DB::table('modeles')
             ->join('produits', function ($join) {
                 $join->on('modeles.produit_id', '=', 'produits.id');
@@ -346,7 +349,7 @@ class VentesController extends Controller
                 'devis_ventes.created_at as create',
                 'devis_ventes.updated_at as update')
             ->get();
-        
+
         $name = "devis_".date('Y-m-d_H-i-s', strtotime(now())).".pdf";
         $pdf = null;
             try{
@@ -386,7 +389,7 @@ class VentesController extends Controller
                 'devis_ventes.created_at as create',
                 'devis_ventes.updated_at as update')
             ->get();
-        
+
         $name = "devis_de_gros_".date('Y-m-d_H-i-s', strtotime(now())).".pdf";
         $pdf = null;
             try{
@@ -554,7 +557,7 @@ class VentesController extends Controller
             })
             ->where('ventes.id','=',$id)
             ->SUM('preventes.prixtotal');
-            
+
             $name = "facture_".date('Y-m-d_H-i-s', strtotime(now())).".pdf";
             $pdf = null;
             $all_vente = Vente::find($id);
@@ -1004,6 +1007,7 @@ class VentesController extends Controller
     public function store(Request $request)
     {
         $allcommande= explode( ',', $request->input('venTable') );
+        error_log($allcommande);
         $i=DB::table('journals')->max('id');
         $id=DB::table('ventes')->max('id');
         $ed=1+$id;
@@ -1181,7 +1185,7 @@ class VentesController extends Controller
             $total = $total + $prevente->prixtotal;
             $allReduction = $allReduction + $prevente->reduction;
         }
-        
+
         $vente=vente::findOrFail($vente->id);
         $vente->montant_reduction = $allReduction;
 
@@ -1496,6 +1500,8 @@ class VentesController extends Controller
 
         if ($type->client_id==null)
         {
+
+         // Return all the producst sales given an id.
         $vente = DB::table('ventes')
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');

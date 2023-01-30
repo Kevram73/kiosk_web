@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 class DepenseController extends Controller
 {
 
+    // Return the list of depenses per boutique.
     public function liste()
     {
         $sold = Sold::where('boutique_id', Auth::user()->boutique->id)->first();
@@ -65,7 +66,7 @@ class DepenseController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     public function create_depot()
@@ -122,7 +123,7 @@ class DepenseController extends Controller
             return null;
         }
 
-        
+
         $sold->montant -= $request->montant;
         $sold->update();
 
@@ -172,13 +173,13 @@ class DepenseController extends Controller
 
         DB::commit();
 
-        return redirect("/depenses")->with('success', 'Dépôt effectuer avec success');   
+        return redirect("/depenses")->with('success', 'Dépôt effectuer avec success');
     }
 
     public function store_depense(Request $request)
     {
         DB::beginTransaction();
-        
+
         $depense = Depense::findorfail($request->depense_id);
 
         $name = File::newFile($request->file, "justify");
@@ -202,8 +203,8 @@ class DepenseController extends Controller
 
         DB::commit();
 
-        return redirect()->back()->with('success', 'Fichier Enregistrer');   
-        
+        return redirect()->back()->with('success', 'Fichier Enregistrer');
+
     }
 
     /**
@@ -231,7 +232,7 @@ class DepenseController extends Controller
      */
     public function edit($id)
     {
-        
+
     }
 
     /**
@@ -346,7 +347,7 @@ class DepenseController extends Controller
         $historique->cible = "Dépense";
         $historique->user_id = Auth::user()->id;
         $historique->save();
-        
+
         return $sold;
     }
 
@@ -360,7 +361,7 @@ class DepenseController extends Controller
         $historique->cible = "Dépense Fichier";
         $historique->user_id = Auth::user()->id;
         $historique->save();
-        
+
         return redirect()->back();
     }
 

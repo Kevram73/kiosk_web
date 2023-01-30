@@ -1,0 +1,22 @@
+GET http://localhost:8000/api/categories/
+Accept: application/json
+
+###
+# Return the list of all request.
+GET http://localhost:8000/api/sales/
+Accept: application/json
+
+###
+GET http://localhost:8000/api/users/
+Accept: application/json
+###
+GET http://localhost:8000/api/products/
+Accept: application/json
+
+###
+GET http://localhost:8000/api/clients/
+Accept: application/json
+
+###
+GET http://localhost:8000/api/products/
+Accept: application/json

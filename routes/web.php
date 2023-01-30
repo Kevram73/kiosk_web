@@ -16,6 +16,7 @@ Route::get('/', function () {
     // Alert::success('Success Title', 'Success Message');
     return redirect('/connexion');
 });
+
 // Route::get('/b', 'BordsController@b');
 Route::get('/bord', 'BordsController@index')->name('bord');
 Route::get('/bordcaisse', 'BordsController@caisse')->name('caissebord');
