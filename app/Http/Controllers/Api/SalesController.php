@@ -269,6 +269,7 @@ class SalesController extends Controller
             })
             //->where('ventes.id','=',$id)
             ->select('ventes.numero as numero',
+
                 'ventes.id as id',
                 'ventes.date_vente as date',
                 'ventes.facture as facture',
@@ -278,12 +279,25 @@ class SalesController extends Controller
                 'preventes.prix as prix',
                 'preventes.prixtotal as prixtotal',
                 'ventes.created_at as create',
-                'ventes.updated_at as update')
+                'ventes.updated_at as update',
+                'ventes.type_vente as type_vente'
+            )
+            
+            //->groupBy('ventes.id','ventes.numero')
             ->get();
 
 
+        
+
+                
+
 
         return response()->json($sales->toArray()) ;
+    }
+
+    public function list_all_product(Request $request,$vente_id){
+
+
     }
 
 

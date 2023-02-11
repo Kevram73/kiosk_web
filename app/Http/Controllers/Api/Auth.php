@@ -17,12 +17,23 @@ class Auth extends Controller
      */
     public function login(Request $request)
     {
-        $data = $request->validate([
-            'username' => 'required|string',
+      /**
+      **
+          $data = $request->validate([
+            'email' => 'required|string',
             'password' => 'required|string'
         ]);
 
-        return;
+        $email =$data['username'];
+        $password =$data['password'];
+
+        $user = DB::table('users')->where('password',$password)->where('email',$email) ;
+
+
+        return response()->json($user->toArray()) ;
+      **/
+
+        return "hello";
 
     }
 

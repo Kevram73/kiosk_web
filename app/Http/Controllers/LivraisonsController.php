@@ -199,7 +199,8 @@ class LivraisonsController extends Controller
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');
             })
-            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
+            ->where ('ventes.boutique_id',
+                '=',Auth::user()->boutique->id)
             ->where ('ventes.type_vente', '=', 3)
             ->where ('preventes.etat', '=', 1)
             ->select('ventes.id as id','ventes.numero as numero')
@@ -236,32 +237,32 @@ class LivraisonsController extends Controller
             $livraison ->date_livraison= now();
             $livraison ->boutique_id= Auth::user()->boutique->id;
             $livraison->save();
-    
+
             $alllivraison= explode( ',', $request->input('livTable') );
             for ($i =0 ;$i<count($alllivraison);$i+=2) {
                 $commande_modele = DB::table('commande_modeles')->find($alllivraison[$i]);
                 $quantite_livre= DB::table('livraison_commandes')
                         ->where('commande_modele_id',$alllivraison[$i])
                         ->sum('quantite_livre');
-                                    
+
                 $livraisoncommande = new livraisonCommande();
                 $livraisoncommande ->livraison_id=$livraison ->id;
                 $livraisoncommande  ->commande_modele_id=$alllivraison[$i];
                 $livraisoncommande ->quantite_livre =$alllivraison[$i+1];
                 $livraisoncommande->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i+1];
                 $livraisoncommande->save();
-    
+
                 $modele= Modele::findOrFail($commande_modele->modele);
                 $modele->quantite=$modele->quantite+ $livraisoncommande ->quantite_livre;
                 $modele->update();
-    
+
                 if ($livraisoncommande->quantite_restante==0){
                     DB::table('commande_modeles')
                         ->where('id',$alllivraison[$i])
                         ->update(['etat' => true]);
                 }
             }
-    
+
             $historique=new Historique();
             $historique->actions = "Creer";
             $historique->cible = "Livraisons";
@@ -270,8 +271,8 @@ class LivraisonsController extends Controller
 
             DB::commit();
             return $livraison;
-            
-            
+
+
         } catch (\Exception $e) {
             DB::rollback();
             return $e;
@@ -322,7 +323,7 @@ class LivraisonsController extends Controller
 
             $quantite= DB::table('livraison_commandes')
                 ->where('commande_modele_id',$alllivraison[$i] )
-                    ->sum('quantite_livre');               
+                    ->sum('quantite_livre');
         $livraisoncommande = new livraisonCommande();
         $livraisoncommande ->livraison_id=$livraison ->id;
         $livraisoncommande  ->commande_modele_id=$alllivraison[$i];
@@ -386,32 +387,32 @@ class LivraisonsController extends Controller
             $livraison ->date_livraison= now();
             $livraison ->boutique_id= Auth::user()->boutique->id;
             $livraison->save();
-    
+
             $alllivraison= explode( ',', $request->input('livTable') );
             for ($i =0 ;$i<count($alllivraison);$i+=2) {
                 $commande_modele = DB::table('preventes')->find($alllivraison[$i]);
                 $quantite_livre= DB::table('livraison_ventes')
                         ->where('prevente_id', $alllivraison[$i])
                         ->sum('quantite_livre');
-                                    
+
                 $livraisonvente = new Livraison_vente();
                 $livraisonvente->livraison_v_id=$livraison ->id;
                 $livraisonvente->prevente_id=$alllivraison[$i];
                 $livraisonvente->quantite_livre =$alllivraison[$i+1];
                 $livraisonvente->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i+1];
                 $livraisonvente->save();
-    
+
                 $modele= Modele::findOrFail($commande_modele->modele_fournisseur_id);
                 $modele->quantite=$modele->quantite- $livraisonvente ->quantite_livre;
                 $modele->update();
-    
+
                 if ($livraisonvente->quantite_restante==0){
                     DB::table('preventes')
                         ->where('id',$alllivraison[$i])
                         ->update(['etat' => false]);
                 }
             }
-    
+
             $historique=new Historique();
             $historique->actions = "Creer";
             $historique->cible = "Livraisons";
@@ -420,8 +421,8 @@ class LivraisonsController extends Controller
 
             DB::commit();
             return $livraison;
-            
-            
+
+
         } catch (\Execption $e) {
             DB::rollback();
             return $e;
@@ -489,7 +490,7 @@ class LivraisonsController extends Controller
 
     }
 
-    
+
     public function verification($id)
     {
         try {

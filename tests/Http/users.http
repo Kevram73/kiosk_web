@@ -1,0 +1,22 @@
+POST http://199.247.6.133/api/users/validate/
+Content-Type: application/json
+
+{
+    "email": "abel@gmail.com",
+    "password" : "123456"
+}
+
+###
+GET http://localhost:8000/api/users/roles/
+Accept: application/json
+
+###
+POST http://localhost:8000/api/users/validate/
+Content-Type: application/json
+
+{
+    "email": "abel@gmail.com",
+    "password" : "123456"
+}
+
+###

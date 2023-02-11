@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "580854ea-af16-4281-9079-1e3ca33c4a85",
+		"name": "BOUTIQUE PLUS API COLLECTION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4708462"
+	},
+	"item": [
+		{
+			"name": "LIST CLIENT",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/clients/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"clients",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST PRODUCTS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST PRODUCT MODELS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/models/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"models",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST CATEGORY",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/categories/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"categories",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST SALES",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "LIST OF PRODUCTS IN A SALES AND THEIR IDS",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE A SALE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sale\":{\n        \"user_id\":63,\n        \"boutique_id\":16,\n        \"type_vente\":0,\n        \"with_tva\":0,\n        \"tva_value\":18,\n        \"montant_tva\":null,\n        \"montant_ht\":null,\n        \"montant_reduction\":0,\n        \"products\":[\n            {\n                \"pruduct_id\":10,\n                \"model_id\": \"null\",\n                \"category_id\": null,\n                \"qte\":null,\n                \"etat\":null,\n                \"total_cost\":null\n                \"model_id\":1,\n                \"reduction\":100,\n            },\n            {\n\n            }\n        ]\n    \n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/sales/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"sales",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST EXPENSES",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE EXPENSES",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n    \"name\": \"Abel the huncho\",\n        \"montant\": 100,\n        \"motif\": \"pour achetter un macbook pro2\",\n        \"justifier\": 1,\n        \"date_dep\": \"2023-01-30\",\n        \"user_id\": 63,\n        \"boutique_id\": 16,\n        \"journal_id\": 10,\n        \"sold_id\":22\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/expenses/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"expenses",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

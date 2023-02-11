@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+<link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 @endsection
 @section('contenu')
     <div class="inner-wrapper">
@@ -20,8 +20,10 @@
                     </header>
 
                     <div class="panel-body">
+                        <!--  Inventaire category-->
                         <div class="col-md-18">
                             <div class="tabs">
+                                <!-- Tables types -->
                                 <ul class="nav nav-tabs nav-justified">
                                     <li class="active">
                                         <a href="#inventaire_pending" data-toggle="tab" class="text-center"><i class="fa fa-star"></i> EN COURS</a>
@@ -30,9 +32,15 @@
                                     <li>
                                         <a href="#inventaire_valider" data-toggle="tab" class="text-center">VALIDER</a>
                                     </li>
+                                    <li>
+                                        <a href="#inventaire_regularistion" data-toggle="tab" class="text-center">RÉGULARISATION INVENTAIRE</a>
+                                    </li>
                                 </ul>
-                                <div class="tab-content">
 
+
+                                <!-- Body of tables -->
+                                <div class="tab-content">
+                                    <!-- Inventaire pending table -->
                                     <div id="inventaire_pending" class="tab-pane active">
                                         <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btnAddInventaire"><i class="fa fa-plus"></i>Ajouter un inventaire</a>
                                         <table class="table table-bordered table-striped mb-none" id="inventaireTablePending" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
@@ -52,6 +60,7 @@
                                         </table>
                                     </div>
 
+                                    <!-- Inventaire valider -->
                                     <div id="inventaire_valider" class="tab-pane ">
                                         {{-- <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btninventaire"><i class="fa fa-plus"></i>Faire l'inventaire</a> --}} <br>
                                         <table class="table table-bordered table-striped mb-none" id="inventaireTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
@@ -69,10 +78,34 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <!-- Inventaire regularisation -->
+                                    <div id="inventaire_regularistion" class="tab-pane ">
+                                        {{-- <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btninventaire"><i class="fa fa-plus"></i>Faire l'inventaire</a> --}} <br>
+                                        <table class="table table-bordered table-striped mb-none" id="inventaireTableRegularisation" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                            <thead>
+                                            <tr>
+                                                <th class="center hidden-phone">Code Inventaire</th>
+                                                <th class="center hidden-phone">Date</th>
+                                                <th class="center hidden-phone">Utilisateur</th>
+                                                <th class="center hidden-phone">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="center hidden-phone">
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade " id="ajout_inventaie" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal fade "
+                             id="ajout_inventaie"
+                             tabindex="-1"
+                             role="dialog"
+                             aria-labelledby="myModalLabel"
+                        >
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
 

@@ -99,6 +99,9 @@ Route::get('/showcategorie-{id}', 'CategoriesController@show');
 //Route::get('/allinventaire', 'ModelesController@inventaire');
 Route::get('/inventaire', 'InventairesController@liste')->name('inventaire');
 Route::get('/allinventaire', 'InventairesController@index');
+Route::get('/inventaire_non_regulated','InventairesController@list_non_regulated');
+Route::get('/inventaire_non_reg-{id}','InventairesController@regulate_inventaire');
+
 Route::get('/allinventairepending', 'InventairesController@indexPending');
 Route::get('/newinventaire', 'InventairesController@create');
 Route::get('/new2inventaire-{id}', 'InventairesController@create2invt');

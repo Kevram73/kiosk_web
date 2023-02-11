@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Categorie;
 use App\Inventaire_modeles;
+use App\InventoryDebtor;
 use App\Modele;
 use Illuminate\Support\Facades\DB;
 use App\Historique;
@@ -13,6 +14,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class InventairesController extends Controller
@@ -48,6 +50,7 @@ class InventairesController extends Controller
             })
             ->make(true) ;
     }
+    // Return the list of all pending inventaires.
     public function indexPending()
     {
         $inventaire = DB::table('inventaires')
@@ -62,6 +65,47 @@ class InventairesController extends Controller
                 return ' <a class="btn btn-success " href="/new2inventaire-'.$clt->id.'" ><i class="fa fa-check"></i></a>
                 <a class="btn btn-info" href="/inventaires/pending/'. $clt->pdf_pending .'" ><i class="fa fa-print"></i></a>
                 <a class="btn btn-danger " onclick="deleteinventaire('.$clt->id.')" ><i class="fa fa-trash-o"></i></a>
+                ';
+            })
+            ->make(true) ;
+    }
+
+    // Return the list of all inventaires non regulated.
+    public  function list_non_regulated(){
+        $inventaire = DB::table('inventaires')
+            ->where(['inventaires.etat' => 1, 'inventaires.boutique_id' => Auth::user()->boutique->id])
+            ->join('users', function ($join) {
+                $join->on('inventaires.user_id', '=', 'users.id');
+            })
+            ->select('inventaires.*', 'users.id as user_id', 'users.nom', 'users.prenom')
+            ->get();
+        return datatables()->of($inventaire)
+            ->addColumn('action', function ($clt){
+                return '
+                 <a class="btn btn-success " href="/inventaire_non_reg-'.$clt->id.'" ><i class="fa fa-info"></i></a>
+
+                ';
+            })
+            ->make(true) ;
+    }
+    // regulate an inventaire
+    public function regulate_defined_inventaire()
+    {
+        $inventaire = DB::table('inventaires')
+            ->where(['inventaires.etat' => 1, 'inventaires.boutique_id' => Auth::user()->boutique->id])
+            ->join('users', function ($join) {
+                $join->on('inventaires.user_id', '=', 'users.id');
+            })
+            ->join('inventaire_modeles',function ($join){
+                $join->on('inventaire_modeles.inventaire_id','=','inventaire.id') ;
+            })
+            ->select('inventaires.*', 'users.id as user_id', 'users.nom', 'users.prenom','')
+            ->get();
+        return datatables()->of($inventaire)
+            ->addColumn('action', function ($clt){
+                return '
+                 <a class="btn btn-success " href="/inventaire_non_reg-'.$clt->id.'" ><i class="fa fa-check"></i></a>
+
                 ';
             })
             ->make(true) ;
@@ -114,6 +158,16 @@ class InventairesController extends Controller
         {
             return view('new2inventaire', compact('data'));
         }
+    }
+
+    //Show the detail of a regulated inventaire.
+    public function regulate_inventaire($id)
+    {
+    $data = Inventaires::find($id) ;
+    if(is_null($data)) {
+            return back() ;
+        }
+    return view('inventaire_regulate',compact('data')) ;
     }
 
     public function create2(Request $request)
@@ -226,41 +280,72 @@ class InventairesController extends Controller
     }
     public function show2($id)
     {
+
+
+
+
         $inventaire = DB::table('inventaires')
-            ->join('inventaire_modeles', function ($join) {
-                $join->on('inventaire_modeles.inventaire_id', '=', 'inventaires.id');
-            })
-            ->join('modeles', function ($join) {
-                $join->on('inventaire_modeles.modele_id', '=', 'modeles.id');
-            })
-            ->join('produits', function ($join) {
-                $join->on('modeles.produit_id', '=', 'produits.id');
-            })
-            ->join('categories', function ($join) {
-                $join->on('produits.categorie_id', '=', 'categories.id');
-            })
-            ->join('users', function ($join) {
-                $join->on('inventaires.user_id', '=', 'users.id');
-            })
-            ->select('modeles.id as id',
-                'modeles.libelle as modele',
-                'inventaire_modeles.quantite as quantite',
-                'inventaire_modeles.quantite_reelle as quantiteR',
-                'inventaire_modeles.justify as justify',
-                'produits.nom as produit',
-                'inventaires.numero as numero',
-                'inventaires.date_inventaire as date',
-                'inventaires.id as inventaire_id',
-                'inventaires.pdf_pending as pdf',
-                'inventaires.observation as observation',
-                'users.nom as utilisateur',
-                'users.prenom as prenom',
-                'categories.nom as categorie'
-            )
-            ->where('inventaires.id','=',$id)
-            ->get();
-            //dd($inventaire);
-        return view('detailinventaire',compact('inventaire'));
+        ->join('inventaire_modeles', function ($join) {
+        $join->on('inventaire_modeles.inventaire_id', '=', 'inventaires.id');
+        })
+        ->join('modeles', function ($join) {
+        $join->on('inventaire_modeles.modele_id', '=', 'modeles.id');
+        })
+        ->join('produits', function ($join) {
+        $join->on('modeles.produit_id', '=', 'produits.id');
+        })
+        ->join('categories', function ($join) {
+        $join->on('produits.categorie_id', '=', 'categories.id');
+        })
+        ->join('users', function ($join) {
+        $join->on('inventaires.user_id', '=', 'users.id');
+        })
+        ->select('modeles.id as id',
+        'modeles.libelle as modele',
+        'modeles.prix as prix_unitaire',
+        'inventaire_modeles.quantite as quantite',
+        'inventaire_modeles.quantite_reelle as quantiteR',
+        'inventaire_modeles.justify as justify',
+        'produits.nom as produit',
+        'inventaires.numero as numero',
+        'inventaires.date_inventaire as date',
+        'inventaires.id as inventaire_id',
+        'inventaires.pdf_pending as pdf',
+        'inventaires.observation as observation',
+        'users.nom as utilisateur',
+        'users.prenom as prenom',
+        'categories.nom as categorie'
+        )
+        ->where(
+            'inventaires.id','=',$id
+        )
+        ->get();
+
+       // var_dump($inventaire);
+        // Montant total
+        // Return all the debtors of inventory.
+        $debtors = Db::table('inventory_debtors')->get();
+        $montant_total_maquant = 0 ;
+        $counter = count($inventaire) ;
+        foreach ($inventaire as $inv){
+            $montant_total_maquant += $inv->prix_unitaire * ($inv->quantite - $inv->quantiteR) ;
+        }
+        return view('detailinventaire',compact('inventaire','montant_total_maquant','debtors'));
+    }
+
+    // Create the a inventory debtor.
+    public function create_inventory_debtorp(Request $request)
+    {   //
+        $nom = $request->input('prenom');
+        $nom = $request->input('prenom');
+        $nom = $request->input('prenom');
+        $nom = $request->input('prenom');
+    }
+
+    // Return the lists  of alls inventory debtors
+    public function list_inventory_debtors(){
+        $inventory_debtor = InventoryDebtor::all() ;
+            return response()->json($inventory_debtor) ;
     }
 
     public function show3($id)
