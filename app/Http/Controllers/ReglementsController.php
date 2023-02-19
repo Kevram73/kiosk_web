@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Banque;
+use App\CompteBancaire;
 use App\journal;
 use App\Reglement;
 use App\Client;
@@ -115,7 +117,7 @@ class ReglementsController extends Controller
     {
         $fournisseur=DB::table('fournisseurs')
             ->get();
-
+        $banques = Banque::all();
         $reglements=ReglementAchat::join('fournisseurs', function ($join) {
                 $join->on('reglement_achats.fournisseur_id', '=', 'fournisseurs.id');
             })
@@ -136,7 +138,9 @@ class ReglementsController extends Controller
         $historique->cible = "Reglements Achat";
         $historique->user_id = Auth::user()->id;
         $historique->save();
-        return view('reglementachatlist', compact('fournisseur', 'reglements', 'commandes'));
+        return view('reglementachatlist',
+            compact('fournisseur',
+                'reglements', 'commandes','banques'));
     }
 
     public function reglementlistshow($id)
@@ -440,6 +444,9 @@ class ReglementsController extends Controller
     public function storeachat(Request $request)
     {
         $reglement=new ReglementAchat();
+        $compte_id = $request->input('compte') ;
+        $compte = CompteBancaire::find($compte_id);
+
         $reglement->montant_donne = $request->input('donne');
         $reglement->fournisseur_id = $request->input('fournisseur');
         $reglement->total = $request->input('total');
@@ -447,11 +454,16 @@ class ReglementsController extends Controller
         $reglement->boutique_id = Auth::user()->boutique->id;
         if ($request->input('reste')>0)
         {
+            $compte->solder = $compte->solder - $reglement->montant_donne ;
+            $compte->save();
             $reglement->montant_restant = $request->input('restant');
             $reglement->save();
+
             return $request ->input();
         }
         else{
+            $compte->solder = $compte->solder - $reglement->montant_donne ;
+            $compte->save();
             $reglement->montant_restant =0;
             $reglement->save();
             return $request ->input();

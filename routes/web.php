@@ -102,8 +102,14 @@ Route::get('/allinventaire', 'InventairesController@index');
 Route::get('/inventaire_non_regulated','InventairesController@list_non_regulated');
 Route::get('/inventaire_non_reg-{id}','InventairesController@regulate_inventaire');
 
+//Route::get('/remboursement-{id}','InventairesController@remboursement_inventaire');
+Route::get('/debtor_inv_amount',
+    'InventairesController@get_client_amount_by_inventory');
+
 Route::get('/allinventairepending', 'InventairesController@indexPending');
 Route::get('/newinventaire', 'InventairesController@create');
+Route::post('/inventaire_pay', 'InventairesController@change_inventaire_regulate');
+Route::post('/inventaire-debtors','InventairesController@create_inventory_debtor');
 Route::get('/new2inventaire-{id}', 'InventairesController@create2invt');
 Route::get('/fermerinventaire', 'InventairesController@fermer');
 Route::get('/fermerinventaire-{id}', 'InventairesController@fermerbydata');
@@ -416,3 +422,14 @@ Route::post('/updatetransfert', 'TransfertsController@update');
 Route::get('/showtransfert-{id}', 'TransfertsController@show');
 Route::get('/showtransfertreception-{id}', 'TransfertsController@indexUpdate');
 Route::get('/recuperermodeleboutique-{famille}', 'TransfertsController@showBoutiqueProduit');
+
+
+
+/// Banque routes.
+Route::get('/banques','BanqueController@list_banques');
+Route::post('/banques','BanqueController@create_banque');
+Route::get('/get_account','BanqueController@get_account_for_bank');
+Route::get('/get_solde','BanqueController@get_solde');
+
+
+

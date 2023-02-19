@@ -42,7 +42,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
 
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
-        
+
         @yield('css')
 	</head>
 	<body>
@@ -197,7 +197,7 @@
                                             @if (Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first() && Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first()->pivot->is_active)
                                             <li>
                                                 <a href="{{route('reglementachatlist')}}">
-                                                    {{ Str::upper(__('msg.buys')) }}
+                                                    FOURNISSEURS
                                                 </a>
                                             </li>
                                             @endif
@@ -227,6 +227,18 @@
                                             </li>
                                         </ul>
                                     </li>
+                                    <li class="nav-parent">
+                                        <a href="/banques">
+                                            <i class="fa  fa-bank" aria-hidden="true"></i>
+                                            <span>BANQUES</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-parent">
+                                        <a href="/caisses">
+                                            <i class="fa  fa-money" aria-hidden="true"></i>
+                                            <span>CAISSES</span>
+                                        </a>
+                                    </li>
                                     @if (Auth::user()->boutique->settings->where('tag', 'inventaire')->first() && Auth::user()->boutique->settings->where('tag', 'inventaire')->first()->pivot->is_active)
                                     <li>
                                         <a href="{{route('inventaire')}}">
@@ -247,7 +259,7 @@
                                             <span>{{ Str::upper(__('msg.providers')) }}</span>
                                         </a>
                                     </li>
-                                    
+
                                     <li>
                                         <a href="{{route('depenses')}}">
                                             <i class="fa  fa-money" aria-hidden="true"></i>
@@ -385,7 +397,8 @@
                                                     SERVICES
                                                 </a>
                                             </li> -->
-                                            @if (Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()->pivot->is_active)
+                                            @if (Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()
+&& Auth::user()->boutique->settings->where('tag', 'livraison_vente')->first()->pivot->is_active)
                                             <li>
                                                 <a href="{{route('livraisons2')}}">
                                                     {{ Str::upper(__('msg.delivery')) }}

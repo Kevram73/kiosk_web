@@ -1,3 +1,4 @@
+var globalStore ;
 function sweetToast(type,text){
     return  Swal.fire({
         position: 'top-end',
@@ -17,7 +18,8 @@ $('#fournisseur').on('change',function ( ) {
         type: "get",
         success: function (data) {
             $('#total').empty();
-            $('#total').val(data.total - data.montant)
+
+            $('#total').val(data.total - data.montant);
         },
         error: function (data) {
             console.log("erreur")
@@ -25,6 +27,84 @@ $('#fournisseur').on('change',function ( ) {
     })
 })
 
+$('#banque').on('change',function () {
+    console.log(" banque selectionner") ;
+
+    let _banKId =$('#banque').val();
+    let _btqId = $('#idBoutique').val();
+
+    console.log(_banKId);
+    console.log(_btqId);
+    let _getAcountUrl = "/get_account?boutique="+_btqId+"&&"+"banque="+_banKId+"";
+    console.log(_getAcountUrl);
+    $.ajax({
+        url : _getAcountUrl,
+        type : "get",
+        // data : $('#modal-form-user').serialize(),
+        //data: new FormData($("#ajout_reglement form")[0]),
+        //data: new FormData($("#modal-form-user")[0]),
+        contentType: false,
+        processData: false,
+        success : function(data) {
+            console.log(data);
+            if(data.length==0){
+                let _m = " Vous n'avez pas de compte dans cette banques" ;
+                sweetToast('warning',_m) ;
+                $('#banque').val(null);
+            }
+
+            if(data.length != 0){
+                let _accountList = data;
+                globalStore = data ;
+                $(_accountList).each(function () {
+                    var option = $("<option/>");
+                    option.html(this.numero);
+                    option.val(this.id);
+                    $('#compte').append(option) ;
+                })
+                $('#group_compte').show();
+
+            }
+            //$('#ajout_reglement').modal('hide');
+            //sweetToast('success',message);
+
+            //reglementTable.ajax.reload();
+           // window.location.reload();
+        },
+        error : function(data){
+            console.log(data.error()) ;
+        }
+    });
+
+});
+
+$('#compte').on('change',function () {
+    let _x = $('#compte').val() ;
+    console.log(_x);
+
+    let _getAcountUrl = "/get_solde?account_id="+_x+"";
+    console.log(_getAcountUrl);
+    $.ajax({
+        url : _getAcountUrl,
+        type : "get",
+        // data : $('#modal-form-user').serialize(),
+        //data: new FormData($("#ajout_reglement form")[0]),
+        //data: new FormData($("#modal-form-user")[0]),
+        contentType: false,
+        processData: false,
+        success : function(data) {
+            console.log(data[0]);
+            $('#solde').val(null);
+            $('#solde').val(data[0].solder);
+            //$('#solde').html(data[0].solder);
+
+
+        },
+        error : function(data){
+            console.log(data) ;
+        }
+    });
+})
 
 $('#donne').on('value change',function ( ) {
     $('#restant').val($('#total').val()-$('#donne').val());
@@ -109,11 +189,12 @@ $('#btnreglement').on('click', function(){
     $('#idreglement').val(null);
     $('#fournisseur').val(null);
     $('#btnadd').text('Valider');
-    $('#btnadd').removeClass('btn-warning');
-    $('#btnadd').addClass('btn-primary');
+    $('#btnadd').removeClass('btn-warning').addClass('btn-primary');
+    //$('#btnadd').addClass('btn-primary');
     $('#total').val(null);
     $('#donne').val(null);
     $('#restant').val(null);
+    $('#group_compte').hide();
     $('#ajout_reglement').modal('show');
 });
 

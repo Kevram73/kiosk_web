@@ -31,8 +31,10 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-8">
+                                {{--
                                 <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btncharge"><i class="fa fa-plus"></i> Faire une depense</a>
                                 <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btndepot"><i class="fa fa-arrow-left" aria-hidden="true"></i> Faire un dépôt</a>
+                                --}}
                                 <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-success" id="btnhistorique"><i class="fa fa-file-text"></i>Historiques</a>
                                 <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id ="btnjournal"><i class="fa fa-file-text"></i>Fermer le journal</a>
 
@@ -41,7 +43,7 @@
                                 <h3 >SOLD : <strong class="prix" id="sold">{{ $sold->montant  }}</strong></h3>
                             </div>
                         </div>
-                        
+
                         <div class="modal fade " id="ajout_charge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -152,5 +154,5 @@
         setNumeralHtml("prix", "0,0");
     </script>
     <script src="js/depense.js"></script>
-    
+
 @endsection

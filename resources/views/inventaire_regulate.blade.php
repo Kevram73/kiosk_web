@@ -1,53 +1,92 @@
 @extends('layout')
 @section('css')
-<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
+<link rel="stylesheet" type="text/css"
+      href="DataTables/datatables.min.css"/>
 <script>
-    import Scala from "../../public/octopus/assets/vendor/codemirror/mode/clike/scala.html";
-    export default {
+    /**
+
+     import Scala from "../../public/octopus/assets/vendor/codemirror/mode/clike/scala.html";
+     export default {
         components: {Scala}
     }
+
+     */
+
+
 </script>
+<script src="https://unpkg.com/htmx.org@1.8.5"></script>
 @endsection
+
 @section('contenu')
+
     <div class="inner-wrapper">
         <section role="main" class="content-body">
             <header class="page-header">
                 <h2>Regularisation de l'inventaire</h2>
             </header>
-            <div class="modal fade " id="inventaire" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade " id="inventaireRegulateModal"
+                 tabindex="-1"
+                 role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
 
                         <div class="modal-header " style="background-color: #0b93d5;border-top-left-radius: inherit;border-top-right-radius: inherit">
-                            <h4 class="modal-title-user" id="myModalLabel" style="color: white"></h4>
+                            <h4 class="modal-title-user" id="myModalLabel" style="color: white">
+                                    FORMULAIRE DE REGULARISATION.
+                            </h4>
                         </div>
                         <div class="modal-body">
-                            <form id="form" action="" method="POST" class="	form-validate form-horizontal mb-lg" enctype="multipart/form-data">
+                            <form
+                                id="form"
+                                  action="/inventaire_pay"
+                                  method="POST"
+                                  class="form-validate form-horizontal mb-lg"
+                                enctype="multipart/form-data">
                                 {{csrf_field()}}
                                 <div class="form-group mt-lg">
-                                    <label class="col-sm-3 control-label">Quantité </label>
+                                    <label class="col-sm-3 control-label"
+                                           for="idDebiteur">Nom débiteurs.</label>
                                     <div class="col-sm-9">
-                                        <input type="number" name="quantite" id="quantite" class="form-control" placeholder="100"  min="0" required/>
-                                        <input type="hidden" name="id" id="id"/>
+
+                                        <select
+                                            name="debtor_id"
+                                            id="idDebiteur"
+                                            class="form-control"
+                                            hx-get="/debtor_inv_amount?inv_id={{$result[0]->id}}"
+
+                                            hx-indicator=".htmx-indicator"
+                                            hx-target="#montantId.value"
+                                        >
+                                            <optgroup label="Débiteurs">
+                                                <option value="">Selectionner débiteur</option>
+
+                                                @foreach($result as $re)
+                                                    <option value="{{$re->debtor_id}}">
+                                                        {{$re->nom}} {{$re->prenom}}
+                                                    </option>
+                                                @endforeach
+                                            </optgroup>
+
+                                        </select>
 
                                     </div>
                                 </div>
+                                <input type="hidden" value="{{$result[0]->id}}" name="inv_id"/>
                                 <div class="form-group mt-lg">
-                                    <label class="col-sm-3 control-label">Quantité réelle</label>
+                                    <label class="col-sm-3 control-label">Montant a rembourser</label>
                                     <div class="col-sm-9">
-                                        <input type="number" name="quantiteR" id="quantiteR" class="form-control" placeholder="100"  min="0" required/>
-                                    </div>
-                                </div>
-                                <div class="form-group mt-lg">
-                                    <label class="col-sm-3 control-label">Justificatif</label>
-                                    <div class="col-sm-9">
-                                        <textarea name="justify" id="justify" cols="30" rows="5" class="form-control"></textarea>
+                                        <input type="number" name="montant" id="montantId" class="form-control"
+                                               placeholder="100"  min="0"
+
+                                               required/>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <div class="col-md-12 text-right">
-                                        <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>
-                                        <button type="button" class="mb-xs mt-xs mr-xs btn btn-default  " data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
+                                        <button type="submit" class="btn btn-primary" id="btnadd"
+                                          hx-confirm="Confirmer ?"
+                                        ><i class="fa fa-check"></i> Valider</button>
+                                        <button type="button" class="mb-xs mt-xs mr-xs btn btn-danger  " data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
                                     </div>
                                 </div>
                             </form>
@@ -65,7 +104,7 @@
                             <a href="#" class="fa fa-caret-down"></a>
                         </div>
 
-                        <h1 class="panel-title">Régularisation</h1>
+                        <h1 class="panel-title">Régularisations</h1>
                     </header>
 
                     <div class="panel-body">
@@ -82,6 +121,40 @@
                             </tr>
                             </thead>
                             <tbody class="center hidden-phone">
+                            @php
+                            $i = 1 ;
+                            @endphp
+                            @foreach($result as $re)
+                                <tr>
+
+                                    <td>{{$i++}}</td>
+                                    <td>
+                                        {{$re->code_inventaire}}
+                                    </td>
+                                    <td>
+                                        {{$re->nom}} {{$re->prenom}}
+                                    </td>
+                                    <td>
+                                        {{$re->montant_a_rembourser}}
+                                    </td>
+                                    <td>
+                                        @if($re->montant_rembourser == null)
+                                             0 FCFA
+
+                                        @endif
+
+
+                                    </td>
+                                    <td>
+                                        {{$re->montant_a_rembourser - $re->montant_rembourser}}
+                                    </td>
+                                    <td>
+                                        <a type="button" class="btn btn-lg" data-toggle="modal" data-target="#inventaireRegulateModal"> Modifier</a>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+
 
 
                             </tbody>
@@ -92,76 +165,21 @@
 
             </div>
 
-            <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id="fermerRegulated" ><i class="fa "></i>Valider</a>
+            <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-danger"
+               onclick="history.back()"
+               ><i class="fa fa-step-backward"></i> &nbsp; Retour</a>
         </section>
     </div>
-
 @endsection
 @section('js')
-
     <script src="/octopus/assets/vendor/jquery/jquery.js"></script>
     <script src="/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
     <script src="/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-
 <script type="application/javascript">
-    // load the data into the table.
-    var regulatedTable ;
-    // Load data into non regulated inventaire.
-    $(function () {
 
-        inventaireTableRegularisation =   $('#inventaireTableRegularisation').DataTable({
-            processing: true,
-            serverSide: true,
-            'paging': true,
-            'lengthChange': true,
-            'searching': true,
-            'ordering': true,
-            'info': true,
-            'autoWidth': true,
-            language: {
-                "sProcessing": "Traitement en cours...",
-                "sSearch": "Rechercher&nbsp;:",
-                "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
-                "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-                "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-                "sInfoPostFix": "",
-                "sLoadingRecords": "Chargement en cours...",
-                "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
-                "oPaginate": {
-                    "sFirst": "Premier",
-                    "sPrevious": "Pr&eacute;c&eacute;dent",
-                    "sNext": "Suivant",
-                    "sLast": "Dernier"
-                },
-                "oAria": {
-                    "sSortAscending": ": activer pour trier la colonne par ordre croissant",
-                    "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
-                },
-                "select": {
-                    "rows": {
-                        _: "%d lignes séléctionnées",
-                        0: "Aucune ligne séléctionnée",
-                        1: "1 ligne séléctionnée"
-                    }
-                }
-            },
-            "order": [[ 0, "desc" ]],
-            ajax: '/inventaire_non_regulated',
-            "columns": [
-
-                {data: "numero",name : 'numero'},
-                {data: "date_inventaire",name : 'date'},
-                {data: "nom",name : 'nom'},
-                {data: "action", name : 'action' , orderable: false, searchable: false}
-            ]
-
-        });
-    });
 
 
 </script>

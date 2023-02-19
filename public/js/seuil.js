@@ -12,11 +12,13 @@ function sweetToast(type,text){
 var seuilTable;
 
 $(function () {
-    getSeuil();
+    // Enlever la fonction alerte dans la boutique principale.
+    //getSeuil();
 });
 
 function getSeuil()
 {
+
     $.ajax({
         url: '/allseuil',
         type: "get",

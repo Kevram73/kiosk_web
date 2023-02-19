@@ -97,6 +97,7 @@ $('#modele').on('change',function ( ) {
         url: '/recupefournisseurmodele-' + $('#modele').val() + '-' +  fourn,
         type: "get",
         success: function (data) {
+            console.log(data);
             // if (data == ""){
             //     $('#fournisseur').empty();
             //     $('#prix').val(null);
@@ -120,6 +121,7 @@ $('#modele').on('change',function ( ) {
         },
         error: function (data) {
             console.log("erreur")
+            console.log(data);
         },
     })
 })
@@ -178,6 +180,7 @@ $(function( ) {
                 { data: 'modele' },
                 { data: 'quantite' },
                 { data: 'prix' },
+                {data:'credit'},
                 { data: 'total' },
             ]
 
@@ -194,6 +197,8 @@ $(function( ) {
 
 $('#ajout').on('click',function () {
     let message;
+    //sweetToast('warning',"Vérifier si ce n'est pas à crédit");
+
     if($('#categorie').val()  ==='' ||  $('#modele').val() ==null   ||  $('#quanite').val() <= 0 || $('#quanite').val()  ==''  ||  $('#prix').val() <= 0 || $('#prix').val()  =='' ){
     message='Veuillez remplir tous les champs svp...'
         sweetToast('warning',message);
@@ -210,6 +215,8 @@ $('#ajout').on('click',function () {
             }
         }
 
+        console.log($("#credit").val()) ;
+
         if ( trouveEmporte === false) {
             var d=document.getElementById('produit')
             var b=document.getElementById('modele')
@@ -221,12 +228,15 @@ $('#ajout').on('click',function () {
                 "modele":modele,
                 "prix": $('#prix').val(),
                 "quantite": $('#quantite').val(),
+                "credit":$("#credit").prop("checked") ? "OUI" :"NON",
                 "total": $('#prix').val() * $('#quantite').val(),
+                //"à crédit":$("#credit").val();
 
             }).draw()
 
             $('#prix').val(null);
             $('#quantite').val(null);
+            $("#credit").val(null);
 
         }else{
             $table2.data()[position].quantite = parseInt( $table2.data()[position].quantite) + parseInt( $('#quantite').val()) ;
@@ -302,11 +312,13 @@ $('#valider').on('click',function (e) {
                             contentType: false,
                             processData: false,
                             success : function(data) {
+                                console.log(data);
                                 Swal.fire('Effectué',
                                 'Commande bien enregistrée');
                                 window.location='/provisions'
                             },
                             error : function(data){
+                                console.log(data);
                                 let message='Erreur ';
                                 sweetToast('warning',message);
                             }
@@ -314,7 +326,7 @@ $('#valider').on('click',function (e) {
                     }
                 }
             }
-            
+
         }
     });
 })

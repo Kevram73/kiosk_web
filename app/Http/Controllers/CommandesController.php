@@ -51,7 +51,7 @@ class CommandesController extends Controller
             ->get();
         return $provision;
     }
-    
+
     public function commande($id)
     {
         $commande = DB::table('commandes')
@@ -166,7 +166,9 @@ class CommandesController extends Controller
             $credit[$i] = $total;
         }
         $cre=count($clients);
-        return view('newcommande',compact('categorie', 'produits', 'modeles', 'fournisseurs', 'mod','modele2','clients','credit','cre'));
+        return view('newcommande',
+            compact('categorie',
+                'produits', 'modeles', 'fournisseurs', 'mod','modele2','clients','credit','cre'));
     }
   public function create2()
     {
@@ -406,7 +408,8 @@ class CommandesController extends Controller
 
             $commande = [];
 
-            if($commandeExist->fournisseur_id !== null) {
+            if($commandeExist->fournisseur_id !== null)
+            {
                 $commande =  DB::table('commande_modeles')
                     ->join('commandes', function ($join) {
                         $join->on('commandes.id', '=', 'commande_modeles.commande_id');
