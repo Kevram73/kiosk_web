@@ -31,10 +31,10 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-8">
-                                {{--
+                                
                                 <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btncharge"><i class="fa fa-plus"></i> Faire une depense</a>
-                                <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btndepot"><i class="fa fa-arrow-left" aria-hidden="true"></i> Faire un dépôt</a>
-                                --}}
+                              <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btndepot"><i class="fa fa-arrow-left" aria-hidden="true"></i> Faire un dépôt</a>
+                               
                                 <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-success" id="btnhistorique"><i class="fa fa-file-text"></i>Historiques</a>
                                 <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id ="btnjournal"><i class="fa fa-file-text"></i>Fermer le journal</a>
 
@@ -147,7 +147,7 @@
                 var number = numeral(prices[i].innerText);
 
                 var string = number.format(format);
-                prices[i].innerText = string+" "+surfix;
+                prices[i].innerText = string+" "+surfix; 
             }
 
         }

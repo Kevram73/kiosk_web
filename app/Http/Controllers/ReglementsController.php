@@ -87,14 +87,15 @@ class ReglementsController extends Controller
 
         $reglements=Reglement::join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
-            })
+            }) 
             ->join('ventes', function ($join) {
                 $join->on('reglements.vente_id', '=', 'ventes.id');
             })
             ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
+            ->selectRaw('clients.id, ventes.id as venteId,reglements.created_at, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
+            
+            ->groupBy('clients.id', 'clients.nom','reglements.created_at', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
             ->orderBy('reglements.created_at', 'desc')
-            ->selectRaw('clients.id, ventes.id as venteId, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
-            ->groupBy('clients.id', 'clients.nom', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
             ->get();
 
         // $ventes = vente::with('boutique')->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)
@@ -117,7 +118,12 @@ class ReglementsController extends Controller
     {
         $fournisseur=DB::table('fournisseurs')
             ->get();
-        $banques = Banque::all();
+        $banques = DB::table('banques')
+        ->join('agence_banques','agence_banques.banque_id','=','banques.id')
+        ->join('compte_bancaires','compte_bancaires.agence_id','=','agence_banques.id')
+        ->select('compte_bancaires.id as id','compte_bancaires.numero as numero','agence_banques.nom as agence','banques.nom as banques')
+        ->get();
+       // dd($banques);
         $reglements=ReglementAchat::join('fournisseurs', function ($join) {
                 $join->on('reglement_achats.fournisseur_id', '=', 'fournisseurs.id');
             })
@@ -325,7 +331,7 @@ class ReglementsController extends Controller
             -> select ('ventes.id as venteId', 'reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();
-
+        
         return response() ->json($total);
     }
 
@@ -432,8 +438,16 @@ class ReglementsController extends Controller
         if ($request->input('reste')>0)
         {
             $reglement->montant_restant = $request->input('restant');
-            $reglement->save();
+            $reglement->save(); 
+            // Récupération de l'utilisateur à mettre à jour
+            $client = client::find($reglement->client_id);
+            // Mise à jour des informations de l'utilisateur
+            $client->solde = $reglement->montant_restant;
+            // Sauvegarde des modifications
+            $client->save();
             return $request ->input();
+
+          
         }
         else{
             $reglement->montant_restant =0;
@@ -458,6 +472,14 @@ class ReglementsController extends Controller
             $compte->save();
             $reglement->montant_restant = $request->input('restant');
             $reglement->save();
+              // Récupération de l'utilisateur à mettre à jour
+              $fournisseur = Fournisseur::find($reglement->fournisseur_id);
+
+              // Mise à jour des informations de l'utilisateur
+              $fournisseur->solde = $reglement->montant_restant;
+  
+              // Sauvegarde des modifications
+              $fournisseur->save();
 
             return $request ->input();
         }

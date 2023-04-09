@@ -62,6 +62,16 @@
 
                                 </div>
                                 <div id="debiteurs" class="tab-pane ">
+                                    <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="form-group">
+                                            <h3 class="m-0">Total: <strong id="montantTotal" class="prix">0</strong></h3>
+                                            <h3> Clients Débiteurs  <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-primary" id="btnclient"><i class="fa fa-plus"></i></a>
+                                </h3>
+                                        </div>
+                                    </div>
+                                    </div>
+                                <br>
                                     <table class="table table-bordered table-striped mb-none" id="debiteurTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                         <thead>
                                         <tr>
@@ -74,13 +84,20 @@
                                         <tbody class="center hidden-phone">
 
 
-                                        </tbody>
+                                        </tbody> 
                                     </table>
-
+                                  
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade " id="ajout_reglement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        
+
+                    </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="modal fade " id="ajout_reglement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
 
@@ -136,22 +153,158 @@
                                 </div>
                             </div>
                         </div>
+    <div class="modal fade " id="ajout_client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
 
-                    </div>
+                <div class="modal-header " style="background-color: #0b93d5;border-top-left-radius: inherit;border-top-right-radius: inherit">
+                    <h4 class="modal-title-user" id="myModalLabel" style="color: white"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form" action="" method="POST" class="	form-validate form-horizontal mb-lg" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                        <div class="form-group mt-lg">
+                            <label class="col-sm-3 control-label">Nom/Raison sociale</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="nom"  id="nom" class="form-control" placeholder=" ATO Kodjo, BTD Construction" required/>
+                                <input type="hidden" name="idclient" id="idclient"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="aaaa@aa.com " />
+                            </div>
+                        </div>
+                        <div class="form-group mt-lg">
+                            <label class="col-sm-3 control-label">Contact</label>
+                            <div class="col-sm-9">
+                                <input type="integer" name="contact" id="contact" class="form-control" placeholder="92658797"/>
+                            </div>
+                        </div>
+                        <div class="form-group mt-lg">
+                            <label class="col-sm-3 control-label">Adresse</label>
+                            <div class="col-sm-9">
+                                <input type="integer" name="adresse" id="adresse" class="form-control" placeholder="Adidogome, Lome"/>
+                            </div>
+                        </div>
+                        <div class="form-group mt-lg">
+                            <label class="col-sm-3 control-label">Dette</label>
+                            <div class="col-sm-9">
+                                <input type="integer" name="solde" id="solde" class="form-control" placeholder="Adidogome, Lome"/>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>
+                                <button type="button" class="mb-xs mt-xs mr-xs btn btn-default  " data-dismiss="modal"><i class="fa fa-times"></i> Annuler</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </section>
+        </div>
     </div>
-
 @endsection
 @section('js')
-
+    <script src="js/addReglementClient.js"></script>
     <script src="octopus/assets/vendor/jquery/jquery.js"></script>
     <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="js/reglement_list.js"></script>
+    
+    <script >
+    console.log('hummmmmmmmmmmmmmmmm');
+ 
+
+    console.log('AZER');
+
+$('#btnreglement').on('click', function(){
+
+    $('.modal-title-user').text('ENREGISTREMENT DU REGLEMENT');
+    $('#idreglement').val(null);
+    $('#client').val(null);
+    $('#btnadd').text('Valider');
+    $('#btnadd').removeClass('btn-warning');
+    $('#btnadd').addClass('btn-primary');
+    $('#total').val(null);
+    $('#donne').val(null);
+    $('#restant').val(null);
+    $('#ajout_reglement').modal('show');
+    });
+//post des données
+$('#ajout_reglement  form').on('submit', function (e) {
+
+    let url,message;
+    if (!$('#idreglement').val()){
+        url = '/storereglement'
+        message = 'reglement enregistré'
+
+
+    }
+    else{
+        url = '/updatereglement'
+        message = 'reglement modifié'
+
+    }
+    e.preventDefault();
+    if (e.isDefaultPrevented()){
+        $.ajax({
+            url : url ,
+            type : "post",
+            // data : $('#modal-form-user').serialize(),
+            data: new FormData($("#ajout_reglement form")[0]),
+            //data: new FormData($("#modal-form-user")[0]),
+            contentType: false,
+            processData: false,
+            success : function(data) {
+
+                $('#ajout_reglement').modal('hide');
+                sweetToast('success',message);
+
+            //    reglementTable.ajax.reload();
+               window.location.reload();
+            },
+            error : function(data){
+              alert('erreur')
+            }
+        });
+    }
+});
+//post des données
+$('#ajout_client  form').on('submit', function (e) {
+
+    let url;
+    if (!$('#idclient').val()){
+        url = '/ajoutclient'
+    }
+
+    e.preventDefault();
+    if (e.isDefaultPrevented()){
+        $.ajax({
+            url : url ,
+            type : "post",
+            // data : $('#modal-form-user').serialize(),
+            data: new FormData($("#ajout_client form")[0]),
+            //data: new FormData($("#modal-form-user")[0]),
+            contentType: false,
+            processData: false,
+            success : function(data) {
+
+                $('#ajout_client').modal('hide');
+                window.location='/reglementlist'
+
+            },
+            error : function(data){
+                alert('erreur')
+            }
+        });
+    }
+});</script>
+    
     <script>
 
         function setNumeralHtml(element, format, surfix="")

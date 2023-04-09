@@ -228,11 +228,42 @@
                                         </ul>
                                     </li>
                                     <li class="nav-parent">
-                                        <a href="/banques">
+                                        <a>
                                             <i class="fa  fa-bank" aria-hidden="true"></i>
                                             <span>BANQUES</span>
                                         </a>
+
+                                          <ul class="nav nav-children">
+                                            <li>
+                                                <a href="{{route('banques')}}">
+                                                    BANQUES
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{route('agences')}}">
+                                                    AGENCES
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{route('comptes')}}">
+                                                    COMPTES
+                                                </a>
+                                            </li>
+                                            <li class="nav-parent">
+                                                <a href="/allversements">
+                                                    <i class="fa  fa-bank" aria-hidden="true"></i>
+                                                    <span>VERSEMENT</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
+                                    <li class="nav-parent">
+                                        <a href="/situationsBoutiques">
+                                            <i class="fa  fa-bank" aria-hidden="true"></i>
+                                            <span>SITUATION BOUTIQUES</span>
+                                        </a>
+                                    </li>
+                                   
                                     <li class="nav-parent">
                                         <a href="/caisses">
                                             <i class="fa  fa-money" aria-hidden="true"></i>

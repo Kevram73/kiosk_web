@@ -6,9 +6,6 @@
     <!-- Modal to add banques -->
     @include('banque.modals.modal_add_banque')
     <!-- Modal to add agences banques -->
-    @include('banque.modals.modal_add_agence')
-    <!-- Modal to add compte bancaire -->
-    @include('banque.modals.modal_add_compte_bancaire')
     <div class="inner-wrapper">
         <section role="main" class="content-body">
             <header class="page-header">
@@ -31,10 +28,7 @@
                            id="btnaddBanq" onclick="addBanque()"
                            data-bs-toggle="modal"
                            data-bs-target="#idAddBanqueModal">Ajouter Banques</a>
-                        <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-outline-light" id ="btnAddAgence"
-                           onclick="addAgenceBanque()">Ajouter agences banques</a>
-                        <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-outline-light"
-                           id ="btnAddCompte" onclick="addCompteBancaire()">Ajouter compte bancaire</a>
+                       
                         @include('banque.bank_list_table')
                     </div>
                 </section>

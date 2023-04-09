@@ -6,7 +6,7 @@ $('#choix').on('change',function ( ) {
         $('#jr').hide();
         $('#depense').show();
         $('#depenses').val(null);
-        $('#moi').show();
+        $('#moi').show(); 
                 $('#mois').empty()
                     $('#mois').append('<option value=""></option>',
                         '<option value="1">Janvier</option>',
@@ -323,4 +323,177 @@ function show(id){
 
 
 
+function setNumeralHtml(element, format, surfix="", type="html")
+{
+    var prices = $("."+element);
+
+    for(var i=0; i<prices.length; i++)
+    {
+        if(type=="html")
+        {
+            var number = numeral(prices[i].innerText);
+
+            var string = number.format(format);
+            prices[i].innerText = string+" "+surfix;
+        }else if(type=="value")
+        {
+            var number = numeral(prices[i].value);
+
+            var string = number.format(format);
+            prices[i].value = string+" "+surfix;
+        }
+
+    }
+  
+}
+
+$("#voir").on('click', function(){
+    getSum();
+});
+
+ 
+$("#fournisseur").select2( {
+    placeholder: "Choisir un fournisseur",
+    allowClear: true
+} );
+    $("#product").select2( {
+        placeholder: "Choisir un produit",
+        allowClear: true
+    } ); 
+
+
+$("#product").on('change', function(){
+    getSum();
+});
+
+
+
+$("#fournisseur").on('change', function(){
+    getSum();
+});
+
+
+
+
+
+var achatFourniTable;
+
+(function(){
+    getTable ();
+});
+
+function getTable () {
+    achatFourniTable =   $('#achatFourniTable').DataTable({
+        processing: true,
+        serverSide: true,
+        'paging': true,
+        'lengthChange': true,
+        'searching': true,
+        'ordering': true,
+        'info': true,
+        'autoWidth': true,
+        language: {
+            "sProcessing": "Traitement en cours...",
+            "sSearch": "Rechercher&nbsp;:",
+            "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
+            "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+            "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+            "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+            "sInfoPostFix": "",
+            "sLoadingRecords": "Chargement en cours...",
+            "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+            "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+            "oPaginate": {
+                "sFirst": "Premier",
+                "sPrevious": "Pr&eacute;c&eacute;dent",
+                "sNext": "Suivant",
+                "sLast": "Dernier"
+            },
+            "oAria": {
+                "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+                "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+            },
+            "select": {
+                "rows": {
+                    _: "%d lignes séléctionnées",
+                    0: "Aucune ligne séléctionnée",
+                    1: "1 ligne séléctionnée"
+                }
+            }
+        },
+        ajax:{
+            url: '/allfournihistorique',
+            data: {
+                'produit':$("#product").val(),
+                'fournisseur': $("#fournisseur").val(),
+            }
+        },
+        "columns": [
+            {data: "date",name : 'date'},
+            {data: "nom",name : 'nom'},
+            {data: "libelle",name : 'libelle'},
+            {data: "quantite",name : 'quantite'},
+            {data: "price_unit",name : 'price_unit'},
+            {data: "montant",name : 'montant'},
+        ]
+    });
+
+
+}
+
+function getSum()
+{
+    var produit = $("#product").val();
+    
+console.log(produit);
+/*     console.log(produit);return;
+ */    var fournisseur = $("#fournisseur").val();
+    $.ajax({
+        url : '/allfournihistoriquesum',
+        type : "get",
+        data: {
+            'produit':produit,
+            'fournisseur': fournisseur,
+        },
+        success : function(data) {
+            $("#qteTotal").val(data.quantite);
+            $("#montantTotal").val(data.montant);
+            setNumeralHtml("prix", "0,0", "", 'value');
+            $('#achatFourniTable').DataTable().destroy()
+            getTable ();
+        },
+        error : function(data){
+            alert('erreur')
+        }
+    });
+}
+
+$(function () {
+    setDataTable()
+});
+
+function setDataTable(){
+    $('#achatFourniTable').DataTable().destroy()
+    var produit = $("#product").val();
+    
+    
+    $.ajax({
+        url : '/allfournihistorique',
+        type : "get",
+        data: {
+            'produit':produit,
+            'fournisseur': 0,
+            
+        },
+        success : function(data) {
+            console.log(data)
+            $('#achatFourniTable').DataTable({
+                data: data
+            });
+        },
+        error : function(data){
+            alert('erreur')
+        }
+    });console.log(produit);
+}
 

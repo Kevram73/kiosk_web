@@ -10,7 +10,7 @@
                 <h2>Commande non livree</h2>
             </header>
 
-            <div class="row">
+            <div class="row"> 
                 <section class="panel">
                     <header class="panel-heading">
                         <div class="panel-actions">
@@ -127,7 +127,7 @@
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                         <input class="form-control d-inline mr-5" type="checkbox" name="credit" id="credit">
                                     </div>
-                                </div>
+                                </div> 
                             @endif
                         </form>
                     </div>

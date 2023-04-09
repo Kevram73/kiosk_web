@@ -121,8 +121,6 @@ class InventairesController extends Controller
         $inventaire_id = $request->input('inv_id');
         $debtor = $request->input('debtor_id');
         $montant = $request->input('montant') ;
-
-
         error_log("inventaire id ".$inventaire_id);
         error_log("debtor ".$debtor);
         error_log("montant ".$montant);
@@ -209,6 +207,7 @@ class InventairesController extends Controller
             'inventory_debtor_balances.montant as montant_a_rembourser',
             'inventory_debtor_balances.montant_rembourser as montant_rembourser')
         ->get();
+       // dd($result);
     error_log($result);
     error_log("le id de inv: ".$result[0]->id);
     $data = Inventaires::find($id) ;
@@ -293,13 +292,13 @@ class InventairesController extends Controller
             return [];
     }
 
-    /**
+    /*
     public function rembourse_inventaire(Request $request,$id)
     {
-    $client_inventaire = DB::table('inventaire')
+    $client_inventaire = DB::table('inventaire');
     }
 
-     **/
+     */
 
     public function get_client_amount_by_inventory()
     {
@@ -357,9 +356,6 @@ class InventairesController extends Controller
     }
     public function show2($id)
     {
-
-
-
 
         $inventaire = DB::table('inventaires')
         ->join('inventaire_modeles', function ($join) {

@@ -285,7 +285,7 @@
                 }
 
             }
-
+ 
         }
 
         setNumeralHtml("prix", "0,0");

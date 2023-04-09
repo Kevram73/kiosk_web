@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Facades\Storage;
+
 
 class ModelesController extends Controller
 {
@@ -192,7 +194,6 @@ class ModelesController extends Controller
         ->join('ventes', function ($join) {
             $join->on('ventes.id', '=', 'preventes.vente_id');
         });
-
         if($request->client > 0)
         {
             $modele->join('clients', function ($join) {

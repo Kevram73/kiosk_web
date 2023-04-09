@@ -202,8 +202,12 @@
 
                         </table>
                         <a class=" btn btn-lg mb-xs mt-xs mr-xs btn btn-danger"  href="{{route('inventaire')}}"><i class="fa  fa-times"></i>Fermé</a>
-                        <a class=" btn btn-lg mb-xs mt-xs mr-xs btn btn-success"
+                        @if ($montant_total_maquant == $montant_total_debiteur_inventair)
+                            <a class=" btn btn-lg mb-xs mt-xs mr-xs btn btn-success"
                            href="/detailinventaireprint-{{ $inventaire[0]->inventaire_id }}"><i class="fa  fa-print"></i>{{ '  ' }}Validé</a>
+                    
+                        @endif()
+                        
                     </div>
 
                 </section>

@@ -34,14 +34,25 @@ class BanqueController extends Controller
     // liste banques.
     public function list_banques(){
     $banks = Banque::all() ;
-    $agences = AgenceBanque::all();
-    $comptes_bancaires = CompteBancaire::all();
     error_log($banks);
-    error_log($comptes_bancaires);
-    error_log($agences);
     return view('banque.list_bank',
         compact('banks')) ;
     }
+    public function listagences(){
+        $agences = AgenceBanque::all();
+     
+        error_log($agences);
+        return view('banque.list_agences',
+            compact('agences')) ;
+        }
+        public function list_comptes(){
+            $comptes_bancaires = CompteBancaire::all();
+            
+            error_log($comptes_bancaires);
+            
+            return view('banque.list_comptes',
+                compact('comptes_bancaires')) ;
+            }
 
 
    // public function create_agence-banque

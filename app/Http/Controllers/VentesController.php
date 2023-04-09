@@ -1198,9 +1198,26 @@ class VentesController extends Controller
             $vente->montant_ht = $montant_ht;
             $vente->montant_tva = $montant_tva;
             $vente->totaux= $montant_ht + $montant_tva;
+
+             // Récupération de l'utilisateur à mettre à jour
+             $client = Client::find($vente->client_id);
+
+             // Mise à jour des informations de l'utilisateur
+             $client->solde = $vente->totaux + $client->solde;
+ 
+             // Sauvegarde des modifications
+             $client->save();
         }else{
             $vente->with_tva = false;
             $vente->totaux = $total;
+             // Récupération de l'utilisateur à mettre à jour
+             $client = Client::find($vente->client_id);
+
+             // Mise à jour des informations de l'utilisateur
+             $client->solde = $vente->totaux + $client->solde;
+ 
+             // Sauvegarde des modifications
+             $client->save();
         }
 
         $vente->update();
@@ -1217,6 +1234,7 @@ class VentesController extends Controller
         $historique->cible = "Ventes";
         $historique->user_id =Auth::user()->id;
         $historique->save();
+        
         $total = DB::table('ventes')
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');

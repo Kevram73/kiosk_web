@@ -184,7 +184,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <a class="btn btn-danger" id="sup" ><i class="fa fa-trash-o" ></i>Supprimer</a>
-                            </div>
+                            </div> 
                             
                             <div class="col-md-6 text-right">
                                 <h3 class="m-0">Total: <strong id="montant_total" class="prix">0</strong></h3>

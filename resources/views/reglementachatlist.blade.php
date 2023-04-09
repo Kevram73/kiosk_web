@@ -11,7 +11,7 @@
 
             <div class="row">
                 <section class="panel">
-                    <header class="panel-heading">
+                    <header class="panel-heading"> 
                         <div class="panel-actions">
                             <a href="#" class="fa fa-caret-down"></a>
                         </div>

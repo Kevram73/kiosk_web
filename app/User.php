@@ -53,7 +53,14 @@ class User extends Authenticatable
     }
     public function role()
     {
-        return $this->hasOne('App\Role');
+        try {
+            $roleId = \App\Models\ModelHasRole::where("model_type", "App\User")
+                ->where("model_id", "App\User")->first()->role_id;
+
+            return $this->hasOne('App\Role');
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     public function recettes(){

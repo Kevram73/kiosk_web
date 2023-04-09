@@ -3,9 +3,9 @@
     <thead>
     <tr>
         <th class="center hidden-phone">Nom banque</th>
-        <th class="center hidden-phone">Nom agence</th>
-        <th class="center hidden-phone">Compte</th>
-        <th class="center hidden-phone">Type de compte</th>
+        <th class="center hidden-phone">Nom </th>
+        <th class="center hidden-phone">ety</th>
+        <th class="center hidden-phone">Type d</th>
 
     </tr>
     </thead>

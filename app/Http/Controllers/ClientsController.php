@@ -72,6 +72,7 @@ class ClientsController extends Controller
         $client->email = $request->input('email');
         $client->contact = $request->input('contact');
         $client->adresse = $request->input('adresse');
+        $client->solde= $request->input('solde');
         $client->boutique_id = Auth::user()->boutique->id;
         $client->save();
         $historique = new Historique();

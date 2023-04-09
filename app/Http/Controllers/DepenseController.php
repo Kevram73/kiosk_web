@@ -31,6 +31,12 @@ class DepenseController extends Controller
         $sold->save();
         }
 
+       /*  $totauxVentes = DB::table('ventes')
+        ->where('boutique_id', Auth::user()->boutique->id)->first()
+        ->selectRaw('SUM(ventes.totaux)' )
+        ->get(); */
+ 
+
         $historique = new Historique();
         $historique->actions = "liste";
         $historique->cible = "Depense";
@@ -110,22 +116,20 @@ class DepenseController extends Controller
         $charge->motif = $request->motif;
 
         $charge->journal_id = $id;
-        $charge->user_id = Auth::user()->id;
-        $charge->sold_id = $request->sold_id;
+        $charge->user_id = Auth::user()->id;/* 
+        $charge->sold_id = $request->sold_id; */
         $charge->boutique_id =Auth::user()->boutique->id;
 
         $charge->save();
 
-        $sold = Sold::find($request->sold_id);
+       /*  $sold = Sold::find($request->sold_id);
         if($sold->montant <= $request->montant)
         {
             DB::rollback();
             return null;
         }
-
-
         $sold->montant -= $request->montant;
-        $sold->update();
+        $sold->update(); */
 
         $historique = new Historique();
         $historique->actions = "Creer";
@@ -135,7 +139,7 @@ class DepenseController extends Controller
 
         DB::commit();
 
-        return $sold;
+        return redirect("/depenses")->with('success', 'Dépenses effectuer avec success');
     }
 
     public function store_depot(Request $request)

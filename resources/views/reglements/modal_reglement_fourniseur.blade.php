@@ -51,7 +51,7 @@
                                     <option value=""></option>
                                     @foreach($banques as $banque_item)
                                         <option value="{{$banque_item->id}}">
-                                            {{$banque_item->nom}}
+                                            {{$banque_item->banques}} - {{$banque_item->agence}} -  {{$banque_item->numero}}
                                         </option>
                                     @endforeach
                                 </optgroup>
