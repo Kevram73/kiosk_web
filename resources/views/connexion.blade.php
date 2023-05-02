@@ -1,4 +1,4 @@
-public/<!doctype html>
+<!doctype html>
 <html class="fixed">
 <head>
 
@@ -38,7 +38,7 @@ public/<!doctype html>
 <section class="body-sign">
     <div class="center-sign">
         <a  class="logo pull-left">
-            <img src="image/IMG-2014.PNG" height="54" alt="BOUTIQUE+" />
+            <img src="public/image/IMG-2014.PNG" height="54" alt="BOUTIQUE+" />
         </a>
 
         <div class="panel panel-sign">
