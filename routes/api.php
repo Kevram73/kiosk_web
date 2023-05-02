@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ClientsController;
 use App\Http\Controllers\Api\ExpenseController;
+use App\Http\Controllers\Api\JournalController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\ApiAuthController;
@@ -37,6 +38,8 @@ use Illuminate\Support\Facades\Hash;
 Route::get('/test1/', function (Request $request) {
     return UserResource::collection(User::all());
 });
+
+Route::get('/sales/verify-journal', [JournalController::class, 'verify']);
 
 Route::get('/users/', [UserController::class, 'index']);
 Route::post('/users/validate/', [ApiAuthController::class, 'get_user']);

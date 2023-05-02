@@ -16,13 +16,14 @@ use App\Boutique;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','api_token',
+        'name', 'email', 'password', 'api_token',
     ];
 
     /**
@@ -44,26 +45,30 @@ class User extends Authenticatable
     ];
 
 
-
-    public function caisse(){
+    public function caisse()
+    {
         return $this->hasOne('App\Caisse');
     }
-    public function boutique(){
+
+    public function boutique()
+    {
         return $this->belongsTo('App\Boutique');
     }
+
     public function role()
     {
         try {
             $roleId = \App\Models\ModelHasRole::where("model_type", "App\User")
-                ->where("model_id", "App\User")->first()->role_id;
+                ->where("model_id", $this->id)->first()->role_id;
 
-            return $this->hasOne('App\Role');
+            return Role::whereId($roleId)->first();
         } catch (\Throwable $e) {
             return null;
         }
     }
 
-    public function recettes(){
+    public function recettes()
+    {
         return $this->hasMany('App\Reccete', 'user_id');
     }
 }
