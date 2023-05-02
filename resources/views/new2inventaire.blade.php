@@ -1,7 +1,7 @@
 @extends('layout')
 @section('css')
-<link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/>
-<script type="text/javascript" src="/DataTables/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/public/DataTables/datatables.min.css"/>
+<script type="text/javascript" src="/public/DataTables/datatables.min.js"></script>
 @endsection
 @section('contenu')
            <div class="inner-wrapper">
