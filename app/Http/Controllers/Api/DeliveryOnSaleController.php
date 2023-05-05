@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Historique;
 use App\Http\Controllers\Controller;
-use App\LivraisonV;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DeliveryOnSaleController extends Controller

@@ -7,10 +7,10 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\DeliveryOnSaleController;
+use App\Http\Controllers\Api\TestController;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,35 +23,31 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
+// Login Request
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::post('/password/update', [ApiAuthController::class, 'updatePassword']);
 
-/*Route::get('/test/', function (Request $request) {
-    $users = User::all();
+// Test request
+Route::get('/test', [TestController::class, 'index']);
 
-    foreach ($users as $user) {
-        $user->update(['password' => Hash::make('123456')]);
-        $user->save();
-    }
+// Get list of users
+Route::get('/users', [UserController::class, 'index']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::get('/users/{id}', [UserController::class, 'show']);
 
-    return $users;
-});*/
-
-Route::get('/test1/', function (Request $request) {
-    return UserResource::collection(User::all());
-});
+// Get list of clients
+Route::get('/clients', [ClientsController::class, 'index']);
+Route::get('/clients/{id}', [ClientsController::class, 'show']);
 
 Route::get('/sales/verify-journal', [JournalController::class, 'verify']);
 
-Route::get('/users/', [UserController::class, 'index']);
-Route::post('/users/validate/', [ApiAuthController::class, 'get_user']);
-Route::get('/users/roles/', [ApiAuthController::class, 'get_role_list']);
 // Return the list of sales.
-Route::get('/sales/', [SalesController::class, 'index']);
+Route::get('/sales', [SalesController::class, 'index']);
 // Return the sale state and the list of products in the sales.
 Route::get('/sales/list/', [SalesController::class, 'list_sales_with_products']);
 //Create sale
-Route::post('/sales/', [SalesController::class, 'create']);
-// Return the list of all clients
-Route::get('/clients/', [ClientsController::class, 'list']);
+Route::post('/sales', [SalesController::class, 'create']);
+
 // Return the list of all product with their models.
 Route::get('/products/', [SalesController::class, 'list_products']);
 // Return a list of product categories

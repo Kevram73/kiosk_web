@@ -11,9 +11,10 @@ use Spatie\Permission\Traits\HasRoles;
 use App\modelHasRole;
 use App\Role;
 use App\Boutique;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, HasRoles;
 
@@ -70,5 +71,10 @@ class User extends Authenticatable
     public function recettes()
     {
         return $this->hasMany('App\Reccete', 'user_id');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
     }
 }
