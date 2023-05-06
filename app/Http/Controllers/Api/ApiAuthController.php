@@ -17,58 +17,45 @@ class ApiAuthController extends BaseController
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
+    // Login function
     public function login(Request $request)
     {
-        // Validate user credentials
         $credentials = $request->only(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        // Create API token for authenticated user
         $token = $request->user()->createToken('API Token')->plainTextToken;
-
-        // Return token to the user
         return response()->json(['token' => $token, 'user' => $request->user()]);
     }
 
 
-    public function updatePassword(Request $request, $user_id)
+    // Logout function
+    public function logout(Request $request)
     {
-        $rules = [
-            'old_password' => 'required',
-            'new_password' => 'required',
-            'confirm_password' => 'required|same:new_password',
-        ];
-        $messages = array(
-            'old_password.required' => 'Mot de passe actuel est obligatoire.',
-            'new_password.required' => 'Nouveau mot de passe est obligatoire.',
-            'confirm_password.required' => 'Confirmation mot de passe est obligatoire.',
-            'confirm_password.same' => 'Confirmation mot de passe et le nouveau mot de passe doivent être identiques',
-        );
+        $user = $request->user();
+        $user->tokens()->delete();
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        return response()->json(['message' => 'Logout successful']);
+    }
 
-        // Check the validation becomes fails or not
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        } else {
 
-            $user = User::findOrFail($user_id); //Get user specified by id
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed',
+        ]);
 
-            if ((Hash::check(request('old_password'), Auth::user()->password)) == false) {
+        $user = Auth::user();
 
-                return $this->sendError('Votre mot de passe actuel est incorrect! Veuillez vérifier svp!');
-            } else if ((Hash::check(request('new_password'), Auth::user()->password)) == true) {
-
-                return $this->sendError("Veuillez entrer un mot de passe qui n\'est pas similaire à l\'actuel.");
-            } else {
-
-                $user->password = $request->input('new_password');
-                $user->save();
-
-                return $this->sendResponse($user, 'Mot de passe mis à jour avec succès.');
-            }
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['error' => 'The current password is incorrect.'], 422);
         }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['message' => 'Password changed successfully.']);
     }
 }

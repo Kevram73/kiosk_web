@@ -25,7 +25,8 @@ use Illuminate\Http\Request;
 
 // Login Request
 Route::post('/login', [ApiAuthController::class, 'login']);
-Route::post('/password/update', [ApiAuthController::class, 'updatePassword']);
+Route::post('/logout', [ApiAuthController::class, 'logout']);
+Route::post('/change-password', [ApiAuthController::class, 'changePassword']);
 
 // Test request
 Route::get('/test', [TestController::class, 'index']);
