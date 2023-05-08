@@ -28,7 +28,7 @@
                            id="btnaddBanq" onclick="addBanque()"
                            data-bs-toggle="modal"
                            data-bs-target="#idAddBanqueModal">Ajouter Banques</a>
-                       
+
                         @include('banque.bank_list_table')
                     </div>
                 </section>
@@ -62,7 +62,7 @@
 @section('js')
 
 <script>
-    import Index from "../../../public/octopus/assets/vendor/flot/examples/zooming/index.html";
+    import Index from "../../../octopus/assets/vendor/flot/examples/zooming/index.html";
     export default {
         components: {Index}
     }

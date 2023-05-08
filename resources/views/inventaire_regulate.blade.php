@@ -5,7 +5,7 @@
 <script>
     /**
 
-     import Scala from "../../public/octopus/assets/vendor/codemirror/mode/clike/scala.html";
+     import Scala from "../../octopus/assets/vendor/codemirror/mode/clike/scala.html";
      export default {
         components: {Scala}
     }

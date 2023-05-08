@@ -22,8 +22,8 @@ class SalesController extends Controller
     public function index()
     {
         // get all the sales dones and their authors.
-        $vente = DB::table('ventes')->get() ;
-        return response()->json($vente->toArray());
+        $vente = vente::all() ;
+        return response()->json($vente);
     }
 
     /**
@@ -282,14 +282,14 @@ class SalesController extends Controller
                 'ventes.updated_at as update',
                 'ventes.type_vente as type_vente'
             )
-            
+
             //->groupBy('ventes.id','ventes.numero')
             ->get();
 
 
-        
 
-                
+
+
 
 
         return response()->json($sales->toArray()) ;

@@ -24,7 +24,7 @@
 
                     <div class="panel-body">
 
-                       
+
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-outline-light" id ="btnAddAgence"
                            onclick="addAgenceBanque()">Ajouter agences banques</a>
                         @include('banque.agence_list_table')
@@ -60,7 +60,7 @@
 @section('js')
 
 <script>
-    import Index from "../../../public/octopus/assets/vendor/flot/examples/zooming/index.html";
+    import Index from "../../../octopus/assets/vendor/flot/examples/zooming/index.html";
     export default {
         components: {Index}
     }

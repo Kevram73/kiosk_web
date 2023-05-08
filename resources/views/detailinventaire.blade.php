@@ -205,9 +205,9 @@
                         @if ($montant_total_maquant == $montant_total_debiteur_inventair)
                             <a class=" btn btn-lg mb-xs mt-xs mr-xs btn btn-success"
                            href="/detailinventaireprint-{{ $inventaire[0]->inventaire_id }}"><i class="fa  fa-print"></i>{{ '  ' }}Validé</a>
-                    
+
                         @endif()
-                        
+
                     </div>
 
                 </section>
@@ -220,7 +220,7 @@
 @section('js')
 
 <script>
-    import Select2 from "../../public/octopus/assets/vendor/select2/select2";
+    import Select2 from "../../octopus/assets/vendor/select2/select2";
     export default {
         components: {Select2}
     }
