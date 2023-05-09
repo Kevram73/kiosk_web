@@ -32,10 +32,6 @@ class SalesController extends Controller
      */
     public function create(Request $request)
     {
-        /**
-         *
-   
-         */
 
         $data = $request->input('sale');
         $user_id=$data['user_id'] ;
