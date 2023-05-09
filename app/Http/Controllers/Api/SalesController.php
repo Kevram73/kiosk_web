@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Modele;
 use App\Prevente;
 use App\vente;
-//use http\Env\Response;
 use App\Http\Resources\SaleResource;
 use http\Env\Response;
 use Illuminate\Http\Request;
