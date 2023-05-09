@@ -12,7 +12,7 @@ use App\Http\Resources\SaleResource;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+ 
 class SalesController extends Controller
 {
     /**
