@@ -22,8 +22,6 @@ class SalesController extends Controller
      */
     public function index()
     {
-        // get all the sales dones and their authors.
-        // $vente = SaleResource::collection(vente::all());
         return SaleResource::collection(vente::all());
     }
 
@@ -36,27 +34,7 @@ class SalesController extends Controller
     {
         /**
          *
-        "sale":{
-        "user_id":63,
-        "boutique_id":16,
-        "type_vente":0,
-        "with_tva":0,
-        "tva_value":18,
-        "montant_tva":null,
-        "montant_ht":null,
-        "montant_reduction":0,
-        "products":[
-        {
-        "pruduct_id":10,
-        "model_id": "null",
-        "category_id": null,
-        "qte":null,
-        "etat":null,
-        "prix_total":null
-        }
-        ]
-
-        }
+   
          */
 
         $data = $request->input('sale');
