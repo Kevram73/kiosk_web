@@ -4,7 +4,7 @@
     }
 </style>
 @if(config('sweetalert.local') && !empty(config('sweetalert.cdn')))
-<script src="{{ asset('vendor/sweetalert/sweetalert2.all.js') }}"></script>
+<script src="{{ asset('public/vendor/sweetalert/sweetalert2.all.js') }}"></script>
 <script>
     Swal.fire({
         "title":"Warning!",
@@ -19,7 +19,7 @@
     });
 </script>
 @elseif(config('sweetalert.local'))
-<script src="{{ asset('vendor/sweetalert/sweetalert2.all.js') }}"></script>
+<script src="{{ asset('public/vendor/sweetalert/sweetalert2.all.js') }}"></script>
     @if (Session::has('alert.config'))
 <script>
     Swal.fire({!! Session::pull('alert.config') !!});

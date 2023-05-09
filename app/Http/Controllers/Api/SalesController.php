@@ -8,9 +8,11 @@ use App\Modele;
 use App\Prevente;
 use App\vente;
 //use http\Env\Response;
+use App\Http\Resources\SaleResource;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class SalesController extends Controller
 {
@@ -22,8 +24,8 @@ class SalesController extends Controller
     public function index()
     {
         // get all the sales dones and their authors.
-        $vente = vente::all() ;
-        return response()->json($vente);
+        // $vente = SaleResource::collection(vente::all());
+        return SaleResource::collection(vente::all());
     }
 
     /**
