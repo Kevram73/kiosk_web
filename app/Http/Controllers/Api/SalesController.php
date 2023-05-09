@@ -25,7 +25,6 @@ class SalesController extends Controller
         return SaleResource::collection(vente::all());
     }
 
-    
     /**
      * Create sales.
      *
