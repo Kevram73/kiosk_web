@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class vente extends Model
 {
-    public function  prevente(){
-        return $this->hasMany('App\Prevente');
+    public function preventes(){
+        $preventes = Prevente::where("vente_id", $this->id)->get();
+        return $preventes;
     }
     public function caisse(){
-        $caisse = CaisseBoutique::where('boutique_id', $this->boutique_id)->get()->first();
-        return $caisse;
+        // $caisse = CaisseBoutique::where('boutique_id', $this->boutique_id)->get()->first();
+        // return $caisse;
     }
 
     public function client(){
