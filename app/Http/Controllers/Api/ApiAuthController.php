@@ -26,7 +26,7 @@ class ApiAuthController extends BaseController
         }
 
         $token = $request->user()->createToken('API Token')->plainTextToken;
-        return response()->json(['token' => $token, 'user' => $request->user()]);
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->role()]);
     }
 
 
