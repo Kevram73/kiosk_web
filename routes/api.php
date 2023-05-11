@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\DeliveryOnSaleController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TestController;
 use Illuminate\Http\Request;
 
