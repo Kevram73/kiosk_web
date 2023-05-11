@@ -51,7 +51,7 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'list_products_category']);
 
 // Return a list of product models
-Route::get('/models', [ModeleController::class, 'list_products_models']);
+Route::get('/models', [ModeleController::class, 'index']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
