@@ -49,7 +49,7 @@ Route::post('/sales', [SalesController::class, 'create']);
 Route::get('/products', [ProductController::class, 'index']);
 
 // Return a list of product categories
-Route::get('/categories', [CategoryController::class, 'list_products_category']);
+Route::get('/categories', [CategoryController::class, 'index']);
 
 // Return a list of product models
 Route::get('/models', [ModeleController::class, 'index']);
