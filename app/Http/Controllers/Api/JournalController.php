@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Journal;
+use App\Historique;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
