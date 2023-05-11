@@ -3,13 +3,13 @@
 use App\Http\Controllers\Api\ClientsController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\JournalController;
+use App\Http\Controllers\Api\ModeleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\DeliveryOnSaleController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\TestController;
-use App\Http\Resources\UserResource;
-use App\User;
 use Illuminate\Http\Request;
 
 /*
@@ -40,32 +40,28 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/clients', [ClientsController::class, 'index']);
 Route::get('/clients/{id}', [ClientsController::class, 'show']);
 
-Route::get('/sales/verify-journal', [JournalController::class, 'verify']);
 
-// Return the list of sales.
 Route::get('/sales', [SalesController::class, 'index']);
-// Return the sale state and the list of products in the sales.
-Route::get('/sales/list/', [SalesController::class, 'list_sales_with_products']);
-//Create sale
 Route::post('/sales', [SalesController::class, 'create']);
 
 // Return the list of all product with their models.
-Route::get('/products/', [SalesController::class, 'list_products']);
+Route::get('/products', [ProductController::class, 'index']);
+
 // Return a list of product categories
-Route::get('/categories/', [SalesController::class, 'list_products_category']);
+Route::get('/categories', [CategoryController::class, 'list_products_category']);
+
 // Return a list of product models
-Route::get('/models/', [SalesController::class, 'list_products_models']);
+Route::get('/models', [ModeleController::class, 'list_products_models']);
 
-// Return the list of expenses.
-Route::get('/expenses/', [ExpenseController::class, 'index']);
-// Create expenses.
-Route::post('/expenses/', [ExpenseController::class, 'store']);
-// Return all the livraison sur vente .
-Route::get('/delivery/', [DeliveryOnSaleController::class, 'index']);
+Route::get('/expenses', [ExpenseController::class, 'index']);
+Route::post('/expenses', [ExpenseController::class, 'store']);
 
-// Change the value of an already delivered products.
-Route::post('/delivery/', [DeliveryOnSaleController::class, 'create']);
+Route::get('/delivery', [DeliveryOnSaleController::class, 'index']);
+Route::post('/delivery', [DeliveryOnSaleController::class, 'create']);
 
-// TODO: CRUD devis
+Route::post('/open-journal', [JournalController::class, 'openJournal']);
+Route::post('/close-journal', [JournalController::class, 'closeJournal']);
+Route::get('/verify-journal', [JournalController::class, 'verifyJournal']);
 
-// TODO : CRUD statistiques.
+
+

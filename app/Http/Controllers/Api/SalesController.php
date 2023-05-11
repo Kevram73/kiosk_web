@@ -25,7 +25,7 @@ class SalesController extends Controller
         return SaleResource::collection(vente::all());
     }
 
-    
+
     /**
      * Create sales.
      *
@@ -179,15 +179,7 @@ class SalesController extends Controller
     }
 
 
-    /***
-      Return list of all clients
-     ***/
-    public function list_clients()
-    {
-    $clients = Db::table('clients')->get();
 
-    return response()->json($clients->toArray());
-    }
 
     /**  Return the list of all products and their models.
      * @param $Request
