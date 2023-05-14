@@ -25,7 +25,7 @@
                         <div class="col-md-4 form-group">
                                                 <label class="col-md-4 control-label">Client</label>
                                                 <div class="col-md-9 form-group">
-                                                    <select  name="client" id="client"  class=" form-control populate">
+                                                  <select  name="client" id="client"  class=" form-control populate">
                                                         <optgroup label="Choisir le client">
                                                             <option value=""></option>
                                                             @foreach($client as $clt)
@@ -92,7 +92,7 @@
                                                     <input type="number" name="quantite"  id="quantite" class="form-control" placeholder="100"  min="1" required/>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-4 form-group"></div>
                                             <div class="col-md-4 form-group">
                                                 <label class="col-sm-4 control-label">Total</label>
@@ -171,7 +171,7 @@
                         <tbody class="center hidden-phone">
                         </tbody>
                     </table>
-                    
+
                     <div class="col-md-12">
                         <div class="row">
                         <div class="col-md-6"></div>
@@ -183,7 +183,7 @@
                             <div class="col-md-6">
                                 <a class="btn btn-danger" id="sup" ><i class="fa fa-trash-o" ></i>Supprimer</a>
                             </div>
-                            
+
                             <div class="col-md-6 text-right">
                                 <h3 class="m-0">Total: <strong id="montant_total" class="prix">0</strong></h3>
                             </div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\DeliveryOnSaleController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TestController;
+use App\Http\Controllers\Api\DevisController;
 use Illuminate\Http\Request;
 
 /*
@@ -64,5 +65,6 @@ Route::post('/open-journal', [JournalController::class, 'openJournal']);
 Route::post('/close-journal', [JournalController::class, 'closeJournal']);
 Route::get('/verify-journal', [JournalController::class, 'verifyJournal']);
 
-
+Route::get('/devis', [DevisController::class, 'index']);
+Route::post('/devis/store', [DevisController::class, 'storeDevis']);
 
