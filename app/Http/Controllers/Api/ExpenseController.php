@@ -36,7 +36,7 @@ class ExpenseController extends Controller
      */
 
     public function available_depense(Request $request){
-        $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get();
+        $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get()->first();
         if(count($journal) == 0){
             $journal = JournalDepense::create(
                 [
