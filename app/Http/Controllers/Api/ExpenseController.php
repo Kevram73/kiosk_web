@@ -86,7 +86,7 @@ class ExpenseController extends Controller
         $historique = new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Dépense";
-        $historique->user_id = $request->user_id,
+        $historique->user_id = $request->user_id;
         $historique->save();
 
         return response([
