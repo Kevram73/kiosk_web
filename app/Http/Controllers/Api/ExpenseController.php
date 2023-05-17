@@ -29,15 +29,16 @@ class ExpenseController extends Controller
 
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     public function available_depense(Request $request){
         $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get();
-        if($journal){
-            return response([
-                'data' => $journal,
-                'status' => 200,
-            ]);
-        }else{
-            $new_journal = JournalDepense::create(
+        if(count($journal) == 0){
+            $journal = JournalDepense::create(
                 [
                     'date_creation' => Carbon::now(),
                     'mois' => Carbon::now()->month,
@@ -46,13 +47,12 @@ class ExpenseController extends Controller
                     'boutique_id' => $request->boutique_id,
                 ]
             );
-            return response([
-                'data' => $new_journal,
-                'status' => 200,
-            ]);
         }
 
-
+        return response([
+            'data' => $journal,
+            'status' => 200,
+        ]);
 
     }
 
