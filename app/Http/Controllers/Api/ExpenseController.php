@@ -6,8 +6,8 @@ use App\Depense;
 use App\Historique;
 use App\Http\Controllers\Controller;
 use App\Sold;
+use App\JournalDepense;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
 class ExpenseController extends Controller
@@ -29,13 +29,24 @@ class ExpenseController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    public function available_depense(Request $request){
+        $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get();
+        if(!$journal){
+            $journal = JournalDepense::create(
+                [
+                    'date_creation' => Carbon::now(),
+                    'mois' => Carbon::now()->month,
+                    'annee' => Carbon::now()->year,
+                    'user_id' => $request->user_id,
+                    'boutique_id' => $request->boutique_id,
+                ]
+            );
+        }
+
+        return response([
+            'data' => $journal,
+            'status' => 200,
+        ]);
 
     }
 
@@ -47,14 +58,7 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $sold = Sold::find($request->sold_id);
-        if($sold->montant <= $request->montant)
-        {
-            return response([
-                'data' => 'unable to create resoruce',
-                'status'=>404,
-            ]);
-        }
+
         $id=JournalDepense::latest()->first()->id;
         if($id){
             $ed = $id + 1;
@@ -67,7 +71,6 @@ class ExpenseController extends Controller
             'date_dep' => Carbon::now(),
             'motif' => $request->motif,
             'user_id' => $request->user_id,
-            'sold_id' => $request->sold_id,
             'boutique_id' => $request->boutique_id,
             'journal_id' => $id,
         ]);
