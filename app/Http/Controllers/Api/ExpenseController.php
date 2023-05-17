@@ -82,8 +82,6 @@ class ExpenseController extends Controller
         ]);
 
 
-        $sold->montant -= $request->montant;
-        $sold->update();
 
         $historique = new Historique();
         $historique->actions = "Creer";
