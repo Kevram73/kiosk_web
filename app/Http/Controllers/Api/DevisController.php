@@ -29,14 +29,16 @@ class DevisController extends BaseController
 
     public function storeDevis()
     {
-        $id=DB::table('devis_ventes')->max('id');
-        $ed=1+$id;
-        $allcommande= explode( ',', $request->input('venTable') );
-        DB::beginTransaction();
+        $id=DevisVente::latest()->first()->id;
+        if($id){
+            $ed = $id + 1;
+        } else {
+            $ed=1;
+        }
         $devis = new DevisVente();
         $devis->numero = "DEV".now()->format('Y')."-".$ed;
         $devis->date_devis = now();
-        $devis->client_id = $allcommande[1];
+        $devis->client_id = $request->client;
         $devis->user_id = Auth::user()->id;
         $devis->boutique_id = Auth::user()->boutique->id;
         $devis->save();

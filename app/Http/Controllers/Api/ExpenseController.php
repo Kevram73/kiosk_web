@@ -7,8 +7,8 @@ use App\Historique;
 use App\Http\Controllers\Controller;
 use App\Sold;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class ExpenseController extends Controller
 {
@@ -44,47 +44,33 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $_name = $data['name'];
-        $_montant =$data['montant'];
-        $_date_rep=$data['date_dep'];
-        $_motif = $data['motif'];
-        $_user_id = $data['user_id'];
-        $solde_id = $data['sold_id'] ;
-        $_boutique_id = $data['boutique_id'] ;
-
-        DB::beginTransaction();
-        $id=DB::table('journal_depenses')->max('id');
-        $charge = new Depense();
-        //$charge->name = $request->name;
-        $charge->name = $_name;
-        //$charge->montant = $request->montant;
-        $charge->montant = $_montant;
-       // $charge->date_dep = date('Y-m-d', strtotime($request->date));
-        $charge->date_dep = date('Y-m-d', strtotime($_date_rep));
-        //$charge->motif = $request->motif;
-        $charge->motif = $_motif;
-
-        $charge->journal_id = $id;
-        $charge->user_id = $_user_id;
-        $charge->sold_id = $solde_id;
-        $charge->boutique_id =$_boutique_id;
-
-        $charge->save();
-
-        $sold = Sold::find($solde_id);
+        $sold = Sold::find($request->sold_id);
         if($sold->montant <= $request->montant)
         {
-            DB::rollback();
             return response([
                 'data' => 'unable to create resoruce',
                 'status'=>404,
-
             ]);
         }
+        $id=JournalDepense::latest()->first()->id;
+        if($id){
+            $ed = $id + 1;
+        } else {
+            $ed=1;
+        }
+        $expense = Depense::create([
+            'name' => $request->name,
+            'montant' => $request->montant,
+            'date_dep' => Carbon::now(),
+            'motif' => $request->motif,
+            'user_id' => $request->user_id,
+            'sold_id' => $request->sold_id,
+            'boutique_id' => $request->boutique_id,
+            'journal_id' => $id,
+        ]);
 
 
-        $sold->montant -= $_montant;
+        $sold->montant -= $request->montant;
         $sold->update();
 
         $historique = new Historique();
@@ -93,11 +79,9 @@ class ExpenseController extends Controller
         $historique->user_id = $_user_id;
         $historique->save();
 
-        DB::commit();
-
         return response([
-            'charge'=>$charge->toArray(),
-            'status'=>201
+            'data' => $expense->toArray(),
+            'status' => 201
         ]);
     }
 
@@ -109,7 +93,7 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
