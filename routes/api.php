@@ -57,7 +57,7 @@ Route::get('/models', [ModeleController::class, 'index']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
-Route::post('/expenses/journal/available', [ExpenseController::class, 'initJournalDepense']);
+Route::post('/expenses/journal/available', [ExpenseController::class, 'available_depense']);
 
 Route::get('/delivery', [DeliveryOnSaleController::class, 'index']);
 Route::post('/delivery', [DeliveryOnSaleController::class, 'create']);
