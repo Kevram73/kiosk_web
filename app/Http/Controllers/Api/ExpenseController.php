@@ -36,9 +36,9 @@ class ExpenseController extends Controller
      */
 
     public function available_depense(Request $request){
-        $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get()->first();
+        $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get();
         if(count($journal) == 0){
-            $journal = JournalDepense::create(
+            $elt = JournalDepense::create(
                 [
                     'date_creation' => Carbon::now(),
                     'mois' => Carbon::now()->month,
@@ -47,10 +47,12 @@ class ExpenseController extends Controller
                     'boutique_id' => $request->boutique_id,
                 ]
             );
+        } else {
+            $elt = $journal->first();
         }
 
         return response([
-            'data' => $journal,
+            'data' => $elt,
             'status' => 200,
         ]);
 
