@@ -86,11 +86,11 @@ class ExpenseController extends Controller
         $historique = new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Dépense";
-        $historique->user_id = $_user_id;
+        $historique->user_id = $request->user_id,
         $historique->save();
 
         return response([
-            'data' => $expense->toArray(),
+            'data' => $expense,
             'status' => 201
         ]);
     }
