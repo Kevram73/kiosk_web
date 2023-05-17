@@ -21,7 +21,10 @@ class ExpenseController extends Controller
     {
         $expenses = Depense::all();
 
-        return response()->json($expenses->toArray());
+        return response([
+            'data' => $expenses,
+            'status' => 200
+        ]);
 
 
     }
