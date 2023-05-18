@@ -40,10 +40,9 @@ class ClientsController extends BaseController
     public function store(Request $request){
         $client = new Client();
         $client->nom = $request->nom;
-        $client->telephone = $request->telephone;
+        $client->contact = $request->telephone;
         $client->email = $request->email;
         $client->adresse = $request->adresse;
-        $client->solde = $request->solde;
         $client->boutique_id = $request->boutique_id;
         $client->save();
 
