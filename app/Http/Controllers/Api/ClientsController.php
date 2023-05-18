@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Client;
+use App\Historique;
 use Illuminate\Http\Request;
 
 
@@ -46,7 +47,7 @@ class ClientsController extends BaseController
         $client->boutique_id = $request->boutique_id;
         $client->save();
 
-        $historique = new historique();
+        $historique = new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Clients";
         $historique->user_id = $request->user_id;
