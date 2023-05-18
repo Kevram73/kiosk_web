@@ -40,6 +40,7 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 
 // Get list of clients
 Route::get('/clients', [ClientsController::class, 'index']);
+Route::post('/clients', [ClientsController::class, 'store']);
 Route::get('/clients/{id}', [ClientsController::class, 'show']);
 
 
