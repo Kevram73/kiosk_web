@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Client;
+use Illuminate\Http\Request;
 
 
 class ClientsController extends BaseController
