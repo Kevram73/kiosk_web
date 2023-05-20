@@ -16,7 +16,7 @@ class ReglementController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:sanctum');
     }
 
     public function index(){
@@ -46,7 +46,7 @@ class ReglementController extends BaseController
             ->get();
 
         return $this->sendResponse($reglements, "Reglements retournés avec succès");
-    } 
+    }
 
     public function debiteurs()
     {
