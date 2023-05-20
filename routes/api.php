@@ -46,7 +46,10 @@ Route::get('/clients/{id}', [ClientsController::class, 'show']);
 
 
 Route::get('/sales', [SalesController::class, 'index']);
-Route::post('/sales', [SalesController::class, 'create']);
+Route::post('/sales/simple', [SalesController::class, 'store_vente_simple']);
+Route::post('/sales/credit', [SalesController::class, 'store_vente_credit']);
+Route::post('/sales/nonlivre', [SalesController::class, 'store_vente_nonlivre']);
+Route::post('/sales/gros', [SalesController::class, 'store_vente_gros']);
 
 // Return the list of all product with their models.
 Route::get('/products', [ProductController::class, 'index']);

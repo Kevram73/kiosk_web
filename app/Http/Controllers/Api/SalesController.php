@@ -6,7 +6,9 @@ use App\Categorie;
 use App\Http\Controllers\Controller;
 use App\Modele;
 use App\Prevente;
+use App\Historique;
 use App\vente;
+use App\Facture;
 use App\Http\Resources\SaleResource;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -26,11 +28,473 @@ class SalesController extends Controller
     }
 
 
-    /**
-     * Create sales.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function store_vente_simple(Request $request)
+    {
+        $allcommande= explode( ',', $request->input('venTable') );
+        error_log($allcommande);
+        $i=DB::table('journals')->max('id');
+        $id=DB::table('ventes')->max('id');
+        $ed=1+$id;
+        DB::beginTransaction();
+        $vente = new vente();
+        $vente ->numero="VENT".now()->format('Y')."-".$ed;
+        $vente ->date_vente= now();
+        $vente ->user_id= Auth::user()->id;
+        $vente ->client_id= $allcommande[1];
+        $vente ->journal_id= $i;
+        $vente ->type_vente= 1;
+        $vente ->boutique_id= Auth::user()->boutique->id;
+        $vente->save();
+        $total = 0;
+        $allReduction = 0;
+
+        for ($i =0 ;$i<count($allcommande);$i+=5) {
+            $prevente = new Prevente();
+            $prevente ->modele_fournisseur_id=$allcommande[$i];
+            $prevente ->prix=$allcommande[$i+2];
+            $prevente ->quantite= $allcommande[$i+3];
+            $prevente ->reduction= $allcommande[$i+4];
+            $prevente ->prixtotal = $allcommande[$i+3]*$allcommande[$i+2] - $allcommande[$i+4];
+            $prevente ->vente_id=$vente->id;
+            $prevente->save();
+            $modele= Modele::findOrFail($allcommande[$i]);
+            if($modele->quantite < $prevente->quantite)
+            {
+                DB::rollback();
+                return response()->json(["msg" => "Attention quantité stock inferieure à la quantité vente"], 500);
+            }
+            $modele->quantite=$modele->quantite -$prevente ->quantite;
+            $modele->update();
+
+            $total = $total + $prevente->prixtotal;
+            $allReduction = $allReduction + $prevente->reduction;
+        }
+        DB::commit();
+
+        $vente=vente::findOrFail($vente->id);
+        $vente->montant_reduction = $allReduction;
+
+        if($request->input('setTva') == "on")
+        {
+            $montant_ht = $total;
+            $montant_tva = ($total * $request->input('tva'))/100;
+            $vente->with_tva = true;
+            $vente->tva = $request->input('tva');
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->totaux= $montant_ht + $montant_tva;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+        }
+
+        $vente->update();
+
+        $modele2=DB::table('modeles')
+            ->join('produits', function ($join) {
+                $join->on('modeles.produit_id', '=', 'produits.id');
+            })
+            ->whereColumn('modeles.seuil','>=','modeles.quantite')
+            ->get();
+        $mod=count($modele2);
+        $clients=DB::table('clients')
+            ->join('ventes', function ($join) {
+                $join->on('ventes.client_id', '=', 'clients.id');
+            })
+            ->join('reglements', function ($join) {
+                $join->on('reglements.vente_id', '=', 'ventes.id');
+            })
+            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
+            ->where('reglements.montant_restant', '>', 0)
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
+            ->get();
+        $credit=array();
+        for ($i =0 ;$i<count($clients);$i++) {
+            $total = DB::table('reglements')
+                ->join('ventes', function ($join) {
+                    $join->on('reglements.vente_id', '=', 'ventes.id');
+                })
+                ->where('ventes.client_id', '=', $clients[$i]->id)
+                ->SUM('reglements.montant_restant');
+            $credit[$i] = $total;
+        }
+        $cre=count($clients);
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+        $total = DB::table('ventes')
+            ->join('preventes', function ($join) {
+                $join->on('preventes.vente_id', '=', 'ventes.id');
+            })
+            ->where('ventes.id','=',$vente->id)
+            ->SUM('preventes.prixtotal');
+        $id=DB::table('factures')->max('id');
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction =$allReduction;
+        $facture->vente_id =$vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$ed;
+        $facture->save();
+        if ($mod>0){
+         Alert::warning('Attention quantité inferieure au seuil','Veuillez vous approvisionner');
+        }
+        $clients=DB::table('clients')
+            ->join('ventes', function ($join) {
+                $join->on('ventes.client_id', '=', 'clients.id');
+            })
+            ->join('reglements', function ($join) {
+                $join->on('reglements.vente_id', '=', 'ventes.id');
+            })
+            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
+            ->where('reglements.montant_restant', '>', 0)
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
+            ->get();
+        $credit=array();
+        for ($i =0 ;$i<count($clients);$i++) {
+            $total = DB::table('reglements')
+                ->join('ventes', function ($join) {
+                    $join->on('reglements.vente_id', '=', 'ventes.id');
+                })
+                ->where('ventes.client_id', '=', $clients[$i]->id)
+                ->SUM('reglements.montant_restant');
+            $credit[$i] = $total;
+        }
+        $cre=count($clients);
+        // return view('vente',compact('modele2','mod','clients','credit','cre'));
+        return $vente;
+    }
+
+    public function store_vente_credit(Request $request)
+    {
+        $allcommande= explode( ',', $request->input('venTable') );
+        $i=DB::table('journals')->max('id');
+        $id=DB::table('ventes')->max('id');
+        $ed=1+$id;
+        DB::beginTransaction();
+        $vente = new vente();
+        $vente ->numero="VENT".now()->format('Y')."-".$ed;
+        $vente ->date_vente= now();
+        $vente ->client_id= $allcommande[1];
+        $vente ->user_id= Auth::user()->id;
+        $vente ->journal_id= $i;
+        $vente ->type_vente= 2;
+        $vente ->boutique_id= Auth::user()->boutique->id;
+        $vente->save();
+        $total = 0;
+        $allReduction = 0;
+
+        for ($i =0 ;$i<count($allcommande);$i+=5) {
+            $prevente = new Prevente();
+            $prevente ->modele_fournisseur_id=$allcommande[$i];
+            $prevente ->prix =$allcommande[$i+2];
+            $prevente ->quantite= $allcommande[$i+3];
+            $prevente ->reduction= $allcommande[$i+4];
+            $prevente ->prixtotal =$prevente ->prix *$prevente ->quantite - $prevente->reduction;
+            $prevente ->vente_id=$vente->id;
+            $prevente->save();
+            $modele= Modele::findOrFail($allcommande[$i]);
+            if($modele->quantite < $prevente ->quantite)
+            {
+                DB::rollback();
+                return response()->json(["msg" => "Attention quantité stock inferieure à la quantité vente"], 500);
+            }
+            $modele->quantite=$modele->quantite -$prevente ->quantite;
+            $modele->update();
+
+            $total = $total + $prevente->prixtotal;
+            $allReduction = $allReduction + $prevente->reduction;
+        }
+
+        $vente=vente::findOrFail($vente->id);
+        $vente->montant_reduction = $allReduction;
+
+        if($request->input('setTva') == "on")
+        {
+            $montant_ht = $total;
+            $montant_tva = ($total * $request->input('tva'))/100;
+            $vente->with_tva = true;
+            $vente->tva = $request->input('tva');
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->totaux= $montant_ht + $montant_tva;
+
+             // Récupération de l'utilisateur à mettre à jour
+             $client = Client::find($vente->client_id);
+
+             // Mise à jour des informations de l'utilisateur
+             $client->solde = $vente->totaux + $client->solde;
+
+             // Sauvegarde des modifications
+             $client->save();
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+             // Récupération de l'utilisateur à mettre à jour
+             $client = Client::find($vente->client_id);
+
+             // Mise à jour des informations de l'utilisateur
+             $client->solde = $vente->totaux + $client->solde;
+
+             // Sauvegarde des modifications
+             $client->save();
+        }
+
+        $vente->update();
+
+        $modele2=DB::table('modeles')
+            ->join('produits', function ($join) {
+                $join->on('modeles.produit_id', '=', 'produits.id');
+            })
+            ->whereColumn('modeles.seuil','>=','modeles.quantite')
+            ->get();
+        $mod=count($modele2);
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+
+        $total = DB::table('ventes')
+            ->join('preventes', function ($join) {
+                $join->on('preventes.vente_id', '=', 'ventes.id');
+            })
+            ->where('ventes.id','=',$vente->id)
+            ->SUM('preventes.prixtotal');
+        $id=DB::table('factures')->max('id');
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction =$allReduction;
+        $facture->vente_id =$vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$ed;
+        $facture->save();
+        DB::commit();
+        // $clients=DB::table('clients')
+        //     ->join('ventes', function ($join) {
+        //         $join->on('ventes.client_id', '=', 'clients.id');
+        //     })
+        //     ->join('reglements', function ($join) {
+        //         $join->on('reglements.vente_id', '=', 'ventes.id');
+        //     })
+        //     ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
+        //     ->where('reglements.montant_restant', '>', 0)
+        //     ->select('clients.nom as nom','clients.id as id')
+        //     ->groupBy('id', 'clients.nom')
+        //     ->get();
+        // $credit=array();
+        // for ($i =0 ;$i<count($clients);$i++) {
+        //     $total = DB::table('reglements')
+        //         ->join('ventes', function ($join) {
+        //             $join->on('reglements.vente_id', '=', 'ventes.id');
+        //         })
+        //         ->where('ventes.client_id', '=', $clients[$i]->id)
+        //         ->SUM('reglements.montant_restant');
+        //     $credit[$i] = $total;
+        // }
+        // $cre=count($clients);
+        // // return view('vente',compact('modele2','mod','clients','credit','cre'));
+        return $vente;
+    }
+    public function store_vente_nonlivre(Request $request)
+    {
+        $allcommande= explode( ',', $request->input('venTable') );
+        $i=DB::table('journals')->max('id');
+        $id=DB::table('ventes')->max('id');
+        $ed=1+$id;
+        $vente = new vente();
+        $vente ->numero="VENT".now()->format('Y')."-".$ed;
+        $vente ->date_vente= now();
+        $vente ->client_id= $allcommande[1];
+        $vente ->user_id= Auth::user()->id;
+        $vente ->journal_id= $i;
+        $vente ->type_vente= 3;
+        $vente ->boutique_id= Auth::user()->boutique->id;
+        $vente->save();
+        $total = 0;
+        $allReduction = 0;
+
+        for ($i =0 ;$i<count($allcommande);$i+=5) {
+            $prevente = new Prevente();
+            $prevente ->modele_fournisseur_id=$allcommande[$i];
+            $prevente ->prix =$allcommande[$i+2];
+            $prevente ->quantite= $allcommande[$i+3];
+            $prevente ->reduction= $allcommande[$i+4];
+            $prevente ->prixtotal =$prevente ->prix *$prevente ->quantite - $prevente->reduction;
+            $prevente ->vente_id=$vente->id;
+            $prevente ->etat=true;
+            $prevente->save();
+
+            $total = $total + $prevente->prixtotal;
+            $allReduction = $allReduction + $prevente->reduction;
+        }
+
+        $vente=vente::findOrFail($vente->id);
+        $vente->montant_reduction = $allReduction;
+
+        if($request->input('setTva') == "on")
+        {
+            $montant_ht = $total;
+            $montant_tva = ($total * $request->input('tva'))/100;
+            $vente->with_tva = true;
+            $vente->tva = $request->input('tva');
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->totaux= $montant_ht + $montant_tva;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+        }
+
+        $vente->update();
+
+        $modele2=DB::table('modeles')
+            ->join('produits', function ($join) {
+                $join->on('modeles.produit_id', '=', 'produits.id');
+            })
+            ->whereColumn('modeles.seuil','>=','modeles.quantite')
+            ->get();
+        $mod=count($modele2);
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+        $total = DB::table('ventes')
+            ->join('preventes', function ($join) {
+                $join->on('preventes.vente_id', '=', 'ventes.id');
+            })
+            ->where('ventes.id','=',$vente->id)
+            ->SUM('preventes.prixtotal');
+        $id=DB::table('factures')->max('id');
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction =$allReduction;
+        $facture->vente_id =$vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$ed;
+        $facture->save();
+        return $vente;
+    }
+
+    public function store_vente_gros(Request $request)
+    {
+        $allcommande= explode( ',', $request->input('venTable') );
+        $i=DB::table('journals')->max('id');
+        $id=DB::table('ventes')->max('id');
+        $ed=1+$id;
+        DB::beginTransaction();
+        $vente = new vente();
+        $vente ->numero="VENT".now()->format('Y')."-".$ed;
+        $vente ->date_vente= now();
+        $vente ->client_id= $allcommande[1];
+        $vente ->user_id= Auth::user()->id;
+        $vente ->journal_id= $i;
+        $vente ->type_vente= 4;
+        $vente ->boutique_id= Auth::user()->boutique->id;
+        $vente->save();
+        $total = 0;
+        $allReduction = 0;
+
+        for ($i =0 ;$i<count($allcommande);$i+=5) {
+            $prevente = new Prevente();
+            $prevente ->modele_fournisseur_id=$allcommande[$i];
+            $prevente ->prix =$allcommande[$i+2];
+            $prevente ->quantite= $allcommande[$i+3];
+            $prevente ->reduction= $allcommande[$i+4];
+            $prevente ->prixtotal =$prevente ->prix *$prevente ->quantite - $prevente->reduction;
+            $prevente ->vente_id=$vente->id;
+            $prevente->save();
+            $modele= Modele::findOrFail($allcommande[$i]);
+            if($modele->quantite < $prevente ->quantite)
+            {
+                DB::rollback();
+                return response()->json(["msg" => "Attention quantité stock inferieure à la quantité vente"], 500);
+            }
+            $modele->quantite=$modele->quantite -$prevente ->quantite;
+            $modele->update();
+
+            $total = $total + $prevente->prixtotal;
+            $allReduction = $allReduction + $prevente->reduction;
+        }
+        $vente=vente::findOrFail($vente->id);
+        $vente->montant_reduction = $allReduction;
+
+        if($request->input('setTva') == "on")
+        {
+            $montant_ht = $total;
+            $montant_tva = ($total * $request->input('tva'))/100;
+            $vente->with_tva = true;
+            $vente->tva = $request->input('tva');
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->totaux= $montant_ht + $montant_tva;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+        }
+
+        $vente->update();
+
+        $modele2=DB::table('modeles')
+            ->join('produits', function ($join) {
+                $join->on('modeles.produit_id', '=', 'produits.id');
+            })
+            ->whereColumn('modeles.seuil','>=','modeles.quantite')
+            ->get();
+        $mod=count($modele2);
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+        $total = DB::table('ventes')
+            ->join('preventes', function ($join) {
+                $join->on('preventes.vente_id', '=', 'ventes.id');
+            })
+            ->where('ventes.id','=',$vente->id)
+            ->SUM('preventes.prixtotal');
+        $id=DB::table('factures')->max('id');
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction =$allReduction;
+        $facture->vente_id =$vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$ed;
+        $facture->save();
+        $clients=DB::table('clients')
+            ->join('ventes', function ($join) {
+                $join->on('ventes.client_id', '=', 'clients.id');
+            })
+            ->join('reglements', function ($join) {
+                $join->on('reglements.vente_id', '=', 'ventes.id');
+            })
+            ->where ('ventes.boutique_id', '=',Auth::user()->boutique->id )
+            ->where('reglements.montant_restant', '>', 0)
+            ->select('clients.nom as nom','clients.id as id')
+            ->groupBy('id', 'clients.nom')
+            ->get();
+        $credit=array();
+        for ($i =0 ;$i<count($clients);$i++) {
+            $total = DB::table('reglements')
+                ->join('ventes', function ($join) {
+                    $join->on('reglements.vente_id', '=', 'ventes.id');
+                })
+                ->where('ventes.client_id', '=', $clients[$i]->id)
+                ->SUM('reglements.montant_restant');
+            $credit[$i] = $total;
+        }
+        $cre=count($clients);
+        DB::commit();
+        // return view('vente',compact('modele2','mod','clients','credit','cre'));
+        return $vente;
+    }
+
+
     public function create(Request $request)
     {
 
@@ -122,16 +586,7 @@ class SalesController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
