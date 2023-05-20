@@ -837,7 +837,7 @@ class VentesController extends Controller
         $categorie=Categorie::all();
         $produits=Produit::all();
         $modeles=Modele::all();
-        $client=Client::with('boutique')->where ('boutique_id', '=',Auth::user()->boutique->id)->get();
+        $client=Client::with('boutique')->where ('boutique_id', '=', Auth::user()->boutique->id)->get();
         $modele2=DB::table('modeles')
             ->join('produits', function ($join) {
                 $join->on('modeles.produit_id', '=', 'produits.id');
@@ -1204,7 +1204,7 @@ class VentesController extends Controller
 
              // Mise à jour des informations de l'utilisateur
              $client->solde = $vente->totaux + $client->solde;
- 
+
              // Sauvegarde des modifications
              $client->save();
         }else{
@@ -1215,7 +1215,7 @@ class VentesController extends Controller
 
              // Mise à jour des informations de l'utilisateur
              $client->solde = $vente->totaux + $client->solde;
- 
+
              // Sauvegarde des modifications
              $client->save();
         }
@@ -1234,7 +1234,7 @@ class VentesController extends Controller
         $historique->cible = "Ventes";
         $historique->user_id =Auth::user()->id;
         $historique->save();
-        
+
         $total = DB::table('ventes')
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');

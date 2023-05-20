@@ -72,9 +72,7 @@ class DeliveryOnSaleController extends Controller
         //$qte_delyvered = $request->input('qte_delivered') ;
 
         /**
-         * $prevente = DB::table('preventes',function ($join){
-        $join->on('mode')
-        });
+        
          */
         $user_id = $request->input('user_id') ;
         $vente_id =$request->input('vente_id');

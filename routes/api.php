@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\DeliveryOnSaleController;
+use App\Http\Controllers\Api\ReglementController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TestController;
@@ -70,3 +71,5 @@ Route::get('/verify-journal', [JournalController::class, 'verifyJournal']);
 Route::get('/devis', [DevisController::class, 'index']);
 Route::post('/devis/store', [DevisController::class, 'storeDevis']);
 
+Route::get('/reglements', [ReglementController::class, 'index']);
+Route::post('/reglements', [ReglementController::class, 'create']);
