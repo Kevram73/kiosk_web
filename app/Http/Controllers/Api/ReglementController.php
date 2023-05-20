@@ -16,7 +16,7 @@ class ReglementController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
+        $this->middleware('auth');
     }
 
     public function index(){
@@ -65,8 +65,7 @@ class ReglementController extends BaseController
                 $debitors[] = $latestReglement;
             }
         }
-
-        return $this->sendResponse($debitors, "Débiteurs");
+        return datatables()->of($debitors)->make(true);
     }
 
 }
