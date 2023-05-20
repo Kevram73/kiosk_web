@@ -46,7 +46,7 @@ class ReglementController extends BaseController
             ->get();
 
         return $this->sendResponse($reglements, "Reglements retournés avec succès");
-    }
+    } 
 
     public function debiteurs()
     {

@@ -72,4 +72,5 @@ Route::get('/devis', [DevisController::class, 'index']);
 Route::post('/devis/store', [DevisController::class, 'storeDevis']);
 
 Route::get('/reglements', [ReglementController::class, 'index']);
+Route::get('/debitors', [ReglementController::class, 'debiteurs']);
 Route::post('/reglements', [ReglementController::class, 'create']);
