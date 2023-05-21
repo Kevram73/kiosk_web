@@ -13,10 +13,15 @@ use App\Http\Resources\SaleResource;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 
 class SalesController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     /**
      * Display the list sales.
      *
