@@ -61,6 +61,7 @@ class SalesController extends Controller
 
         $prevente = new Prevente();
         $prevente->prix = $request->prix;
+        $prevente->quantite = $request->quantite;
         $prevente->reduction = $request->reduction;
         $prevente->prixtotal = $request->prix*$request->quantite - $request->reduction;
         $prevente->vente_id=$vente->id;
