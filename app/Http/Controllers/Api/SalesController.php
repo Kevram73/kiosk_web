@@ -107,7 +107,7 @@ class SalesController extends Controller
         $facture ->numero="FACT".now()->format('Y')."-".$fac;
         $facture->save();
 
-        return SaleResource::collection($vente);
+        return $this->sendResponse($vente, "Vente effectué avec succès");
     }
 
     public function store_vente_credit(Request $request)
