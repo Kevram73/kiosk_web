@@ -14,8 +14,10 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
-class SalesController extends Controller
+
+class SalesController extends BaseController
 {
 
     public function __construct()
