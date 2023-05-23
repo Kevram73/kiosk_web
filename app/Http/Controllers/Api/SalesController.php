@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Modele;
 use App\Prevente;
 use App\Historique;
+use App\User;
 use App\vente;
 use App\Facture;
 use App\Http\Resources\SaleResource;
