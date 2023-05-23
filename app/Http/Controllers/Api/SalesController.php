@@ -47,12 +47,12 @@ class SalesController extends BaseController
         $vente = new vente();
         $vente->numero="VENT".now()->format('Y')."-".$ed;
 
-        $vente->user_id= Auth::user()->id;
+        $vente->user_id= User::find($request->user_id)->id;
         $vente->client_id= $request->client_id;
         $vente->journal_id= $request->journal_id;
         $vente->type_vente= 1;
         $vente->date_vente= now();
-        $vente->boutique_id= Auth::user()->boutique->id;
+        $vente->boutique_id= User::find($request->user_id)->boutique->id;
         $vente->totaux = $request->prix*$request->quantite - $request->reduction;
         $vente->montant_reduction = $request->reduction;
         $vente->save();
