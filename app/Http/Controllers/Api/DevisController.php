@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\DevisVente;
-use App\Historique;
 use App\DevisLignesVente;
+use App\Historique;
 use App\Http\Resources\DevisResource;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use Illuminate\Support\Facades\DB;
