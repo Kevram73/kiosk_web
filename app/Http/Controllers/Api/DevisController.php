@@ -37,6 +37,7 @@ class DevisController extends BaseController
         } else {
             $ed=1;
         }
+        
         $devis = new DevisVente();
         $devis->numero = "DEV".now()->format('Y')."-".$ed;
         $devis->date_devis = now();
