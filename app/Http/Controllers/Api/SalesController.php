@@ -89,6 +89,7 @@ class SalesController extends BaseController
         }else{
             $vente->with_tva = false;
             $vente->totaux = $total;
+            $vente->montant_reduction = $allReduction;
         }
 
         $vente->save();
