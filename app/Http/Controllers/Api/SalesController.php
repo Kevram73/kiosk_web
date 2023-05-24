@@ -60,7 +60,7 @@ class SalesController extends BaseController
 
 
         $total = 0;
-        // $allReduction = 0;
+        $allReduction = 0;
         foreach($request->product_list as $datum){
             $prevente = new Prevente();
             $prevente->prix = $datum['prix'];
@@ -70,22 +70,24 @@ class SalesController extends BaseController
             $prevente->vente_id=$vente->id;
             $prevente->modele_fournisseur_id = $datum['mfid'];
             $prevente->save();
+            $total += $datum['prix']*$datum['qte'];
+            $allReduction += $datum['reduction'];
         }
 
         $vente=vente::findOrFail($vente->id);
 
         if($request->input('tva_on') == true)
         {
-            // $montant_ht = $request->prix*$request->quantite - $request->reduction;
-            // $montant_tva = ($montant_ht * $request->tva)/100;
-            // $vente->with_tva = true;
-            // $vente->tva = $request->tva;
-            // $vente->montant_ht = $montant_ht;
-            // $vente->montant_tva = $montant_tva;
-            // $vente->totaux= $montant_ht + $montant_tva;
+            $montant_ht = $total-$reduction;
+            $montant_tva = ($montant_ht * 18)/100;
+            $vente->with_tva = true;
+            $vente->tva = 18;
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->totaux= $total;
         }else{
-            // $vente->with_tva = false;
-            // $vente->totaux = $request->prix*$request->quantite - $request->reduction;
+            $vente->with_tva = false;
+            $vente->totaux = $total;
         }
 
         $vente->save();
