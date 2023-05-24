@@ -29,8 +29,10 @@ class DevisController extends BaseController
 
     public function storeDevis()
     {
-        $id=DevisVente::latest()->first()->id;
-        if($id){
+        $devisList = count(DevisVente::all());
+
+        if($devisList > 0){
+            $id=DevisVente::latest()->first()->id;
             $ed = $id + 1;
         } else {
             $ed=1;
