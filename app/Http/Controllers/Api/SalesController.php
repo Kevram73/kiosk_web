@@ -84,6 +84,7 @@ class SalesController extends BaseController
             $vente->tva = 18;
             $vente->montant_ht = $montant_ht;
             $vente->montant_tva = $montant_tva;
+            $vente->montant_reduction = $allReduction;
             $vente->totaux= $total;
         }else{
             $vente->with_tva = false;
