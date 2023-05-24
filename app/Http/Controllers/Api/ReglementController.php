@@ -20,17 +20,7 @@ class ReglementController extends BaseController
     }
 
     public function index(){
-        $clients = Reglement::join('clients', function ($join) {
-            $join->on('reglements.client_id', '=', 'clients.id');
-        })
-        ->join('ventes', function ($join) {
-            $join->on('reglements.vente_id', '=', 'ventes.id');
-        })
-        ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
-        ->selectRaw('clients.id, ventes.id as venteId, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
-        ->groupBy('clients.id', 'clients.nom', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
-        ->havingRaw('(totaux - donner) > 0.0')
-        ->get();
+
 
         $reglements=Reglement::join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
@@ -50,22 +40,19 @@ class ReglementController extends BaseController
 
     public function debiteurs()
     {
-        $clients = Client::where('boutique_id', '=', Auth::user()->boutique->id)->get();
-        $debitors = [];
+        $clients = Reglement::join('clients', function ($join) {
+            $join->on('reglements.client_id', '=', 'clients.id');
+        })
+        ->join('ventes', function ($join) {
+            $join->on('reglements.vente_id', '=', 'ventes.id');
+        })
+        ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
+        ->selectRaw('clients.id, ventes.id as venteId, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
+        ->groupBy('clients.id', 'clients.nom', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
+        ->havingRaw('(totaux - donner) > 0.0')
+        ->get();
 
-        foreach ($clients as $client) {
-            $latestReglement = Reglement::where('client_id', $client->id)
-                ->join('clients', 'reglements.client_id', '=', 'clients.id')
-                ->join('ventes', 'reglements.vente_id', '=', 'ventes.id')
-                ->select('clients.nom', 'clients.contact', 'clients.adresse', 'reglements.montant_restant', 'reglements.created_at')
-                ->latest()
-                ->first();
-
-            if ($latestReglement && $latestReglement->montant_restant > 0) {
-                $debitors[] = $latestReglement;
-            }
-        }
-        return datatables()->of($debitors)->make(true);
+        return $this->sendResponse($clients, "Reglements retournés avec succès");
     }
 
 }
