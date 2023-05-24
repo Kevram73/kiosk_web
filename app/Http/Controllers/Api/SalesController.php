@@ -78,7 +78,7 @@ class SalesController extends BaseController
 
         if($request->input('tva_on') == true)
         {
-            $montant_ht = $total-$reduction;
+            $montant_ht = $total-$allReduction;
             $montant_tva = ($montant_ht * 18)/100;
             $vente->with_tva = true;
             $vente->tva = 18;
@@ -120,6 +120,7 @@ class SalesController extends BaseController
 
     public function store_vente_credit(Request $request)
     {
+        // $this->sendResponse($vente, "Vente effectué avec succès");
         $id=vente::latest()->first()->id;
         if($id){
             $ed = $id + 1;
@@ -130,12 +131,12 @@ class SalesController extends BaseController
         $vente = new vente();
         $vente->numero="VENT".now()->format('Y')."-".$ed;
 
-        $vente->user_id= Auth::user()->id;
+        $vente->user_id= User::find($request->user_id)->id;
         $vente->client_id= $request->client_id;
         $vente->journal_id= $request->journal_id;
         $vente->type_vente= 2;
         $vente->date_vente= now();
-        $vente->boutique_id= Auth::user()->boutique->id;
+        $vente->boutique_id= User::find($request->user_id)->boutique->id;
         $vente->totaux = $request->prix*$request->quantite - $request->reduction;
         $vente->montant_reduction = $request->reduction;
         $vente->save();
@@ -143,30 +144,35 @@ class SalesController extends BaseController
 
         $total = 0;
         $allReduction = 0;
-
-        $prevente = new Prevente();
-        $prevente->prix = $request->prix;
-        $prevente->quantite = $request->quantite;
-        $prevente->reduction = $request->reduction;
-        $prevente->prixtotal = $request->prix*$request->quantite - $request->reduction;
-        $prevente->vente_id=$vente->id;
-        $prevente->modele_fournisseur_id = $request->modele_fournisseur_id;
-        $prevente->save();
+        foreach($request->product_list as $datum){
+            $prevente = new Prevente();
+            $prevente->prix = $datum['prix'];
+            $prevente->quantite = $datum['qte'];
+            $prevente->reduction = $datum['reduction'];
+            $prevente->prixtotal = $datum['prix']*$datum['qte'] - $datum['reduction'];
+            $prevente->vente_id=$vente->id;
+            $prevente->modele_fournisseur_id = $datum['mfid'];
+            $prevente->save();
+            $total += $datum['prix']*$datum['qte'];
+            $allReduction += $datum['reduction'];
+        }
 
         $vente=vente::findOrFail($vente->id);
 
-        if($request->input('setTva') == 1)
+        if($request->input('tva_on') == true)
         {
-            $montant_ht = $request->prix*$request->quantite - $request->reduction;
-            $montant_tva = ($montant_ht * $request->tva)/100;
+            $montant_ht = $total-$allReduction;
+            $montant_tva = ($montant_ht * 18)/100;
             $vente->with_tva = true;
-            $vente->tva = $request->tva;
+            $vente->tva = 18;
             $vente->montant_ht = $montant_ht;
             $vente->montant_tva = $montant_tva;
-            $vente->totaux= $montant_ht + $montant_tva;
+            $vente->montant_reduction = $allReduction;
+            $vente->totaux= $total;
         }else{
             $vente->with_tva = false;
-            $vente->totaux = $request->prix*$request->quantite - $request->reduction;
+            $vente->totaux = $total;
+            $vente->montant_reduction = $allReduction;
         }
 
         $vente->save();
@@ -174,7 +180,7 @@ class SalesController extends BaseController
         $historique=new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Ventes";
-        $historique->user_id =Auth::user()->id;
+        $historique->user_id =$request->user_id;
         $historique->save();
 
 
@@ -192,8 +198,7 @@ class SalesController extends BaseController
         $facture ->numero="FACT".now()->format('Y')."-".$fac;
         $facture->save();
 
-        return $this->sendResponse($vente, "Vente à crédit effectué avec succès");
-
+        return $this->sendResponse($vente, "Vente effectué avec succès");
     }
     public function store_vente_nonlivre(Request $request)
     {
@@ -275,7 +280,7 @@ class SalesController extends BaseController
 
     public function store_vente_gros(Request $request)
     {
-        $this->sendResponse($request, "Vente effectué avec succès");
+        // $this->sendResponse($vente, "Vente effectué avec succès");
         $id=vente::latest()->first()->id;
         if($id){
             $ed = $id + 1;
@@ -316,7 +321,7 @@ class SalesController extends BaseController
 
         if($request->input('tva_on') == true)
         {
-            $montant_ht = $total-$reduction;
+            $montant_ht = $total-$allReduction;
             $montant_tva = ($montant_ht * 18)/100;
             $vente->with_tva = true;
             $vente->tva = 18;
