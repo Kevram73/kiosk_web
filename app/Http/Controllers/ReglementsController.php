@@ -27,7 +27,7 @@ class ReglementsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:sanctum');
     }
 
     /**
@@ -87,13 +87,13 @@ class ReglementsController extends Controller
 
         $reglements=Reglement::join('clients', function ($join) {
                 $join->on('reglements.client_id', '=', 'clients.id');
-            }) 
+            })
             ->join('ventes', function ($join) {
                 $join->on('reglements.vente_id', '=', 'ventes.id');
             })
             ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
             ->selectRaw('clients.id, ventes.id as venteId,reglements.created_at, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
-            
+
             ->groupBy('clients.id', 'clients.nom','reglements.created_at', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
             ->orderBy('reglements.created_at', 'desc')
             ->get();
@@ -331,7 +331,7 @@ class ReglementsController extends Controller
             -> select ('ventes.id as venteId', 'reglements.montant_restant','reglements.created_at')
             ->latest()
             ->first();
-        
+
         return response() ->json($total);
     }
 
@@ -438,7 +438,7 @@ class ReglementsController extends Controller
         if ($request->input('reste')>0)
         {
             $reglement->montant_restant = $request->input('restant');
-            $reglement->save(); 
+            $reglement->save();
             // Récupération de l'utilisateur à mettre à jour
             $client = client::find($reglement->client_id);
             // Mise à jour des informations de l'utilisateur
@@ -447,7 +447,7 @@ class ReglementsController extends Controller
             $client->save();
             return $request ->input();
 
-          
+
         }
         else{
             $reglement->montant_restant =0;
@@ -477,7 +477,7 @@ class ReglementsController extends Controller
 
               // Mise à jour des informations de l'utilisateur
               $fournisseur->solde = $reglement->montant_restant;
-  
+
               // Sauvegarde des modifications
               $fournisseur->save();
 

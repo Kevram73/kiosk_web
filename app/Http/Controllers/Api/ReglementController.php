@@ -52,7 +52,7 @@ class ReglementController extends BaseController
         ->havingRaw('(totaux - donner) > 0.0')
         ->get();
 
-        return $this->sendResponse($clients, "Reglements retournés avec succès");
+        return $this->sendResponse($clients, "Clients qui nous doivent retournés avec succès");
     }
 
 }
