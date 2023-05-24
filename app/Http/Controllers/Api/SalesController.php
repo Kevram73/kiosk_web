@@ -61,7 +61,7 @@ class SalesController extends BaseController
 
         $total = 0;
         // $allReduction = 0;
-        foreach($datum as $data){
+        foreach($request->product_list as $datum){
             $prevente = new Prevente();
             $prevente->prix = $datum['prix'];
             $prevente->quantite = $datum['qte'];
