@@ -28,6 +28,7 @@ class DevisResource extends JsonResource
             "montant_ht" => $this->montant_ht,
             "montant_reduction" => $this->montant_reduction,
             "totaux" => $this->totaux,
+            "devis_ligne"=> $this->devis_ligne(),
             "boutique" => $this->boutique(),
             "user" => $this->user(),
             "client" => $this->client(),
