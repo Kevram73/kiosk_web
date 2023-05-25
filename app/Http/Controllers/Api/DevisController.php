@@ -37,15 +37,15 @@ class DevisController extends BaseController
         } else {
             $ed=1;
         }
-        
+
         $devis = new DevisVente();
         $devis->numero = "DEV".now()->format('Y')."-".$ed;
         $devis->date_devis = now();
         $devis->client_id = $request->client_id;
-        $devis->user_id = User::find($request->user_id)->id;
+        $devis->user_id = $request->user_id;
         $devis->boutique_id = User::find($request->user_id)->boutique_id;
         $devis->save();
-
+ 
         $total = 0;
         $allReduction = 0;
 
