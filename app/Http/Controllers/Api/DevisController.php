@@ -27,7 +27,7 @@ class DevisController extends BaseController
         return DevisResource::collection(DevisVente::all());
     }
 
-    public function storeDevis()
+    public function storeDevis(Request $request)
     {
         // return $this->sendResponse($request, "Devis effectué avec succès");
         $devisList = count(DevisVente::all());
@@ -42,7 +42,7 @@ class DevisController extends BaseController
         $devis = new DevisVente();
         $devis->numero = "DEV".now()->format('Y')."-".$ed;
         $devis->date_devis = now();
-        $devis->client_id = 2;
+        $devis->client_id = $request->client_id;
         $devis->user_id = $request->user_id;
         $devis->boutique_id = User::find($request->user_id)->boutique_id;
         $devis->save();
