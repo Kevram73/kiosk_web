@@ -6,6 +6,7 @@ use App\DevisVente;
 use App\DevisLignesVente;
 use App\Historique;
 use App\Http\Resources\DevisResource;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
