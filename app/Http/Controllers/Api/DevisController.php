@@ -29,7 +29,7 @@ class DevisController extends BaseController
 
     public function storeDevis()
     {
-        return $request;
+        return $this->sendResponse($request, "Devis effectué avec succès");
         $devisList = count(DevisVente::all());
 
         if($devisList > 0){
