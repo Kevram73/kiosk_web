@@ -90,7 +90,7 @@ class DevisController extends BaseController
         $historique=new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Devis";
-        $historique->user_id =Auth::user()->id;
+        $historique->user_id =$request->user_id;
         $historique->save();
 
         return $this->sendResponse($devis, "Devis effectué avec succès");
