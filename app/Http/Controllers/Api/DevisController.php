@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\DevisVente;
 use App\DevisLignesVente;
 use App\Historique;
+use App\User;
 use App\Http\Resources\DevisResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
