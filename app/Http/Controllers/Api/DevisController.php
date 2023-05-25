@@ -29,7 +29,7 @@ class DevisController extends BaseController
 
     public function storeDevis()
     {
-        return $this->sendResponse($request, "Devis effectué avec succès");
+        // return $this->sendResponse($request, "Devis effectué avec succès");
         $devisList = count(DevisVente::all());
 
         if($devisList > 0){
@@ -42,7 +42,7 @@ class DevisController extends BaseController
         $devis = new DevisVente();
         $devis->numero = "DEV".now()->format('Y')."-".$ed;
         $devis->date_devis = now();
-        $devis->client_id = $request->client_id;
+        $devis->client_id = 2;
         $devis->user_id = $request->user_id;
         $devis->boutique_id = User::find($request->user_id)->boutique_id;
         $devis->save();
