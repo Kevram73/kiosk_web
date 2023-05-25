@@ -29,6 +29,7 @@ class DevisController extends BaseController
 
     public function storeDevis()
     {
+        return $request;
         $devisList = count(DevisVente::all());
 
         if($devisList > 0){
@@ -45,7 +46,7 @@ class DevisController extends BaseController
         $devis->user_id = $request->user_id;
         $devis->boutique_id = User::find($request->user_id)->boutique_id;
         $devis->save();
- 
+
         $total = 0;
         $allReduction = 0;
 
