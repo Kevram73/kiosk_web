@@ -55,4 +55,19 @@ class ReglementController extends BaseController
         return $this->sendResponse($clients, "Clients qui nous doivent retournés avec succès");
     }
 
+    public function store(Request $request){
+        $reglement = new Reglement();
+        $client = Client::find($request->client_id);
+        $reglement->client_id = $request->client_id;
+        $reglement->vente_id = 0;
+        $reglement->montant_donne = $request->montant_donne;
+        $reglement->montant_restant = $client->solde - $request->montant_donne;
+        $reglement->boutique_id = Auth::user()->boutique->id;
+        $reglement->save();
+        $client->solde = $client->solde - $request->montant_donne;
+        $client->save();
+
+        return $this->sendResponse($reglement, "Reglement effectué avec succès");
+    }
+
 }

@@ -160,7 +160,7 @@ class SalesController extends BaseController
         }
         if($request->client_id != 0){
             $client = Client::find($request->client_id);
-            $client->solde = $total;
+            $client->solde += $total;
             $client->save();
         }
 
