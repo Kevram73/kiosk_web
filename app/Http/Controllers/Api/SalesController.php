@@ -144,6 +144,7 @@ class SalesController extends BaseController
 
         $total = 0;
         $allReduction = 0;
+
         foreach($request->product_list as $datum){
             $prevente = new Prevente();
             $prevente->prix = $datum['prix'];
@@ -155,6 +156,11 @@ class SalesController extends BaseController
             $prevente->save();
             $total += $datum['prix']*$datum['qte'];
             $allReduction += $datum['reduction'];
+        }
+        if($request->client_id != 0){
+            $client = Client::find($request->client_id);
+            $client->solde = $total;
+            $client->save();
         }
 
         $vente=vente::findOrFail($vente->id);
