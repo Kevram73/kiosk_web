@@ -29,6 +29,7 @@ class ClientsController extends BaseController
         ], 200);
     }
 
+
     public function show($id)
     {
         $client = Client::find($id);
