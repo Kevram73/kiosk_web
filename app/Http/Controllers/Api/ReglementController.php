@@ -8,6 +8,7 @@ use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\ReglementResource;
 
 
 
@@ -20,10 +21,7 @@ class ReglementController extends BaseController
     }
 
     public function index(){
-
-
-        $reglements=Reglement::all();
-
+        $reglements = ReglementResource::collection(Reglement::all());
         return $this->sendResponse($reglements, "Reglements retournés avec succès");
     }
 
