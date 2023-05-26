@@ -62,7 +62,8 @@ class ReglementController extends BaseController
         $reglement->vente_id = 0;
         $reglement->montant_donne = $request->montant_donne;
         $reglement->montant_restant = $client->solde - $request->montant_donne;
-        $reglement->boutique_id = Auth::user()->boutique->id;
+        $reglement->total = $client->solde;
+        $reglement->date_reglement = now();
         $reglement->save();
         $client->solde = $client->solde - $request->montant_donne;
         $client->save();
