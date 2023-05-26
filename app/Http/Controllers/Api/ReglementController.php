@@ -22,18 +22,7 @@ class ReglementController extends BaseController
     public function index(){
 
 
-        $reglements=Reglement::join('clients', function ($join) {
-                $join->on('reglements.client_id', '=', 'clients.id');
-            })
-            ->join('ventes', function ($join) {
-                $join->on('reglements.vente_id', '=', 'ventes.id');
-            })
-            ->where('ventes.boutique_id', '=',Auth::user()->boutique->id)
-            ->selectRaw('clients.id, ventes.id as venteId,reglements.created_at, ventes.numero, clients.nom, clients.contact, ventes.totaux, SUM(reglements.montant_donne) as donner')
-
-            ->groupBy('clients.id', 'clients.nom','reglements.created_at', 'clients.contact', 'ventes.numero', 'ventes.id', 'ventes.totaux')
-            ->orderBy('reglements.created_at', 'desc')
-            ->get();
+        $reglements=Reglement::all();
 
         return $this->sendResponse($reglements, "Reglements retournés avec succès");
     }
