@@ -8,6 +8,7 @@ use App\Modele;
 use App\Prevente;
 use App\Historique;
 use App\User;
+use App\Client;
 use App\vente;
 use App\Facture;
 use App\Http\Resources\SaleResource;
