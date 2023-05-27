@@ -16,12 +16,10 @@ class LivraisonVenteResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "quantite_livre" => $this->quantite_livre,
-            "quantite_restante" => $this->quantite_restante,
-            "prevente_id" => $this->prevente_id,
-            "livraison_v_id" => $this->livraison_v_id,
-            "prevente" => $this->prevente(),
-            "livraisonLigne" => $this->client(),
+            "numero" => $this->numero,
+            "date_livraison" => $this->date_livraison,
+            "boutique_id" => $this->boutique_id,
+            "parent" => $this->livraison(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
         ];

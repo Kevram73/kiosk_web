@@ -6,24 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Historique;
 use App\vente;
 use App\Livraisonvente;
+use App\Prevente;
+use App\LivraisonVenteS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\LivraisonVenteResource;
-use App\Http\Resources\SaleResource;
-
 
 class DeliveryOnSaleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    // prevente livraisons.
     public function index(Request $request)
     {
-        $livraisons = Livraisonvente::all();
-        return LivraisonVenteResource::collection($livraisons);
+        $livraisons = LivraisonVenteS::all();
+        return LivraisonVenteResource::collection(livraison::all());
     }
 
     public function ventes_non_livrees(){
@@ -40,11 +34,35 @@ class DeliveryOnSaleController extends Controller
      */
     public function store(Request $request)
     {
-        $livraison = new LivraisonV();
-        $livraison ->numero="LIV-VENT".now()->format('Y')."-".$ed;
-        $livraison ->date_livraison= now();
-        $livraison ->boutique_id= User::find($request->user_id)->boutique->id;
+        $lineLiv = new LivraisonVenteS();
+        $lineLiv->numero = $request->numero;
+        $lineLiv->date_livraison = now();
+        $lineLiv->boutique_id = $request->boutique_id;
+        $lineLiv->created_at = now();
+        $lineLiv->updated_at = now();
+        $lineLiv->save();
+
+        $livraison = new Livraisonvente();
+        $livraison->quantite_livre += $request->qte;
+        $prevente = Prevente::find($request->prevente_id);
+        $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
+        $livraison->prevente_id = $request->prevente_id;
+        $livraison->livraison_v_id = $lineLiv->id;
+        $livraison->created_at = now();
+        $livraison->updated_at = now();
         $livraison->save();
+
+        $historique = new Historique();
+        $historique->action = "Creer";
+        $historique->cible = "Livraisons";
+        $historique->user_id = $request->user_id;
+        $historique->save();
+
+        return response()->json([
+            'status' => 'success',
+            'livraison' => $livraison,
+            'line' => $lineLiv
+        ], 201);
     }
 
 
