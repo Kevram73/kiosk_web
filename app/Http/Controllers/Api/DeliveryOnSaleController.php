@@ -59,7 +59,7 @@ class DeliveryOnSaleController extends Controller
         $livraison->save();
 
         $historique = new Historique();
-        $historique->action = "Creer";
+        $historique->actions = "Creer";
         $historique->cible = "Livraisons";
         $historique->user_id = $request->user_id;
         $historique->save();
