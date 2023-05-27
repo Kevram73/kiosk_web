@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Historique;
+use App\vente;
 use App\Livraisonvente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
