@@ -14,10 +14,15 @@ use App\Http\Resources\LivraisonVenteResource;
 
 class DeliveryOnSaleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function index(Request $request)
     {
         $livraisons = LivraisonVenteS::all();
-        return LivraisonVenteResource::collection(livraison::all());
+        return LivraisonVenteResource::collection($livraisons);
     }
 
     public function ventes_non_livrees(){
