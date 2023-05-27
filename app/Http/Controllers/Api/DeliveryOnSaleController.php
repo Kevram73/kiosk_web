@@ -9,7 +9,6 @@ use App\Livraisonvente;
 use App\Prevente;
 use App\LivraisonVenteS;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Resources\LivraisonVenteResource;
 use App\Http\Resources\SaleResource;
 
