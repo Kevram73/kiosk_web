@@ -65,7 +65,8 @@ Route::post('/expenses', [ExpenseController::class, 'store']);
 Route::post('/expenses/journal/available', [ExpenseController::class, 'available_depense']);
 
 Route::get('/delivery', [DeliveryOnSaleController::class, 'index']);
-Route::post('/delivery', [DeliveryOnSaleController::class, 'create']);
+Route::get('/delivery/ventes', [DeliveryOnSaleController::class, 'ventes_non_livrees']);
+Route::post('/delivery', [DeliveryOnSaleController::class, 'store']);
 
 Route::post('/open-journal', [JournalController::class, 'openJournal']);
 Route::post('/close-journal', [JournalController::class, 'closeJournal']);
@@ -77,3 +78,4 @@ Route::post('/devis/store', [DevisController::class, 'storeDevis']);
 Route::get('/reglements', [ReglementController::class, 'index']);
 Route::get('/debitors', [ReglementController::class, 'debiteurs']);
 Route::post('/reglements', [ReglementController::class, 'store']);
+

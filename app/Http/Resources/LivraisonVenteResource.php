@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReglementResource extends JsonResource
+class LivraisonVenteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,12 @@ class ReglementResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "montant_donne" => $this->montant_donne,
-            "montany_restant" => $this->montant_restant,
-            "total" => $this->total,
-            "client_id" => $this->client_id,
-            "date_reglement" => $this->date_reglement,
-            "client" => $this->client(),
+            "quantite_livre" => $this->quantite_livre,
+            "quantite_restante" => $this->quantite_restante,
+            "prevente_id" => $this->prevente_id,
+            "livraison_v_id" => $this->livraison_v_id,
+            "prevente" => $this->prevente(),
+            "livraisonLigne" => $this->client(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
         ];
