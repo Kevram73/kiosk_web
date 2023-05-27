@@ -9,6 +9,7 @@ use App\Livraisonvente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\LivraisonVenteResource;
+use App\Http\Resources\SaleResource;
 
 
 class DeliveryOnSaleController extends Controller
