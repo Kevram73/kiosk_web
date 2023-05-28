@@ -56,7 +56,6 @@ Route::get('/products', [ProductController::class, 'index']);
 
 // Return a list of product categories
 Route::get('/categories', [CategoryController::class, 'index']);
-
 // Return a list of product models
 Route::get('/models', [ModeleController::class, 'index']);
 
