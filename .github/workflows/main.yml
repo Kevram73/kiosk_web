@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy on production mode (pressingelegance.com)
+name: Deploy on testing mode
 
 # Controls when the workflow will run
 on:
@@ -25,6 +25,6 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.2
       with:
-        server: easycarrental.tg
-        username: Kevram73@megane.easycarrental.tg
+        server: pressingmobile-tg.mon.world
+        username: testing@pressingmobile-tg.mon.world
         password: Alkashi13!!!%
