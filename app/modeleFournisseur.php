@@ -11,12 +11,14 @@ class modeleFournisseur extends Model
     return $this->belongsTo('App\Fournisseur');
 }
     public  function modele(){
-
-        return $this->belongsTo('App\Modele');
+        $modele = Modele::find($this->modele_id);
+        $libelle = $modele->libelle;
+        $produit = Produit::find($modele->produit_id)->nom;
+        return "Modele: $libelle, produit: $produit";
     }
-    public  function produit(){
-
-        return $this->belongsTo('App\Produit');
+    
+    public function produit(){
+        return Produit::find();
     }
     public  function commande(){
 
