@@ -46,6 +46,7 @@ class ClientsController extends BaseController
         $client->email = $request->email;
         $client->adresse = $request->adresse;
         $client->boutique_id = $request->boutique_id;
+        $client->solde = $request->solde;
         $client->save();
 
         $historique = new Historique();
