@@ -16,9 +16,8 @@ class modeleFournisseur extends Model
         $produit = Produit::find($modele->produit_id)->nom;
         return "Modele: $libelle, produit: $produit";
     }
-    
+
     public function produit(){
-        return Produit::find();
     }
     public  function commande(){
 
