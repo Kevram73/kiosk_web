@@ -32,7 +32,7 @@ class SaleResource extends JsonResource
             "facture" => $this->facture,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
-            "prevente" => $this->preventes(),
+            "prevente" => PreventeResource::collection($this->preventes()),
             "client" => $this->client(),
             "boutique" => $this->boutique(),
             "user" => $this->user(),
