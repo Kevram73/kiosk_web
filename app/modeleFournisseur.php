@@ -10,7 +10,7 @@ class modeleFournisseur extends Model
 
     return $this->belongsTo('App\Fournisseur');
 }
-    public  function modele(){
+    public function modele(){
         $modele = Modele::find($this->modele_id);
         $libelle = $modele->libelle;
         $produit = Produit::find($modele->produit_id)->nom;
