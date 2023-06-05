@@ -22,6 +22,7 @@ class PreventeResource extends JsonResource
             "prixtotal" => $this->prixtotal,
             "modele_fournisseur_id" => $this->modele_fournisseur_id,
             "modele_produit" => $this->modelefournisseur(),
+            "produit" => $this->product(),
             "vente_id" => $this->vente_id,
             "etat" => $this->etat,
             "created_at" => $this->created_at,
