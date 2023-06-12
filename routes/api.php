@@ -81,4 +81,4 @@ Route::post('/reglements', [ReglementController::class, 'store']);
 
 Route::post('/login/collector', [CollectorController::class, 'login']);
 Route::post('/register/collector', [CollectorController::class, 'register']);
-Route::post('/collectors', [CollectorController::class, 'get_list_collectors']);
+Route::get('/collectors', [CollectorController::class, 'get_list_collectors']);
