@@ -14,6 +14,7 @@ class CollectorController extends BaseController
     public function get_list_collectors(Request $request){
 
         $users = User::all();
+        $collectors = [];
         foreach($users as $user){
             if($user->role() == "COLLECTOR"){
                 $collectors[] = $user;
