@@ -38,7 +38,7 @@ class CollectorController extends BaseController
     }
 
     public function register(Request $request){
-        $myrole = Role::findByName("COLLECTOR");
+        $myrole = Role::where("name", "COLLECTOR")->get()->first();
 
         $user = new User;
         $user->nom = $request->input('nom');
