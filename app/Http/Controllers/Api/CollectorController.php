@@ -29,7 +29,7 @@ class CollectorController extends BaseController
 
     public function login(Request $request){
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials) || $request->user()->role() != "COLLECTOR") {
+        if (!Auth::attempt($credentials)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
