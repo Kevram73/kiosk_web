@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class CollectorController extends BaseController
 {
-    
+
     public function get_list_collectors(Request $request){
-        $users = User::role("COLLECTOR")->get();
+
+        $role = Role::where('name', 'COLLECTOR')->first();
+        $users = $role->getUsersByRole();
         return response()->json([
             'status' => 'success',
             'users' => $users,
@@ -40,7 +42,7 @@ class CollectorController extends BaseController
         $user->boutique_id = $request->input('boutique');
         $user->contact = $request->input('contact');
         $user->password = Hash::make('password');
-        $user->attach($myrole);
+        $user->assignRole($myrole);
         $user->save();
         return response()->json([
             'status' => 'success',
