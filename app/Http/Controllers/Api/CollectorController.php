@@ -1,85 +1,50 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\BaseController;
+use App\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class CollectorController extends Controller
+class CollectorController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    
+    public function get_list_collectors(Request $request){
+        $users = User::role("COLLECTOR")->get();
+        return response()->json([
+            'status' => 'success',
+            'users' => $users,
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function login(Request $request){
+        $credentials = $request->only(['email', 'password']);
+        if (!Auth::attempt($credentials) || $request->user()->role() != "COLLECTOR") {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        $token = $request->user()->createToken('API Token')->plainTextToken;
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->role()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function register(Request $request){
+        $myrole = Role::findByName("COLLECTOR");
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $user = new User;
+        $user->nom = $request->input('nom');
+        $user->prenom = $request->input('prenom');
+        $user->sexe = $request->input('sexe');
+        $user->email = $request->input('email');
+        $user->boutique_id = $request->input('boutique');
+        $user->contact = $request->input('contact');
+        $user->password = Hash::make('password');
+        $user->attach($myrole);
+        $user->save();
+        return response()->json([
+            'status' => 'success',
+            'collector' => $user,
+        ], 200);
     }
 }

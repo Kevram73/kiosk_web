@@ -10,10 +10,11 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\DeliveryOnSaleController;
 use App\Http\Controllers\Api\ReglementController;
 use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\TestController;
-use App\Http\Controllers\Api\DevisController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CollectorController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\DevisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,3 +79,6 @@ Route::get('/reglements', [ReglementController::class, 'index']);
 Route::get('/debitors', [ReglementController::class, 'debiteurs']);
 Route::post('/reglements', [ReglementController::class, 'store']);
 
+Route::post('/login/collector', [CollectorController::class, 'login']);
+Route::post('/register/collector', [CollectorController::class, 'register']);
+Route::post('/collectors', [CollectorController::class, 'get_list_collectors']);
