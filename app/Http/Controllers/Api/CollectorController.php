@@ -45,7 +45,7 @@ class CollectorController extends BaseController
         $user->prenom = $request->input('prenom');
         $user->sexe = $request->input('sexe');
         $user->email = $request->input('email');
-        $user->boutique_id = $request->input('boutique');
+        $user->boutique_id = 1;
         $user->contact = $request->input('contact');
         $user->password = Hash::make('password');
         $user->assignRole($myrole);
