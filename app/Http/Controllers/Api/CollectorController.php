@@ -14,10 +14,10 @@ class CollectorController extends BaseController
     public function get_list_collectors(Request $request){
 
         $role = Role::where('name', 'COLLECTOR')->first();
-        $users = $role->getUsersByRole();
+        // $users = $role->getUsersByRole();
         return response()->json([
             'status' => 'success',
-            'users' => $users,
+            'users' => $role,
         ], 200);
     }
 
