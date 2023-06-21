@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CollectorController;
+use App\Http\Controllers\Api\BoutiqueController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\DevisController;
 
@@ -82,3 +83,5 @@ Route::post('/reglements', [ReglementController::class, 'store']);
 Route::post('/login/collector', [CollectorController::class, 'login']);
 Route::post('/register/collector', [CollectorController::class, 'register']);
 Route::get('/collectors', [CollectorController::class, 'get_list_collectors']);
+
+Route::get('/boutiques', [BoutiqueController::class, 'index']);
