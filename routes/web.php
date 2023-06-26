@@ -171,7 +171,7 @@ Route::post('/updatelivraison2', 'LivraisonsController@update2');
 Route::get('/showlivraison2-{id}', 'LivraisonsController@show2');
 Route::get('/verification2-{id}', 'LivraisonsController@verification2');
 
- 
+
 Route::get('/recupererfournisseurP', 'FournisseursController@fournisseurP');
 Route::get('/recupererfournisseur-{id}', 'ProvisionsController@fournisseur');
 Route::get('/recupererprovision-{id}-{ed}', 'ProvisionsController@provision');
@@ -442,14 +442,14 @@ Route::get('/get_solde','BanqueController@get_solde');
 Route::get('/situationsBoutiques','SituationController@liste');
 
 Route::get('/caisses','CaisseController@liste')->name('caisses');
- 
+
 Route::get('/allversements','CaisseController@versements')->name('allversements');
 
 Route::get('/depenseversem-files-{id}', 'CaisseController@create_depense_file')->name('depenseversem_file');
 Route::post('/depenseversem-files', 'CaisseController@store_depense')->name('store_depensedepenseversem_file');
 Route::get('/depense-file-delete-{id}', 'CaisseController@destroy_file')->name('delete_depense_file');
 Route::get('/versements', 'CaisseController@index')->name('versements');
-Route::get('/validationversement', 'CaisseController@indexVALIDATION')->name('validationversement');
+Route:: get('/validationversement', 'CaisseController@indexVALIDATION')->name('validationversement');
 
 Route::get('/depotversement', 'CaisseController@create_depot')->name('depotversement');
 Route::post('/add-depotversement', 'CaisseController@store_depot')->name('store_depotversement');
