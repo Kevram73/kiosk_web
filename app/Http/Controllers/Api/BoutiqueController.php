@@ -57,7 +57,7 @@ class BoutiqueController extends BaseController
         $collector_shop->collector_id = $request->collector_id;
         $collector_shop->shop_id = $request->shop_id;
         $collector_shop->status = true;
-        $collector_shop->status = now();
+        $collector_shop->date = now();
         $collector_shop->save();
 
         return response()->json(['collector_shop' => $collector_shop]);
