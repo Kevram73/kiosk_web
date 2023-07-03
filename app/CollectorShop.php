@@ -14,6 +14,6 @@ class CollectorShop extends Model
     ];
 
     public function users(){
-        return Boutique::find($this->shop_id)->users();
+        return User::where('boutique_id', $this->shop_id)->get();
     }
 }
