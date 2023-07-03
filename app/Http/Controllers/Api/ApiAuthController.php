@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
 
+
 class ApiAuthController extends BaseController
 {
 
@@ -92,6 +93,8 @@ class ApiAuthController extends BaseController
         $collector_shop = new CollectorShop();
         $collector_shop->collector_id = $request->collector_id;
         $collector_shop->shop_id = $request->shop_id;
+        $collector->status = true;
+        $collector->status = now();
         $collector_shop->save();
 
         return response()->json(['collector_shop' => $collector_shop]);
