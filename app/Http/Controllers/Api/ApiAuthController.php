@@ -65,7 +65,7 @@ class ApiAuthController extends BaseController
 
     public function login_collector(Request $request){
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials) && $request->user()->role() != "COLLECTOR") {
+        if (!Auth::attempt($credentials) && $request->user()->hasRole("COLLECTOR")) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
