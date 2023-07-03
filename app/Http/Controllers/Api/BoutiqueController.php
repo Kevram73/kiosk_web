@@ -50,4 +50,15 @@ class BoutiqueController extends BaseController
         $collectes = Collecter::where("user_id_collecteur", $request->user_id)->get();
         return $this->sendResponse($collectes, "Collectes retrieved successfully.");
     }
+
+    public function assign_collector_shop(Request $request){
+        $collector_shop = new CollectorShop();
+        $collector_shop->collector_id = $request->collector_id;
+        $collector_shop->shop_id = $request->shop_id;
+        $collector->status = true;
+        $collector->status = now();
+        $collector_shop->save();
+
+        return response()->json(['collector_shop' => $collector_shop]);
+    }
 }
