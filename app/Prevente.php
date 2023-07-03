@@ -15,7 +15,12 @@ class Prevente extends Model
 
     public function product(){
         $produit_id = Modele::find($this->modele_fournisseur_id)->produit_id;
-        $productName = Produit::find($produit_id)->nom;
-        return $productName;
+        if(Produit::find($produit_id)){
+            $productName = Produit::find($produit_id)->nom;
+            return $productName;
+        }
+
+        return "";
+
     }
 }

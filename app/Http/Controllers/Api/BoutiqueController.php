@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController;
 use App\Boutique;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class BoutiqueController extends BaseController
 {
@@ -18,5 +16,38 @@ class BoutiqueController extends BaseController
     public function index(Request $request){
         $boutiques = Boutique::all();
         return $this->sendResponse($boutiques, "Boutiques retrieved successfully.");
+    }
+
+    public function get_users(Request $request, int $id){
+        $shop = Boutique::findOrFail($id);
+        return $this->sendResponse($shop->users(), "users's shop retrieved successfully.");
+    }
+
+    public function get_shops(Request $request){
+        $user = $request->user();
+        $user_id = $user->id;
+        $shops = CollectorShop::where("collector_id", $user_id)->get();
+        return CollectorResource::collection($shops);
+
+    }
+
+    public function make_transaction(Request $request){
+        $collecte = new Collecter();
+        $collecte->user_id_collecteur = $request->user_id_collecteur;
+        $collecte->boutique_id = $request->boutique_id;
+        $collecte->user_id_gerant = $request->user_id_gerant;
+        $collecte->montant = $request->montant;
+        $collecte->etat  = true;
+        $collecte->save();
+        $user = User::find($request->user_id_collecteur);
+        $user->solde += $request->montant;
+        $user->save();
+
+        return $this->sendResponse($collecte, "Votre collecte a été bien effectuée");
+    }
+
+    public function list_transaction(Request $request){
+        $collectes = Collecter::where("user_id_collecteur", $request->user_id)->get();
+        return $this->sendResponse($collectes, "Collectes retrieved successfully.");
     }
 }
