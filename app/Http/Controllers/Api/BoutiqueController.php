@@ -7,6 +7,7 @@ use App\Boutique;
 use App\Collecter;
 use App\CollectorShop;
 use Illuminate\Http\Request;
+use App\Http\Resources\CollectorResource;
 
 class BoutiqueController extends BaseController
 {
