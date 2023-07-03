@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Boutique;
+use App\Collecter;
 use App\CollectorShop;
 use Illuminate\Http\Request;
 
