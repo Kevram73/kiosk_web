@@ -12,4 +12,8 @@ class CollectorShop extends Model
         'status',
         'date'
     ];
+
+    public function users(){
+        return Boutique::find(shop_id)->users();
+    }
 }
