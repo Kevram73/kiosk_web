@@ -13,7 +13,12 @@ class CollectorShop extends Model
         'date'
     ];
 
-    public function users(){
+    public function users()
+    {
         return User::where('boutique_id', $this->shop_id)->get();
+    }
+
+    public function shop(){
+        return Boutique::find($this->shop_id);
     }
 }

@@ -30,8 +30,11 @@ class BoutiqueController extends BaseController
         $user = $request->user();
         $user_id = $user->id;
         $shops = CollectorShop::where("collector_id", $user_id)->get();
-        return CollectorResource::collection($shops);
-
+        $shopList = [];
+        foreach ($shops as $shop){
+            $shopList[] = $shop->shop();
+        }
+        return $this->sendResponse($shops, "Boutiques retrieved successfully");
     }
 
     public function make_transaction(Request $request){
