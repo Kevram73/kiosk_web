@@ -34,7 +34,7 @@ class BoutiqueController extends BaseController
         foreach ($shops as $shop){
             $shopList[] = $shop->shop();
         }
-        return response()->json(['shops' => $shopList]);
+        return response()->json(['shops' => $shopList, 'collector_shop' => $shop]);
     }
 
     public function make_transaction(Request $request){
