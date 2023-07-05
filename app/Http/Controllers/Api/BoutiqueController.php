@@ -32,9 +32,9 @@ class BoutiqueController extends BaseController
         $shops = CollectorShop::where("collector_id", $user_id)->get();
         $shopList = [];
         foreach ($shops as $shop){
-            array_push($shopList, $shop->shop());
+            $shopList[] = $shop->shop();
         }
-        return $this->sendResponse($shopList, "Boutiques retrieved successfully");
+        return response()->json(['shops' => $shopList]);
     }
 
     public function make_transaction(Request $request){
