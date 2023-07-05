@@ -34,7 +34,7 @@ class BoutiqueController extends BaseController
         foreach ($shops as $shop){
             $shopList[] = $shop->shop();
         }
-        return $this->sendResponse($shops, "Boutiques retrieved successfully");
+        return $this->sendResponse($shopList, "Boutiques retrieved successfully");
     }
 
     public function make_transaction(Request $request){
