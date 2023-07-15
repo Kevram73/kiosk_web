@@ -39,7 +39,7 @@ class SalesController extends BaseController
 
     public function store_vente_simple(Request $request)
     {
-        if(vente::latest() != null){
+        if(vente::latest()->first() != null){
             $id=vente::latest()->first()->id;
             $ed = $id + 1;
         } else {
@@ -122,7 +122,7 @@ class SalesController extends BaseController
     public function store_vente_credit(Request $request)
     {
         // $this->sendResponse($vente, "Vente effectué avec succès");
-        if(vente::latest() != null){
+        if(vente::latest()->first() != null){
             $id=vente::latest()->first()->id;
             $ed = $id + 1;
         } else {
@@ -210,7 +210,7 @@ class SalesController extends BaseController
     public function store_vente_nonlivre(Request $request)
     {
         // $this->sendResponse($vente, "Vente effectué avec succès");
-        if(vente::latest() != null){
+        if(vente::latest()->first() != null){
             $id=vente::latest()->first()->id;
             $ed = $id + 1;
         } else {
@@ -294,7 +294,7 @@ class SalesController extends BaseController
     public function store_vente_gros(Request $request)
     {
         // $this->sendResponse($vente, "Vente effectué avec succès");
-        if(vente::latest() != null){
+        if(vente::latest()->first() != null){
             $id=vente::latest()->first()->id;
             $ed = $id + 1;
         } else {
