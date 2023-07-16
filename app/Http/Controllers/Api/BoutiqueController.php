@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController;
 use App\Boutique;
 use App\Collecter;
+use App\User;
 use App\CollectorShop;
 use Illuminate\Http\Request;
 use App\Http\Resources\CollectorResource;
@@ -44,7 +45,7 @@ class BoutiqueController extends BaseController
         $collecte->boutique_id = $request->boutique_id;
         $collecte->user_id_gerant = $request->user_id_gerant;
         $collecte->montant = $request->montant;
-        $collecte->etat  = true;
+        $collecte->etat = true;
         $collecte->save();
         $user = User::find($request->user_id_collecteur);
         $user->solde += $request->montant;
