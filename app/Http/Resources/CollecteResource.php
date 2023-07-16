@@ -16,8 +16,8 @@ class CollecteResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "collector" => $this->collecteur(),
-            "gerant" => $this->gerant(),
+            "collector" => $this->gerant(),
+            "gerant" => $this->collecteur(),
             "shop" => $this->shop(),
             "amount" => $this->montant,
             "created_at" => $this->created_at,
