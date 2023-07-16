@@ -55,7 +55,7 @@ class BoutiqueController extends BaseController
     }
 
     public function list_transaction(Request $request){
-        $collectes = Collecter::where("user_id_collecteur", $request->user_id)->get();
+        $collectes = Collecter::where("user_id_collecteur", $request->user()->id)->get();
         return $this->sendResponse($collectes, "Collectes retrieved successfully.");
     }
 
