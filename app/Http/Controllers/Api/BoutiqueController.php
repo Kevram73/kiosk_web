@@ -9,6 +9,7 @@ use App\User;
 use App\CollectorShop;
 use Illuminate\Http\Request;
 use App\Http\Resources\CollectorResource;
+use App\Http\Resources\CollecteResource;
 use Illuminate\Support\Facades\Auth;
 
 class BoutiqueController extends BaseController
@@ -57,7 +58,7 @@ class BoutiqueController extends BaseController
 
     public function list_transaction(Request $request){
         $collectes = Collecter::where("user_id_gerant", Auth::user()->id)->get();
-        return $this->sendResponse($collectes, "Collectes retrieved successfully.");
+        return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");
     }
 
     public function assign_collector_shop(Request $request){
