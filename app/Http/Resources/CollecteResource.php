@@ -19,6 +19,7 @@ class CollecteResource extends JsonResource
             "collector" => $this->collecteur(),
             "gerant" => $this->gerant(),
             "shop" => $this->shop(),
+            "amount" => $this->montant,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
         ];
