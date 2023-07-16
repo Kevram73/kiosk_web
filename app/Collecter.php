@@ -19,12 +19,12 @@ class Collecter extends Model
 
     public function gerant(){
         $user = User::find($this->user_id_gerant);
-        return $user->nom + " " + $user->prenom;
+        return $user->nom ." ". $user->prenom;
     }
 
     public function collecteur(){
         $user = User::find($this->user_id_collecteur);
-        return $user->nom + " " + $user->prenom;
+        return $user->nom ." " .$user->prenom;
     }
 
     public function shop(){
