@@ -50,7 +50,7 @@ class BoutiqueController extends BaseController
         $user->solde += $request->montant;
         $user->save();
 
-        return $this->sendResponse($collecte, "Votre collecte a été bien effectuée");
+        return $this->sendResponse($collecte, "Votre collecte a été bien effectuée", 201);
     }
 
     public function list_transaction(Request $request){
