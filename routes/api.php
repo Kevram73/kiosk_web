@@ -90,5 +90,6 @@ Route::get('/boutiques', [BoutiqueController::class, 'index']);
 
 Route::get('/shops/collectors', [BoutiqueController::class, 'get_shops']);
 Route::get('/transactions', [BoutiqueController::class, 'list_transaction']);
+Route::get('/transactions/manager', [BoutiqueController::class, 'list_transaction_manager']);
 Route::post('/transaction/make', [BoutiqueController::class, 'make_transaction']);
 Route::post('/shop/assign', [BoutiqueController::class, 'assign_collector_shop']);

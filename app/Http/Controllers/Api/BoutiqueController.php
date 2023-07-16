@@ -61,6 +61,11 @@ class BoutiqueController extends BaseController
         return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");
     }
 
+    public function list_transaction_manager(Request $request){
+        $collectes = Collecter::where("user_id_collecteur", Auth::user()->id)->get();
+        return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");
+    }
+
     public function assign_collector_shop(Request $request){
         $collector_shop = new CollectorShop();
         $collector_shop->collector_id = $request->collector_id;
