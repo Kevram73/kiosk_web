@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CollectorController;
 use App\Http\Controllers\Api\BoutiqueController;
+use App\Http\Controllers\Api\VersementController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\DevisController;
 
@@ -93,3 +94,7 @@ Route::get('/transactions', [BoutiqueController::class, 'list_transaction']);
 Route::get('/transactions/manager', [BoutiqueController::class, 'list_transaction_manager']);
 Route::post('/transaction/make', [BoutiqueController::class, 'make_transaction']);
 Route::post('/shop/assign', [BoutiqueController::class, 'assign_collector_shop']);
+
+
+Route::get('/versements', [VersementController::class, 'index']);
+Route::post('/versements', [VersementController::class, 'store']);
