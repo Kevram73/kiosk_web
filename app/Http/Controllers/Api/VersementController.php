@@ -10,8 +10,8 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 class VersementController extends BaseController
 {
 
-    private function __construct(){
-        $this->middleware('auth');
+    public function __construct(){
+        $this->middleware('auth:sanctum');
     }
 
     public function index(Request $request){
