@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Models\Versement;
+use App\Versement;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
 
