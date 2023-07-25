@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Versement;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
-class VersementController extends Controller
+
+class VersementController extends BaseController
 {
 
     private function __construct(){
