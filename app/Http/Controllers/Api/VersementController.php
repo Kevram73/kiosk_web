@@ -16,7 +16,7 @@ class VersementController extends BaseController
 
     public function index(Request $request){
         $versements = Versement::where('user_id', $request->user()->id)->get();
-        return $this->sendResponse($boutiques, "Boutiques retrieved successfully.");
+        return $this->sendResponse($versements, "Boutiques retrieved successfully.");
     }
 
     public function store(Request $request){
