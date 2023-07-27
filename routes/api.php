@@ -94,7 +94,10 @@ Route::get('/transactions', [BoutiqueController::class, 'list_transaction']);
 Route::get('/transactions/manager', [BoutiqueController::class, 'list_transaction_manager']);
 Route::post('/transaction/make', [BoutiqueController::class, 'make_transaction']);
 Route::post('/shop/assign', [BoutiqueController::class, 'assign_collector_shop']);
+Route::get('/transactions/manager/lastTen', [VersementController::class, 'lastTen']);
+Route::get('/transactions/manager/filter', [VersementController::class, 'dataWithFilter']);
 
-
-Route::get('/versements', [VersementController::class, 'index']);
+Route::get('/versements/lastTen', [VersementController::class, 'lastTen']);
+Route::get('/versements/filter', [VersementController::class, 'dataWithFilter']);
 Route::post('/versements', [VersementController::class, 'store']);
+

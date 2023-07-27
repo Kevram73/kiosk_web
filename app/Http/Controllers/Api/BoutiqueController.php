@@ -66,6 +66,19 @@ class BoutiqueController extends BaseController
         return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");
     }
 
+    public function lastTen(Request $request){
+        $collectes = Collecter::where("user_id_collecteur", Auth::user()->id)->orderBy('id', 'desc')->take(10)->get();
+        return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");
+    }
+
+    public function dataWithFilter(Request $request){
+        $collectes = Collecter::where("user_id_collecteur", Auth::user()->id)
+                        ->whereBetween('created_at', [$request->startDate, $request->endDate])
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+        return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");
+    }
+
     public function assign_collector_shop(Request $request){
         $collector_shop = new CollectorShop();
         $collector_shop->collector_id = $request->collector_id;
