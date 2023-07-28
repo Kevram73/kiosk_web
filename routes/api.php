@@ -95,9 +95,9 @@ Route::get('/transactions/manager', [BoutiqueController::class, 'list_transactio
 Route::post('/transaction/make', [BoutiqueController::class, 'make_transaction']);
 Route::post('/shop/assign', [BoutiqueController::class, 'assign_collector_shop']);
 Route::get('/transactions/manager/lastTen', [BoutiqueController::class, 'lastTen']);
-Route::get('/transactions/manager/filter/{startDate}/{endDate}', [BoutiqueController::class, 'dataWithFilter']);
+Route::post('/transactions/manager/filter', [BoutiqueController::class, 'dataWithFilter']);
 
 Route::get('/versements/lastTen', [VersementController::class, 'lastTen']);
-Route::get('/versements/filter/{startDate}/{endDate}', [VersementController::class, 'dataWithFilter']);
+Route::post('/versements/filter', [VersementController::class, 'dataWithFilter']);
 Route::post('/versements', [VersementController::class, 'store']);
 
