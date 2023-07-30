@@ -89,4 +89,8 @@ class BoutiqueController extends BaseController
 
         return response()->json(['collector_shop' => $collector_shop]);
     }
+
+    public function solde(Request $request){
+        return response()->json(['solde' => $request->user()]);
+    }
 }

@@ -56,7 +56,5 @@ class CollectorController extends BaseController
         ], 200);
     }
 
-    public function solde(Request $request){
-        return response()->json(['solde' => $request->user()]);
-    }
+    
 }
