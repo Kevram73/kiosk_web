@@ -36,6 +36,7 @@ Route::post('/register/collector', [ApiAuthController::class, 'register_collecto
 Route::post('/logout', [ApiAuthController::class, 'logout']);
 Route::post('/change-password', [ApiAuthController::class, 'changePassword']);
 Route::get('/solde', [BoutiqueController::class,'solde']);
+
 // Test request
 Route::get('/test', [TestController::class, 'index']);
 
