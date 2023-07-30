@@ -57,6 +57,6 @@ class CollectorController extends BaseController
     }
 
     public function solde(Request $request){
-        return response()->json(['solde' => $request->user()->solde]);
+        return response()->json(['solde' => $request->user()]);
     }
 }
