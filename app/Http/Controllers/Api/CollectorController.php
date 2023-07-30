@@ -55,4 +55,8 @@ class CollectorController extends BaseController
             'collector' => $user,
         ], 200);
     }
+
+    public function solde(Request $request){
+        return response()->json(['solde' => Auth::user()->solde]);
+    }
 }
