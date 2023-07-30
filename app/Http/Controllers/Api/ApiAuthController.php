@@ -89,7 +89,7 @@ class ApiAuthController extends BaseController
         return response()->json(['new_user' => $user]);
     }
 
-    
-
-
+    public function solde(Request $request){
+        return response()->json(['solde' => $request->user()->solde]);
+    }
 }

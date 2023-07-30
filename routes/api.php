@@ -35,7 +35,7 @@ Route::post('/login/collector', [ApiAuthController::class, 'login_collector']);
 Route::post('/register/collector', [ApiAuthController::class, 'register_collector']);
 Route::post('/logout', [ApiAuthController::class, 'logout']);
 Route::post('/change-password', [ApiAuthController::class, 'changePassword']);
-
+Route::get('/solde', [ApiAuthController::class,'solde']);
 // Test request
 Route::get('/test', [TestController::class, 'index']);
 
