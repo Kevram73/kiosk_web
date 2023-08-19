@@ -20,9 +20,10 @@ class VersementController extends BaseController
     }
 
     public function dataWithFilter(Request $request){
-        $versements = Versement::where('user_id', $request->user()->id)->whereBetween('created_at', [$request->startDate, $request->endDate])
-                       ->orderBy('created_at', 'desc')
-                       ->get();
+        $versements = Versement::where('user_id', $request->user()->id)
+                        ->whereBetween('created_at', [$request->startDate, $request->endDate])
+                        ->orderBy('created_at', 'desc')
+                        ->get();
         return $this->sendResponse($versements, "Versements retrieved successfully.");
     }
 

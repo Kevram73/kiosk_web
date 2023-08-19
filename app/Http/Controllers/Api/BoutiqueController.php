@@ -74,6 +74,7 @@ class BoutiqueController extends BaseController
     public function dataWithFilter(Request $request){
         $collectes = Collecter::where("user_id_collecteur", Auth::user()->id)
                         ->whereBetween('created_at', [$request->startDate, $request->endDate])
+                        ->where("boutique_id", $request->shopId)
                         ->orderBy('created_at', 'desc')
                         ->get();
         return $this->sendResponse(CollecteResource::collection($collectes), "Collectes retrieved successfully.");

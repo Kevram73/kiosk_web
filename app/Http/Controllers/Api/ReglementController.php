@@ -21,7 +21,7 @@ class ReglementController extends BaseController
     }
 
     public function index(){
-        $reglements = ReglementResource::collection(Reglement::all());
+        $reglements = ReglementResource::collection(Reglement::all()->take(10));
         return $this->sendResponse($reglements, "Reglements retournés avec succès");
     }
 

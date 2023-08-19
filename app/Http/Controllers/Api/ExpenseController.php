@@ -19,7 +19,7 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses = Depense::all();
+        $expenses = Depense::all()->take(10);
 
         return response([
             'data' => $expenses,
