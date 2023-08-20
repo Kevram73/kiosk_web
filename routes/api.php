@@ -72,6 +72,7 @@ Route::post('/expenses/journal/available', [ExpenseController::class, 'available
 Route::get('/delivery', [DeliveryOnSaleController::class, 'index']);
 Route::get('/delivery/ventes', [DeliveryOnSaleController::class, 'ventes_non_livrees']);
 Route::post('/delivery', [DeliveryOnSaleController::class, 'store']);
+Route::post('/delivery/filter', [DeliveryOnSaleController::class, 'filter']);
 
 Route::post('/open-journal', [JournalController::class, 'openJournal']);
 Route::post('/close-journal', [JournalController::class, 'closeJournal']);

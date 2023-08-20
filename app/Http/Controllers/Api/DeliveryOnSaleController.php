@@ -22,13 +22,19 @@ class DeliveryOnSaleController extends Controller
 
     public function index(Request $request)
     {
-        $livraisons = LivraisonVenteS::all()->take(10);
+        $livraisons = LivraisonVenteS::where('boutique_id', Auth::user()->boutique()->id)->take(10);
         return LivraisonVenteResource::collection($livraisons);
     }
 
     public function ventes_non_livrees(){
         $ventes = vente::where('type_vente', 3)->get();
         return SaleResource::collection($ventes);
+    }
+
+    public function filter(Request $request){
+        $livraisons = LivraisonVenteS::where('boutique_id', Auth::user()->boutique()->id)
+                        ->whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
+        return LivraisonVenteResource::collection($livraisons);
     }
 
 
