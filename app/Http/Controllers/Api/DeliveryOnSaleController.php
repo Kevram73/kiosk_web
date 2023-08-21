@@ -22,7 +22,7 @@ class DeliveryOnSaleController extends Controller
 
     public function index(Request $request)
     {
-        $livraisons = LivraisonVenteS::where('boutique_id', Auth::user()->boutique()->id)->take(10);
+        $livraisons = LivraisonVenteS::where('boutique_id', Auth::user()->boutique()->id)->take(10)->get();
         return LivraisonVenteResource::collection($livraisons);
     }
 
