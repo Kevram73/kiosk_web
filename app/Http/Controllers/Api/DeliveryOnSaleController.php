@@ -33,8 +33,7 @@ class DeliveryOnSaleController extends BaseController
     }
 
     public function filter(Request $request){
-        $livraisons = LivraisonVenteS::where('boutique_id', Auth::user()->boutique()->id)
-                        ->whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
+        $livraisons = LivraisonVenteS::whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
         return LivraisonVenteResource::collection($livraisons);
     }
 
