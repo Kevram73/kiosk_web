@@ -96,6 +96,10 @@ class DevisController extends BaseController
         return $this->sendResponse($devis, "Devis effectué avec succès");
     }
 
+    public function filter(Request $request){
+        $devis = DevisVente::whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
+        return $this->sendResponse($devis, "Devis retrieved successfully.");
+    }
 
 
 }

@@ -28,6 +28,7 @@ class DeliveryOnSaleController extends BaseController
         // return LivraisonVenteResource::collection($livraisons);
     }
 
+
     public function ventes_non_livrees(){
         $ventes = vente::where('type_vente', 3)->get();
         return SaleResource::collection($ventes);
@@ -35,7 +36,7 @@ class DeliveryOnSaleController extends BaseController
 
     public function filter(Request $request){
         $livraisons = LivraisonVenteS::whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
-        return LivraisonVenteResource::collection($livraisons);
+        return $this->sendResponse($livraisons, "Deliveries retrieved successfully.");
     }
 
 

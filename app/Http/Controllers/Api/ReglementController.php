@@ -25,6 +25,11 @@ class ReglementController extends BaseController
         return $this->sendResponse($reglements, "Reglements retournés avec succès");
     }
 
+    public function filter(Request $request){
+        $reglements = ReglementResource::collection(Reglement::whereBetween("created_at", [$request->beginDate, $request->endDate])->get()->take(10));
+        return $this->sendResponse($reglements, "Reglements retrieved successfully.");
+    }
+
     public function debiteurs()
     {
         $clients = Client::where("solde",'!=', 0)->get();

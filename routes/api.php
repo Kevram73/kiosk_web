@@ -67,6 +67,7 @@ Route::get('/models', [ModeleController::class, 'index']);
 
 Route::get('/expenses', [ExpenseController::class, 'index']);
 Route::post('/expenses', [ExpenseController::class, 'store']);
+Route::post('/expenses/filter', [ExpenseController::class, 'filter']);
 Route::post('/expenses/journal/available', [ExpenseController::class, 'available_depense']);
 
 Route::get('/delivery', [DeliveryOnSaleController::class, 'index']);
@@ -79,9 +80,11 @@ Route::post('/close-journal', [JournalController::class, 'closeJournal']);
 Route::get('/verify-journal', [JournalController::class, 'verifyJournal']);
 
 Route::get('/devis', [DevisController::class, 'index']);
+Route::post('/devis/filter', [DevisController::class, 'filter']);
 Route::post('/devis/store', [DevisController::class, 'storeDevis']);
 
 Route::get('/reglements', [ReglementController::class, 'index']);
+Route::post('/reglements/filter', [ReglementController::class, 'filter']);
 Route::get('/debitors', [ReglementController::class, 'debiteurs']);
 Route::post('/reglements', [ReglementController::class, 'store']);
 

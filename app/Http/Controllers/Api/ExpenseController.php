@@ -25,8 +25,12 @@ class ExpenseController extends Controller
             'data' => $expenses,
             'status' => 200
         ]);
+    }
 
+    public function filter(Request $request){
+        $expenses = Depense::whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
 
+        return $this->sendResponse($expenses, "Depenses retrieved successfully.");
     }
 
     /**
