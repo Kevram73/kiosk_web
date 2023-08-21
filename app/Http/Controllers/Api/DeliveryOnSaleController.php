@@ -11,16 +11,17 @@ use App\LivraisonVenteS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\LivraisonVenteResource;
+use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\SaleResource;
 
-class DeliveryOnSaleController extends Controller
+class DeliveryOnSaleController extends BaseController
 {
     public function __construct()
     {
         $this->middleware('auth:sanctum');
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $livraisons = LivraisonVenteS::all()->take(10);
         return LivraisonVenteResource::collection($livraisons);
