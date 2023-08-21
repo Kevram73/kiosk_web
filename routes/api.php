@@ -52,6 +52,7 @@ Route::get('/clients/{id}', [ClientsController::class, 'show']);
 
 
 Route::get('/sales', [SalesController::class, 'index']);
+Route::post('/sales/filter', [SalesController::class, 'filter']);
 Route::post('/sales/simple', [SalesController::class, 'store_vente_simple']);
 Route::post('/sales/credit', [SalesController::class, 'store_vente_credit']);
 Route::post('/sales/nonlivre', [SalesController::class, 'store_vente_nonlivre']);

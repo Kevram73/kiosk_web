@@ -36,6 +36,11 @@ class SalesController extends BaseController
         return SaleResource::collection(vente::all());
     }
 
+    public function filter(Request $request){
+        $sales = SaleResource::collection(vente::whereBetween("created_at", [$request->beginDate, $request->endDate])->get()->take(10));
+        return $this->sendResponse($sales, "Sales retrieved successfully");
+    }
+
 
     public function store_vente_simple(Request $request)
     {
