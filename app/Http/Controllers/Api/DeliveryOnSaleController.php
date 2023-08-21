@@ -24,7 +24,8 @@ class DeliveryOnSaleController extends BaseController
     public function index()
     {
         $livraisons = LivraisonVenteS::all()->take(10);
-        return LivraisonVenteResource::collection($livraisons);
+        return $this->sendResponse(LivraisonVenteResource::collection($livraisons), "Deliveries retrieved successfully.");
+        // return LivraisonVenteResource::collection($livraisons);
     }
 
     public function ventes_non_livrees(){
