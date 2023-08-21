@@ -9,8 +9,9 @@ use App\Sold;
 use App\JournalDepense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
-class ExpenseController extends Controller
+class ExpenseController extends BaseController
 {
     /**
      * Display a listing of the resource.
