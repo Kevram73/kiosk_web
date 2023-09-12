@@ -59,6 +59,7 @@ class DeliveryOnSaleController extends BaseController
         $livraison = new Livraisonvente();
         $livraison->quantite_livre += $request->qte;
         $prevente = Prevente::find($request->prevente_id);
+        $prevente->quantite -= $request->qte;
         $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
         $livraison->prevente_id = $request->prevente_id;
         $livraison->livraison_v_id = $lineLiv->id;
