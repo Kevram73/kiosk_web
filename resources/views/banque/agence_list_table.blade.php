@@ -6,7 +6,7 @@
         <th class="center hidden-phone">Ville </th>
         <th class="center hidden-phone">Quartier</th>
         <th class="center hidden-phone">Contact</th>
-
+        <th class="center hidden-phone">Action</th>
     </tr>
     </thead>
     <tbody class="center hidden-phone">
@@ -24,6 +24,8 @@
             <th class="center hidden-phone">
                 {{$bank->contact}}
             </th>
+            <th class="center hidden-phone">   <a class="btn btn-success" onclick="editboutique('.$bank->id.')"> <i class="fa fa-pencil"></i></a>
+                <a class="btn btn-danger" onclick="deleteboutique('.$bank->id.')"><i class="fa fa-trash-o"></i></a></th>
         </tr>
     @endforeach
 

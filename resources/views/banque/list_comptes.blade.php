@@ -26,7 +26,8 @@
 
                     
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-outline-light"
-                           id ="btnAddCompte" onclick="addCompteBancaire()">Ajouter compte bancaire</a>
+                           id ="btnAddCompte" onclick="addCompte()" data-bs-toggle="modal"
+                           data-bs-target="#idAddCompteModal">Ajouter Compte bancaire</a>
                         @include('banque.compte_list_table')
                     </div>
                 </section>
@@ -71,7 +72,48 @@
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="js/banques.js"></script>
+    <script src="js/compte_bancaire.js"></script>
+    <script>
+        console.log('recherche');
+   $(document).ready(function(){
+       $('#provisionTable').DataTable({
+           "order": [[ 0, "desc" ]],
+           "pageLength":10,
+           "oLanguage": {
+               
+               "sProcessing":     "Traitement en cours...",
+               "sSearch":         "Rechercher&nbsp;:",
+               "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
+               "sInfo":           "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+               "sInfoEmpty":      "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+               "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+               "sInfoPostFix":    "",
+               "sLoadingRecords": "Chargement en cours...",
+               "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+               "sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
+               "oPaginate": {
+                   "sFirst":      "Premier",
+                   "sPrevious":   "Pr&eacute;c&eacute;dent",
+                   "sNext":       "Suivant",
+                   "sLast":       "Dernier"
+               },
+               
+               "oAria": {
+                   "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                   "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+               }
+           }
+       });
+   });
 
+
+       $(document).ready(function() {
+       $('#provisionTable').DataTable();
+       } );
+           var modal = $('.Recherche');
+           $('.logo').click(function() {
+               modal.show();
+           });
+</script>
 
 @endsection

@@ -92,7 +92,7 @@
 @endsection
 @section('js')
 
-    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="octopus/assets/vendor/jquery/jquery.js"></script> 
     <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>

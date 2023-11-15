@@ -205,7 +205,7 @@ class CommandesController extends Controller
                 })
                 ->where('ventes.client_id', '=', $clients[$i]->id)
                 ->SUM('reglements.montant_restant');
-            $credit[$i] = $total;
+            $credit[$i] = $total; 
         }
         $cre=count($clients);
         return view('newcommande2',compact('categorie', 'produits', 'modeles', 'fournisseurs', 'mod','modele2','clients','credit','cre'));
@@ -282,8 +282,21 @@ class CommandesController extends Controller
 
             $commande= Commande::findOrFail($commande ->id);
             $commande->totaux=$commande->totaux+  $commandemodele -> total;
-            $commande->update();
+            $commande->update();  
+        $commande= Commande::findOrFail($commande->id);
+
+            if($commande->credit == 1)
+            {
+                $fournisseur = Fournisseur::find($commande->fournisseur_id);
+
+                // Mise à jour des informations de l'utilisateur
+                $fournisseur->solde = $commande->totaux + $fournisseur->solde;
+    
+                // Sauvegarde des modifications
+                $fournisseur->save();
+            }
         }
+    
 
         $historique=new Historique();
         $historique->actions = "Creer";
@@ -335,10 +348,12 @@ class CommandesController extends Controller
             $commande->totaux=$commande->totaux+  $commandemodele -> total;
             $commande->update();
 
-            if($commande ->credit==1)
+            $commande= Commande::findOrFail($commande->id);
+
+            if($commande->credit == 1)
             {
                 $fournisseur = Fournisseur::find($commande->fournisseur_id);
-    
+
                 // Mise à jour des informations de l'utilisateur
                 $fournisseur->solde = $commande->totaux + $fournisseur->solde;
     
@@ -395,6 +410,17 @@ class CommandesController extends Controller
             $commande= Commande::findOrFail($commande ->id);
             $commande->totaux=$commande->totaux+  $commandemodele -> total;
             $commande->update();
+          
+              if($commande ->credit==1)
+            {
+                $fournisseur = Fournisseur::find($commande->fournisseur_id);
+    
+                // Mise à jour des informations de l'utilisateur
+                $fournisseur->solde = $commande->totaux + $fournisseur->solde;
+    
+                // Sauvegarde des modifications
+                $fournisseur->save();
+            }
         }
 
         $historique=new Historique();
@@ -1112,7 +1138,17 @@ class CommandesController extends Controller
              $modele=$modele
              ->where ('fournisseurs.id', '=', $request->fournisseur);
          }
-        
+         if(!empty($request->debut))
+         {
+             $modele
+             ->where ('commandes.created_at', '>=', $request->debut);
+         }
+ 
+         if(!empty($request->fin))
+         {
+             $modele
+             ->where ('commandes.created_at', '<=', $request->fin);
+         }
         $modele=$modele
         ->selectRaw('commandes.date_commande as date,fournisseurs.nom as nom,modeles.libelle as libelle, commande_modeles.quantite as quantite,commande_modeles.prix as price_unit, commande_modeles.total as montant')
                     //->orderBy('commandes.created_at', 'Desc')
@@ -1153,12 +1189,22 @@ class CommandesController extends Controller
             $modele
             ->where ('fournisseurs.id', '=', $request->fournisseur);
         }
+        if(!empty($request->debut))
+        {
+            $modele
+            ->where ('commandes.created_at', '>=', $request->debut);
+        }
+
+        if(!empty($request->fin))
+        {
+            $modele
+            ->where ('commandes.created_at', '<=', $request->fin);
+        }
         $modele
         ->selectRaw('SUM(commande_modeles.quantite) as quantite, SUM(commande_modeles.total) as montant');
 
         $modele = $modele
         ->first();
-
         return $modele;
     }
 
