@@ -13,7 +13,7 @@
                     <header class="panel-heading">
                         <div class="panel-actions">
                             <a href="#" class="fa fa-caret-down"></a>
-                        </div>
+                        </div> 
                         <h1 class="panel-title">FOURNISSEUR    :     {{ $fournisseur->nom.' ' }} </h1>
                         <input type="hidden" id="fournisseur_id" value="{{ $fournisseur->id }}">
                     </header>
@@ -24,10 +24,12 @@
                             <ul class="list-group">
                                 <li class="list-group-item"><center><h3>Historique des paiments</h3></center></span> </b></li>
                                 @if (isset($reglementfournisseur) && isset($commandefournisseur))
+                                <li class="list-group-item">Total Commande :<b> <span class="text-danger" class="prix">{{$commandefournisseur->total}}</span> </b></li>
+
                                     <li class="list-group-item">Total Payé :<b> <span class="text-danger" class="prix">{{$reglementfournisseur->donner}}</span> </b></li>
                                     <li class="list-group-item">Restant :<b> <span class="text-danger" class="prix">{{$commandefournisseur->total - $reglementfournisseur->donner < 1 ? '-' : $commandefournisseur->total - $reglementfournisseur->donner }}</span> </b></li>
                                 @endif
-                            </ul>
+                            </ul> 
                         </div>
                         <table class="table table-bordered table-striped mb-none" id="reglementTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
                             <thead>

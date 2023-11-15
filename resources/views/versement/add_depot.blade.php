@@ -26,6 +26,18 @@
                                 <form id="form" action="{{ route('store_depotversement') }}" method="POST" class="form-validate form-horizontal mb-lg" enctype="multipart/form-data">
                                         {{csrf_field()}}
                                         <div class="form-group mt-lg">
+                                            <label class="col-sm-3 control-label">Nature</label>
+                                            <div class="col-sm-9">
+                                                <select name="nature"  id="nature" class="form-control populate">
+                                                    <optgroup label="Choisir la nature">
+                                                    <option selected value="Ventes Magasins">Ventes Magasins</option>
+                                                    <option value="Autres">Autres</option>
+                                                    </optgroup>
+                                                </select>
+{{--                                                 <input type="text" name="nature"  id="nature" class="form-control" placeholder="" />
+ --}}                                            </div>
+                                        </div>
+                                        <div class="form-group mt-lg">
                                             <label class="col-sm-3 control-label">Montant * </label>
                                             <div class="col-sm-9">
                                                 <input type="number" name="montant"  id="montant" class="form-control" placeholder="" min="0" required/>
@@ -47,17 +59,18 @@
                                                         <option value=""></option>
                                                         @foreach($comptes as $compte)
                                                             <option value="{{$compte->id}}">
-                                                                {{$compte->banques}} - {{$compte->agence}} -  {{$compte->numero}}
+                                                                {{$compte->banques}}  -  {{$compte->numero}}
                                                             </option>
                                                         @endforeach
                                                     </optgroup>
                                                 </select>
                                             </div>
                                         </div>
+                                     
                                         <div class="form-group mt-lg">
-                                            <label class="col-sm-3 control-label">nature</label>
+                                            <label class="col-sm-3 control-label">Solde Collecteur</label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="nature"  id="nature" class="form-control" placeholder="" />
+                                                <input type="text" class="form-control" value="{{ $solde }}" readonly/>
                                             </div>
                                         </div>
                                         <div class="form-group mt-lg">
@@ -69,7 +82,7 @@
                                         <div class="modal-footer">
                                             <div class="col-md-12 text-right">
                                                 <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>
-                                                <a href="/depenses" class="mb-xs mt-xs mr-xs btn btn-default"><i class="fa fa-times"></i> Retour</a>
+                                                <a href="/allversements" class="mb-xs mt-xs mr-xs btn btn-default"><i class="fa fa-times"></i> Retour</a>
                                             </div>
                                         </div>
                                 </form>
@@ -106,6 +119,18 @@
 
         }
         setNumeralHtml("prix", "0,0");
+
+        
+function sweetToast(type,text){
+    return  Swal.fire({
+        position: 'top-end',
+        icon: type,
+        title: text,
+        showConfirmButton: false,
+        timer: 1500,
+        animation : true,
+    });
+}
     </script>
     <script type="text/javascript" src="/vendor/daterangepicker/moment.min.js"></script>
     <script type="text/javascript" src="/vendor/daterangepicker/daterangepicker.js"></script>

@@ -114,7 +114,7 @@
                                         <label class="form-label d-inline mr-5" for="credit">A CREDIT</label>
                                     </div>
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                        <input class="form-control d-inline mr-5" type="checkbox" name="credit" id="credit">
+                                        <input class="form-control d-inline mr-5" checked type="checkbox" name="credit" id="credit">
                                     </div>
                                 </div>
                             @endif

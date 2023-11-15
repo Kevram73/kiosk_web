@@ -212,8 +212,8 @@ let message;
                         }
                     },
 
-                    ajax: '/allmodelevente-'+id,
-                    "columns": [
+                    ajax: '/allmodelevente-'+id, 
+                    "columns": [ 
                         {data: "user",name : 'user'},
                         {data: "date",name : 'date'},
                         {data: "quantite",name : 'quantite'},
@@ -248,7 +248,7 @@ function editmodele(id){
             $('#prixAchat').val(data.prix_achat);
             $('#categorie').val(data.produit.categorie_id);
 			var produiId = data.produit.id;
-			
+
 			$.ajax({
 				url: '/recupererproduit-' + $('#categorie').val(),
 				type: "get",

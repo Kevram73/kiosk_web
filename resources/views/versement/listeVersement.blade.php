@@ -24,22 +24,69 @@
                             <a href="#" class="fa fa-caret-down"></a>
                         </div>
 
-                        <h1 class="panel-title">Versement validé</h1>
+                        <h1 class="panel-title">Liste des Versements </h1>
                     </header>
  
                     <div class="panel-body">
 
                         <div class="tabs">
                         <ul class="nav nav-tabs nav-justified">
-                            <li class="active">
-                                <a href="#reglements" data-toggle="tab" class="text-center" style="font-size: 2rem;"><i class="fa fa-star"></i> Validé</a>
+                          
+                            <li>
+                                <a href="#sommedebiteurs" data-toggle="tab" class="text-center text-warning" style="font-size: 2rem;">Total Montant Collecté</a>
+                            </li> 
+                             <li class="active">
+                                <a href="#reglements" data-toggle="tab" class="text-center" style="font-size: 2rem;"><i class="fa fa-star"></i> Liste des Versements</a>
                             </li>
                             <li>
-                                <a href="#debiteurs" data-toggle="tab" class="text-center text-warning" style="font-size: 2rem;">Non validée</a>
+                                <a href="#debiteurs" data-toggle="tab" class="text-center text-warning" style="font-size: 2rem;">A valider</a>
                             </li>
                         </ul>
                       <div class="tab-content">
-
+                        <div id="sommedebiteurs" class="tab-pane">
+                            <div class="row">
+                             
+                                <div class="">
+                                    <section class="panel">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    
+                                                    <h4 >Montant Collecté : <strong class="prix" id="sold">{{ $globalbybousimple }}</strong></h4>
+                                                  
+                                                </div>
+                                                <div class="col-md-4 text-center">
+                                                    <h4 >Montant Versé : <strong class="prix" id="sold">{{ $montantverse }}</strong></h4>
+                                              
+                 
+                                                 </div>
+                                                <div class="col-md-4 text-center">
+                                                   <h4 >Montant à Versé : <strong class="prix" id="sold">{{ $montantaverse }}</strong></h4>
+                                             
+                
+                                                </div>
+                                            </div>
+                                      
+                                       
+                                            <table class="table table-bordered table-striped mb-none" id="TotalVersementTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                                <thead>
+                                                <tr>
+                                                    <th class="center hidden-phone">DATE </th>
+                                                    <th class="center hidden-phone">Boutique </th>
+                                                    <th class="center hidden-phone">Montant</th>
+                                                    <th class="center hidden-phone">Gérant </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="center hidden-phone">
+                
+                
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
                         <div id="reglements" class="tab-pane active">
                             @if (\Session::has('success'))
                             <div class="alert alert-success">
@@ -47,7 +94,7 @@
                                     <li>{!! \Session::get('success') !!}</li>
                                 </ul>
                             </div>
-                        @endif
+                              @endif
     
                         <div class="panel-body">
                             <div class="row">
@@ -59,8 +106,10 @@
     
                                 </div>
                                 <div class="col-md-4 text-center">
-                                    <h3 >SOLD : <strong class="prix" id="sold">0</strong></h3>
-                                </div>
+                     {{--                                     <h3 >SOLD : <strong class="prix" id="sold">0</strong></h3>
+            --}}                              
+
+                                    </div>
                             </div>
     
                             <div class="modal fade " id="ajout_charge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -146,6 +195,8 @@
                                                     <th class="center hidden-phone">Utilisateur </th>
                                                     <th class="center hidden-phone">Nature</th> 
                                                     <th class="center hidden-phone">Description </th>
+                                                    <th class="center hidden-phone">Statut </th>
+
                                                     <th class="center hidden-phone">Valider</th>
                                                 </tr>
                                                 </thead>
@@ -159,7 +210,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                       </div>
                         </div>
 
@@ -169,7 +220,7 @@
         </section>
     </div>
 @endsection
-@section('js')
+@section('js') 
 
 <script src="octopus/assets/vendor/jquery/jquery.js"></script>
 <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>

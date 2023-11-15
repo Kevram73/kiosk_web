@@ -20,7 +20,7 @@
 
     }
   
-}
+} 
 
 $("#voir").on('click', function(){
     getSum();

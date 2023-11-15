@@ -329,8 +329,9 @@ $('#ajout_inventaie form').on('submit', function (e) {
     //     url = '/updatefournisseur'
     //     message = 'Fournisseur enregistré'
     // }
-
-    url = "/createinventaire"
+ 
+    url = '/createinventaire'
+    message = 'Inventaire enregistré'
 
     e.preventDefault();
     if (e.isDefaultPrevented()){
@@ -343,9 +344,9 @@ $('#ajout_inventaie form').on('submit', function (e) {
             contentType: false,
             processData: false,
             success : function(data) {
+                $('#ajout_inventaie').modal('hide');
                 sweetToast('success',message);
 
-                $('#ajout_inventaie').modal('hide');
 
                 inventaireTablePending.ajax.reload();
             },

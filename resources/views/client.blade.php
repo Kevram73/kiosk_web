@@ -56,6 +56,12 @@
                                                     <input type="integer" name="adresse" id="adresse" class="form-control" placeholder="Adidogome, Lome"/>
                                                 </div>
                                             </div>
+                                            <div class="form-group mt-lg">
+                                                <label class="col-sm-3 control-label">Avoir Client</label>
+                                                <div class="col-sm-9">
+                                                    <input type="integer" name="avoir" id="avoir" class="form-control" placeholder=" 0 "/>
+                                                </div>
+                                            </div>
                                             <div class="modal-footer">
                                                 <div class="col-md-12 text-right">
                                                     <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>

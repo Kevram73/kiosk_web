@@ -9,124 +9,16 @@ function sweetToast(type,text){
         animation : true,
     });
 }
+console.log('HIIIIIIII');
 
 
-$('#fournisseur').on('change',function ( ) {
-    $('#total').empty();
-    $.ajax({
-        url: '/restantachat-' + $('#fournisseur').val(),
-        type: "get",
-        success: function (data) {
-            $('#total').empty();
-
-            $('#total').val(data.total - data.montant);
-        },
-        error: function (data) {
-            console.log("erreur")
-        },
-    })
-})
-
-$('#banque').on('change',function () {
-    console.log(" banque selectionner") ;
-
-    let _banKId =$('#banque').val();
-    let _btqId = $('#idBoutique').val();
-
-    console.log(_banKId);
-    console.log(_btqId);
-    let _getAcountUrl = "/get_account?boutique="+_btqId+"&&"+"banque="+_banKId+"";
-    console.log(_getAcountUrl);
-    $.ajax({
-        url : _getAcountUrl,
-        type : "get",
-        // data : $('#modal-form-user').serialize(),
-        //data: new FormData($("#ajout_reglement form")[0]),
-        //data: new FormData($("#modal-form-user")[0]),
-        contentType: false,
-        processData: false,
-        success : function(data) {
-            console.log(data);
-            if(data.length==0){
-                let _m = " Vous n'avez pas de compte dans cette banques" ;
-                sweetToast('warning',_m) ;
-                $('#banque').val(null);
-            }
-
-            if(data.length != 0){
-                let _accountList = data;
-                globalStore = data ;
-                $(_accountList).each(function () {
-                    var option = $("<option/>");
-                    option.html(this.numero);
-                    option.val(this.id);
-                    $('#compte').append(option) ;
-                })
-                $('#group_compte').show();
-
-            }
-            //$('#ajout_reglement').modal('hide');
-            //sweetToast('success',message);
-
-            //reglementTable.ajax.reload();
-           // window.location.reload();
-        },
-        error : function(data){
-            console.log(data.error()) ;
-        }
-    });
-
-});
-
-$('#compte').on('change',function () {
-    let _x = $('#compte').val() ;
-    console.log(_x);
-
-    let _getAcountUrl = "/get_solde?account_id="+_x+"";
-    console.log(_getAcountUrl);
-    $.ajax({
-        url : _getAcountUrl,
-        type : "get",
-        // data : $('#modal-form-user').serialize(),
-        //data: new FormData($("#ajout_reglement form")[0]),
-        //data: new FormData($("#modal-form-user")[0]),
-        contentType: false,
-        processData: false,
-        success : function(data) {
-            console.log(data[0]);
-            $('#solde').val(null);
-            $('#solde').val(data[0].solder);
-            //$('#solde').html(data[0].solder);
-
-
-        },
-        error : function(data){
-            console.log(data) ;
-        }
-    });
-})
-
-$('#donne').on('value change',function ( ) {
-    $('#restant').val($('#total').val()-$('#donne').val());
-    if ( $('#restant').val()>0) {
-        $('#te').text('Restant');
-        $('#reste').val(1);
-
-    }
-    if ( $('#restant').val()<0) {
-        $('#te').text('Monnaie');
-        $('#restant').val(   $('#restant').val()*-1);
-        $('#reste').val(0);
-    }
-})
 
 var reglementTable;
-var debiteurTable;
 
 
 $(function () {
 
-    reglementTable =   $('#reglementTable').DataTable({
+    reglementTable =   $('#reglementTabl').DataTable({
         processing: true,
         serverSide: true,
         'paging': true,
@@ -165,18 +57,17 @@ $(function () {
                 }
             }
         },
-        ajax: '/allreglement',
+        ajax: '/caisses',
         "columns": [
 
-            {data: "nom",name : 'nom'},
-            {data :  "total",name : 'total'},
-            {data :  "montant_donne",name : 'montant_donne'},
-            {data :  "montant_restant",name : 'montant_restant'},
-            {data :  "date_reglement",name : 'date_reglement'},
+            {data: "date",name : 'date'},
+            {data :  "montant",name : 'montant'},
+            {data :  "boutique_id",name : 'boutique_id'},
+            {data :  "user_id",name : 'user_id'},
             {data: "action", name : 'action' , orderable: false, searchable: false}
 
 
-        ]
+        ] 
 
     });
 
@@ -186,58 +77,95 @@ $(function () {
 $('#btnreglement').on('click', function(){
 
     $('.modal-title-user').text('ENREGISTREMENT DE LA CAISSE');
-    $('#idreglement').val(null);
-    $('#fournisseur').val(null);
     $('#btnadd').text('Valider');
     $('#btnadd').removeClass('btn-warning').addClass('btn-primary');
-    //$('#btnadd').addClass('btn-primary');
-    $('#total').val(null);
-    $('#donne').val(null);
-    $('#restant').val(null);
-    $('#group_compte').hide();
-    $('#ajout_reglement').modal('show');
+    //$('#btnadd').addClass('btn-primary'); 
+       $('#fournisseur').val(null);
+
+    $('#date').val(null);
+    $('#solde').val(null);
+    $('#ajout_caisse').modal('show');
 });
 
 //post des données
-$('#ajout_reglement  form').on('submit', function (e) {
+/*         $('#ajout_caisse  form').on('submit', function (e) {
 
-    let url,message;
-    if (!$('#idreglement').val()){
-        url = '/storereglementachat'
-        message = 'reglement enregistré'
+            let url,message;
+                url = '/storecaisse'
+                message = 'reglement enregistré'
+            
+        /*   else{
+                url = '/updatereglementachat'
+                message = 'reglement modifié'
 
+            } 
+            e.preventDefault();
+            if (e.isDefaultPrevented()){
+                $.ajax({
+                    url : url ,
+                    type : "post",
+                    // data : $('#modal-form-user').serialize(),
+                    data: new FormData($("#ajout_caisse form")[0]),
+                    //data: new FormData($("#modal-form-user")[0]),
+                    contentType: false,
+                    processData: false,
+                    success : function(data) {
 
-    }
-    else{
-        url = '/updatereglementachat'
-        message = 'reglement modifié'
+                        $('#ajout_caisse').modal('hide');
+                        sweetToast('success',message);
 
-    }
-    e.preventDefault();
-    if (e.isDefaultPrevented()){
-        $.ajax({
-            url : url ,
-            type : "post",
-            // data : $('#modal-form-user').serialize(),
-            data: new FormData($("#ajout_reglement form")[0]),
-            //data: new FormData($("#modal-form-user")[0]),
-            contentType: false,
-            processData: false,
-            success : function(data) {
-
-                $('#ajout_reglement').modal('hide');
-                sweetToast('success',message);
-
-               reglementTable.ajax.reload();
-               window.location.reload();
-            },
-            error : function(data){
-              alert('erreur')
+                    reglementTable.ajax.reload();
+                    window.location.reload();
+                    },
+                    error : function(data){
+                    alert('erreur')
+                    }
+                });
             }
-        });
-    }
-});
+        }); */
 
+// create banque.
+console.log('perty');
+
+$('#btnadd').click(function (e) {
+    e.preventDefault();
+    var form = $('#form')[0];
+    console.log(form);
+    console.log('allo');
+    var data =new FormData(form);
+    console.log(data);
+    console.log(data.values());
+    $('#btnadd').prop("disabled",true);
+    $.ajax({
+       
+        type:"POST",
+       // enctype:"multipart/form-data",
+        url:"/storecaisse",
+        processData:false,
+        contentType:false,
+        data:data,
+        success:function (data) {
+            // Remove the modal
+            $('#ajout_caisse').hide();
+            // show the alerte
+            Swal.fire(
+                'Compte',
+                'Création réussi',
+            );
+            // reload the windows.
+            window.location.reload();
+
+        },
+        error:function (data) {
+            $('#btnadd').prop("disabled",false);
+            let message= "Erreur requette échouer";
+            sweetToast('warning',message);
+            console.log(data);
+
+        }
+    });
+
+}) ;
 
 function editreglement(id){
     $.ajax({
@@ -252,7 +180,7 @@ function editreglement(id){
             $('#email').val(data.email);
             $('#contact').val(data.contact);
             $('#sexe').val(data.sexe);
-            $('#ajout_reglement').modal('show');
+            $('#ajout_caisse').modal('show');
 
         },
         error : function(data){

@@ -13,7 +13,7 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body">
             <header class="page-header">
-                <h2>Historique des achats</h2>
+                <h2>Historique des achats</h2>  
             </header> 
 
             <div class="row"  id="inventaire">
@@ -143,7 +143,22 @@
                                                         </div>   
                                                                             </div>
                                                 </div>
-
+                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="debut">Date Début</label>
+                                                    <input type="date" class="form-control" id="debut" placeholder="Date Début">
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="fin">Date Fin</label>
+                                                    <input type="date" class="form-control" id="fin" placeholder="Date Fin">
+                                                </div></div>
+                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"><br>
+                                                <div class="form-group text-left">
+                                                    <button id="reset" class="btn btn-default">Annuler</button>
+                                                    <button id="voir" class="btn btn-primary">Voir</button>
+                                                </div></div>
                                             </div>
                                             <br>
                                             
