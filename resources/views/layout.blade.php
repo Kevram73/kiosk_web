@@ -142,6 +142,18 @@
                                                     {{ Str::upper(__('msg.sales')) }}
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="{{route('depenses')}}">
+                                                    <i class="fa  fa-money" aria-hidden="true"></i>
+                                                    <span>DEPENSES</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/listeglobal">
+                                                    <i class="fa  fa-money" aria-hidden="true"></i>
+                                                    <span>CAISSES</span>
+                                                </a>
+                                            </li>
                                             <!-- <li>
                                                 <a href="{{route('prestations')}}">
                                                     SERVICES
@@ -157,28 +169,10 @@
                                         </ul>
                                     </li>
 
-                                    <li class="nav-parent">
-                                        <a>
-                                            <i class="fa   fa-truck" aria-hidden="true"></i>
-                                            <span>{{ Str::upper(__('msg.procurement')) }}</span>
-                                        </a>
-                                        <ul class="nav nav-children">
-                                            <li>
-                                                <a href="{{route('provisions')}}">
-                                                    {{ Str::upper(__('msg.orders')) }}
-                                                </a>
-                                            </li>
-                                            @if (Auth::user()->boutique->settings->where('tag', 'livraison_commande')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_commande')->first()->pivot->is_active)
-                                            <li>
-                                                <a href="{{route('livraisons')}}">
-                                                    {{ Str::upper(__('msg.delivery')) }}
-                                                </a>
-                                            </li>
-                                            @endif
-                                        </ul>
-                                    </li>
+
 
                                     @if ((Auth::user()->boutique->settings->where('tag', 'reglement')->first() && Auth::user()->boutique->settings->where('tag', 'reglement')->first()->pivot->is_active) || (Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first() && Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first()->pivot->is_active))
+                                    @if (Auth::user()->boutique->is_central == 0)
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa   fa-money" aria-hidden="true"></i>
@@ -192,18 +186,14 @@
                                                     {{ Str::upper(__('msg.sales')) }}
                                                 </a>
                                             </li>
+
                                             @endif
 
-                                            @if (Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first() && Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first()->pivot->is_active)
-                                            <li>
-                                                <a href="{{route('reglementachatlist')}}">
-                                                    FOURNISSEURS
-                                                </a>
-                                            </li>
-                                            @endif
                                         </ul>
                                     </li>
                                     @endif
+                                    @endif
+                                    @if (Auth::user()->boutique->is_stock == 0)
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa  fa-cubes" aria-hidden="true"></i>
@@ -227,18 +217,111 @@
                                             </li>
                                         </ul>
                                     </li>
+                                    @endif
+                                    @if (Auth::user()->boutique->is_central == 1)
+
                                     <li class="nav-parent">
-                                        <a href="/banques">
+                                        <a>
+                                            <i class="fa   fa-truck" aria-hidden="true"></i>
+                                            <span>{{ Str::upper(__('msg.procurement')) }}</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="{{route('provisions')}}">
+                                                    {{ Str::upper(__('msg.orders')) }}
+                                                </a>
+                                            </li>
+                                            @if (Auth::user()->boutique->settings->where('tag', 'livraison_commande')->first() && Auth::user()->boutique->settings->where('tag', 'livraison_commande')->first()->pivot->is_active)
+                                            <li>
+                                                <a href="{{route('livraisons')}}">
+                                                    {{ Str::upper(__('msg.delivery')) }}
+                                                </a>
+                                            </li>
+                                            @endif
+                                        </ul>
+                                    </li>
+                                    <li class="nav-parent">
+                                        <a>
                                             <i class="fa  fa-bank" aria-hidden="true"></i>
-                                            <span>BANQUES</span>
+                                            <span>BANQUE</span>
                                         </a>
+
+                                          <ul class="nav nav-children">
+
+                                            <li>
+                                                <a href="{{route('banques')}}">
+
+                                                    <i class="fa  fa-money" aria-hidden="true"></i>
+                                                    <span>BANQUES</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{route('comptes')}}">
+                                                    <i class="fa  fa-money" aria-hidden="true"></i>
+                                                    <span>COMPTES</span>
+
+                                                </a>
+                                            </li>
+                                            <li >
+                                                <a href="/allversements">
+                                                    <i class="fa  fa-money" aria-hidden="true"></i>
+                                                    <span>VERSEMENT</span>
+
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                     <li class="nav-parent">
-                                        <a href="/caisses">
-                                            <i class="fa  fa-money" aria-hidden="true"></i>
-                                            <span>CAISSES</span>
+                                        <a>
+                                            <i class="fa   fa-money" aria-hidden="true"></i>
+                                            <span>{{ Str::upper(__('msg.reglements')) }}</span>
                                         </a>
+                                        <ul class="nav nav-children">
+
+                                            <li>
+                                                <a href="{{route('reglementlistallshoop')}}">
+                                                    {{ Str::upper(__('msg.sales')) }}
+                                                </a>
+                                            </li>
+
+                                            @if (Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first() && Auth::user()->boutique->settings->where('tag', 'reglement_achat')->first()->pivot->is_active)
+                                            <li>
+                                                <a href="{{route('reglementachatlist')}}">
+                                                    FOURNISSEURS
+                                                </a>
+                                            </li>
+                                            @endif
+                                        </ul>
                                     </li>
+                                    @endif
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa  fa-book" aria-hidden="true"></i>
+                                            <span>RESULTAT</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+
+
+                                            <li >
+                                                <a href="/situationsBoutiques">
+                                                    <i class="fa  fa-bank" aria-hidden="true"></i>
+                                                    <span>SITUATION BOUTIQUES</span>
+                                                </a>
+                                            </li>
+
+
+                                            <li>
+                                                <a href="{{route('resultat')}}">
+                                                    <i class="fa  fa-book" aria-hidden="true"></i>
+                                                    <span>{{ Str::upper(__('msg.results'))  }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+
+
                                     @if (Auth::user()->boutique->settings->where('tag', 'inventaire')->first() && Auth::user()->boutique->settings->where('tag', 'inventaire')->first()->pivot->is_active)
                                     <li>
                                         <a href="{{route('inventaire')}}">
@@ -260,12 +343,7 @@
                                         </a>
                                     </li>
 
-                                    <li>
-                                        <a href="{{route('depenses')}}">
-                                            <i class="fa  fa-money" aria-hidden="true"></i>
-                                            <span>DEPENSES</span>
-                                        </a>
-                                    </li>
+
 
                                     @if (Auth::user()->boutique->settings->where('tag', 'charge')->first() && Auth::user()->boutique->settings->where('tag', 'charge')->first()->pivot->is_active)
                                     <li>
@@ -302,12 +380,7 @@
                                             <span>{{ Str::upper(__('msg.history'))  }}</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{route('resultat')}}">
-                                            <i class="fa  fa-book" aria-hidden="true"></i>
-                                            <span>{{ Str::upper(__('msg.results'))  }}</span>
-                                        </a>
-                                    </li>
+
                                     <li>
                                         <a href="{{route('utilisateurs')}}">
                                             <i class="fa fa-users"></i>
@@ -495,12 +568,32 @@
                                             <span>BOUTIQUES</span>
                                         </a>
                                     </li>
+                                     <li>
+                                                <a href="{{route('resultatsuper')}}">
+                                                    <i class="fa  fa-book" aria-hidden="true"></i>
+                                                    <span>{{ Str::upper(__('msg.results'))  }}</span>
+                                                </a>
+                                            </li>
                                     <li>
                                         <a href="{{route('utilisateurs')}}">
                                             <i class="fa fa-users"></i>
                                             <span>USERS</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/caisses">
+                                            <i class="fa  fa-money" aria-hidden="true"></i>
+                                            <span>CAISSES</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('inventairesuper')}}">
+                                            <i class="fa  fa-institution" aria-hidden="true"></i>
+                                            <span>INVENTAIRE</span>
+                                        </a>
+                                    </li>
+
+
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa   fa-truck" aria-hidden="true"></i>
@@ -530,6 +623,7 @@
                                             <span>{{ Str::upper(__('msg.account'))  }}</span>
                                         </a>
                                     </li>
+
                                     @endrole
 								</ul>
 							</nav>

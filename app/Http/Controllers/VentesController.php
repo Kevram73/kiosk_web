@@ -638,12 +638,14 @@ class VentesController extends Controller
             ->SUM('preventes.prixtotal');
 
         $name = "facture_".date('Y-m-d_H-i-s', strtotime(now())).".pdf";
-        $all_vente = Vente::find($id);
+        $all_vente = vente::find($id);
         $client=DB::table('clients')->where('id', $all_vente->client_id)->first();
         try{
             $pdf = PDF::loadView('facturesimple',compact('all_vente', 'vente','modele2','mod','total','clients','credit','cre', 'client'))
                     ->setPaper('a4')
                     ->save(public_path("factures/".$name));
+
+                    //dd($pdf);
             DB::table('ventes')->where('id',$id)->update(['facture' => $name]);
         }catch(Exception $e)
         {}
@@ -1007,11 +1009,11 @@ class VentesController extends Controller
     public function store(Request $request)
     {
         $allcommande= explode( ',', $request->input('venTable') );
-        error_log($allcommande);
+        //error_log($allcommande);
         $i=DB::table('journals')->max('id');
         $id=DB::table('ventes')->max('id');
         $ed=1+$id;
-        DB::beginTransaction();
+       //DB::beginTransaction();
         $vente = new vente();
         $vente ->numero="VENT".now()->format('Y')."-".$ed;
         $vente ->date_vente= now();
@@ -1024,7 +1026,7 @@ class VentesController extends Controller
         $total = 0;
         $allReduction = 0;
 
-        for ($i =0 ;$i<count($allcommande);$i+=5) {
+     for ($i =0 ;$i<count($allcommande);$i+=5) {
             $prevente = new Prevente();
             $prevente ->modele_fournisseur_id=$allcommande[$i];
             $prevente ->prix=$allcommande[$i+2];
@@ -1045,9 +1047,9 @@ class VentesController extends Controller
             $total = $total + $prevente->prixtotal;
             $allReduction = $allReduction + $prevente->reduction;
         }
-        DB::commit();
+        //DB::commit();
 
-        $vente=vente::findOrFail($vente->id);
+       $vente=vente::findOrFail($vente->id);
         $vente->montant_reduction = $allReduction;
 
         if($request->input('setTva') == "on")
@@ -1059,9 +1061,55 @@ class VentesController extends Controller
             $vente->montant_ht = $montant_ht;
             $vente->montant_tva = $montant_tva;
             $vente->totaux= $montant_ht + $montant_tva;
+             if($request->input('checkavoir') == "on")
+            {
+                 $client = Client::find($vente->client_id);
+                  $vente->with_avoir = true;
+                    if($client->avoir > $vente->totaux)
+                    {
+
+                    $client->avoir = $client->avoir - $vente->totaux;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde = $client->avoir - $vente->totaux + $client->solde;
+
+                    }
+                    elseif($client->avoir < $vente->totaux)
+                    {
+
+                    $client->avoir = 0;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde =$vente->totaux - $client->avoir  + $client->solde;
+
+                    }
+                    // Sauvegarde des modifications
+                    $client->save();
+            }
         }else{
             $vente->with_tva = false;
             $vente->totaux = $total;
+             if($request->input('checkavoir') == "on")
+            {
+                 $client = Client::find($vente->client_id);
+                  $vente->with_avoir = true;
+                    if($client->avoir > $vente->totaux)
+                    {
+
+                    $client->avoir = $client->avoir - $vente->totaux;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde = $client->avoir - $vente->totaux + $client->solde;
+
+                    }
+                    elseif($client->avoir < $vente->totaux)
+                    {
+
+                    $client->avoir = 0;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde =$vente->totaux - $client->avoir  + $client->solde;
+
+                    }
+                    // Sauvegarde des modifications
+                    $client->save();
+            }
         }
 
         $vente->update();
@@ -1095,13 +1143,13 @@ class VentesController extends Controller
                 ->SUM('reglements.montant_restant');
             $credit[$i] = $total;
         }
-        $cre=count($clients);
+     $cre=count($clients);
         $historique=new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Ventes";
         $historique->user_id =Auth::user()->id;
         $historique->save();
-        $total = DB::table('ventes')
+          $total = DB::table('ventes')
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');
             })
@@ -1109,15 +1157,15 @@ class VentesController extends Controller
             ->SUM('preventes.prixtotal');
         $id=DB::table('factures')->max('id');
         $ed=1+$id;
-        $facture=new Facture();
+         $facture=new Facture();
         $facture->prixapayer =$total;
         $facture->montant_reduction =$allReduction;
         $facture->vente_id =$vente->id;
         $facture ->numero="FACT".now()->format('Y')."-".$ed;
         $facture->save();
-        if ($mod>0){
+       /* if ($mod>0){
          Alert::warning('Attention quantité inferieure au seuil','Veuillez vous approvisionner');
-        }
+        }*/
         $clients=DB::table('clients')
             ->join('ventes', function ($join) {
                 $join->on('ventes.client_id', '=', 'clients.id');
@@ -1151,7 +1199,7 @@ class VentesController extends Controller
         $i=DB::table('journals')->max('id');
         $id=DB::table('ventes')->max('id');
         $ed=1+$id;
-        DB::beginTransaction();
+       DB::beginTransaction();
         $vente = new vente();
         $vente ->numero="VENT".now()->format('Y')."-".$ed;
         $vente ->date_vente= now();
@@ -1198,13 +1246,66 @@ class VentesController extends Controller
             $vente->montant_ht = $montant_ht;
             $vente->montant_tva = $montant_tva;
             $vente->totaux= $montant_ht + $montant_tva;
+
+             // Récupération de l'utilisateur à mettre à jour
+             $client = Client::find($vente->client_id);
+              $vente->with_avoir = true;
+            if($client->avoir > $vente->totaux)
+            {
+
+             $client->avoir = $client->avoir - $vente->totaux;
+             // Mise à jour des informations de l'utilisateur
+             $client->solde = $client->avoir - $vente->totaux + $client->solde;
+
+            }
+            elseif($client->avoir < $vente->totaux)
+            {
+
+             $client->avoir = 0;
+             // Mise à jour des informations de l'utilisateur
+             $client->solde =$vente->totaux - $client->avoir  + $client->solde;
+
+            }
+             // Sauvegarde des modifications
+             $client->save();
+
+
         }else{
             $vente->with_tva = false;
             $vente->totaux = $total;
+             // Récupération de l'utilisateur à mettre à jour
+             $client = Client::find($vente->client_id);
+
+             // Mise à jour des informations de l'utilisateur
+             $client->solde = $vente->totaux + $client->solde;
+
+             // Sauvegarde des modifications
+             $client->save();
         }
 
         $vente->update();
+             if($request->input('checkavoir') == "on")
+            {
+                 $client = Client::find($vente->client_id);
+                    if($client->avoir > $vente->totaux)
+                    {
 
+                    $client->avoir = $client->avoir - $vente->totaux;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde = $client->avoir - $vente->totaux + $client->solde;
+
+                    }
+                    elseif($client->avoir < $vente->totaux)
+                    {
+
+                    $client->avoir = 0;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde =$vente->totaux - $client->avoir  + $client->solde;
+
+                    }
+                    // Sauvegarde des modifications
+                    $client->save();
+            }
         $modele2=DB::table('modeles')
             ->join('produits', function ($join) {
                 $join->on('modeles.produit_id', '=', 'produits.id');
@@ -1217,6 +1318,7 @@ class VentesController extends Controller
         $historique->cible = "Ventes";
         $historique->user_id =Auth::user()->id;
         $historique->save();
+
         $total = DB::table('ventes')
             ->join('preventes', function ($join) {
                 $join->on('preventes.vente_id', '=', 'ventes.id');
@@ -1310,6 +1412,29 @@ class VentesController extends Controller
 
         $vente->update();
 
+            if($request->input('checkavoir') == "on")
+            {
+                 $client = Client::find($vente->client_id);
+                  $vente->with_avoir = true;
+                    if($client->avoir > $vente->totaux)
+                    {
+
+                    $client->avoir = $client->avoir - $vente->totaux;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde = $client->avoir - $vente->totaux + $client->solde;
+
+                    }
+                    elseif($client->avoir < $vente->totaux)
+                    {
+
+                    $client->avoir = 0;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde =$vente->totaux - $client->avoir  + $client->solde;
+
+                    }
+                    // Sauvegarde des modifications
+                    $client->save();
+            }
         $modele2=DB::table('modeles')
             ->join('produits', function ($join) {
                 $join->on('modeles.produit_id', '=', 'produits.id');
@@ -1421,7 +1546,29 @@ class VentesController extends Controller
         }
 
         $vente->update();
+         if($request->input('checkavoir') == "on")
+            {
+                 $client = Client::find($vente->client_id);
+                  $vente->with_avoir = true;
+                    if($client->avoir > $vente->totaux)
+                    {
 
+                    $client->avoir = $client->avoir - $vente->totaux;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde = $client->avoir - $vente->totaux + $client->solde;
+
+                    }
+                    elseif($client->avoir < $vente->totaux)
+                    {
+
+                    $client->avoir = 0;
+                    // Mise à jour des informations de l'utilisateur
+                    $client->solde =$vente->totaux - $client->avoir  + $client->solde;
+
+                    }
+                    // Sauvegarde des modifications
+                    $client->save();
+            }
         $modele2=DB::table('modeles')
             ->join('produits', function ($join) {
                 $join->on('modeles.produit_id', '=', 'produits.id');
@@ -1651,32 +1798,59 @@ class VentesController extends Controller
             ->first();
         return $credit->montant_restant;
     }
-
+    public function avoir($id)
+    {
+        $credit =DB::table('clients')
+            -> where ('id', '=',$id)
+            -> select ('clients.avoir','clients.created_at')
+            ->latest()
+            ->first();
+        return $credit->avoir;
+    }
     public function debiteurs()
     {
-        $clients = Client::where ('clients.boutique_id', '=',Auth::user()->boutique->id )->get();
+        $clients = Client::where ('clients.boutique_id', '=',Auth::user()->boutique->id )
+        ->where('clients.solde','>',0)
+        ->select ('clients.nom', 'clients.contact', 'clients.adresse','clients.solde', 'clients.created_at')
+        ->get();
 
-        $array = [];
+       /*  $array = [];
         foreach($clients as $client)
         {
             $data = Reglement::where('clients.id', $client->id)
             ->join('clients', 'reglements.client_id', '=', 'clients.id')
             ->join('ventes', 'reglements.vente_id', '=', 'ventes.id')
-            ->select ('clients.nom', 'clients.contact', 'clients.adresse', 'reglements.montant_restant','reglements.created_at')
-            ->latest()
-            ->first();
+            ->select ('clients.nom', 'clients.contact','clients.solde', 'clients.adresse', 'reglements.montant_restant','reglements.created_at')
 
-            if($data != null && $data->montant_restant > 0)
+
+            if($data != null && $data->montant_restant > 0 && $data->solde >0 )
             {
                 $array[] = $data;
             }
-        }
+        } */
 
-        return datatables()->of($array)
+        return datatables()->of($clients)
         ->make(true);
+       /*  $client =Client::with('boutique')->where ('boutique_id', '=',Auth::user()->boutique->id )->orderBy('created_at', 'DESC')->get();
+        return datatables()->of($client)
+
+            ->make(true); */
     }
 
+    public function alldebiteurs()
+    {
+        $clients = Client::where('clients.solde','>',0)
+        ->join('boutiques', 'clients.boutique_id', '=', 'boutiques.id')
 
+        ->select ('boutiques.nom as boutique', 'clients.id', 'clients.nom', 'clients.contact', 'clients.adresse','clients.solde', 'clients.created_at')
+        ->get();
+
+        return datatables()->of($clients)
+        ->addColumn('action', function ($clt) {
+            return '<a class="btn btn-info " onclick="show(' . $clt->id . ')" ><i class="fa  fa-info"></i></a>';
+        })
+        ->make(true);
+    }
     public function journal()
     {
 
@@ -1840,6 +2014,9 @@ class VentesController extends Controller
     public function adminventemois($id,$ed,$ad)
     {
         $vente = DB::table('ventes')
+        ->join('users', function ($join) {
+            $join->on('ventes.user_id', '=', 'users.id');
+        })
             ->join('journals', function ($join) {
                 $join->on('ventes.journal_id', '=', 'journals.id');
             })
@@ -1847,8 +2024,8 @@ class VentesController extends Controller
             ->where('journals.mois', '=', $id)
             ->where('journals.annee', '=', $ed)
             ->select('ventes.id as id','ventes.numero as vente','ventes.totaux as totaux', 'users.nom as user')
-
             ->get();
+          //  dd($vente);
         return datatables()->of($vente)
             ->addColumn('action', function ($clt) {
                 return  '<a class="btn btn-info " onclick="show(' . $clt->id . ')" ><i class="fa  fa-info"></i></a>';
