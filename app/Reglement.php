@@ -14,4 +14,8 @@ class Reglement extends Model
         return $this->belongsTo('App\Boutique');
     }
 
+    public function client(){
+        return Client::find($this->client_id);
+    }
+
 }

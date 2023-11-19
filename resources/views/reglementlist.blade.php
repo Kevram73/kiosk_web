@@ -23,7 +23,7 @@
                         <div class="tabs">
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="active">
-                                    <a href="#reglements" data-toggle="tab" class="text-center" style="font-size: 2rem;"><i class="fa fa-star"></i> Lists</a>
+                                    <a href="#reglements" data-toggle="tab" class="text-center" style="font-size: 2rem;"><i class="fa fa-star"></i> Liste des Règlements</a>
                                 </li>
                                 <li>
                                     <a href="#debiteurs" data-toggle="tab" class="text-center text-warning" style="font-size: 2rem;">Débiteurs</a>
@@ -35,10 +35,11 @@
                                     <table class="table table-bordered table-striped mb-none" id="reglementTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                         <thead>
                                         <tr>
+                                            <th class="center hidden-phone">Date</th>
                                             <th class="center hidden-phone">Client</th>
-                                            <th class="center hidden-phone">Contact</th>
+                                            <th class="center hidden-phone">Contact</th>{{--
                                             <th class="center hidden-phone">Numero Vente</th>
-                                            <th class="center hidden-phone">Total Vente</th>
+                                            <th class="center hidden-phone">Total Vente</th> --}}
                                             <th class="center hidden-phone">Total Payé</th>
                                             <th class="center hidden-phone">Restant</th>
                                             <th class="center hidden-phone">Action</th>
@@ -47,14 +48,16 @@
                                         <tbody class="center hidden-phone">
                                             @if (isset($reglements) && count($reglements) > 0)
                                                 @foreach ($reglements as $index => $item)
-                                                    <tr style="color: {{$item->totaux - $item->donner > 0 ? 'red' : 'black'}}">
+                                                    <tr style="color: {{$item->solde > 0 ? 'red' : 'black'}}">
+                                                        <td>{{ $item->date }}</td>
                                                         <td>{{ $item->nom }}</td>
-                                                        <td>{{ $item->contact }}</td>
+                                                        <td>{{ $item->contact }}</td>{{--
                                                         <td>{{ $item->numero }}</td>
-                                                        <td class="prix">{{ $item->totaux }}</td>
+                                                        <td class="prix">{{ $item->totaux }}</td> --}}
                                                         <td class="prix">{{ $item->donner }}</td>
-                                                        <td class="prix" >{{ $item->totaux - $item->donner }}</td>
-                                                        <td><a class="btn btn-info" href="/reglementlist-{{ $item->venteId }}"> <i class="fa fa-arrow-right"></i>
+                                                        <td class="prix" >{{ $item->solde}}</td>
+                                                        <td>
+                                                            <a class="btn btn-info" href="/reglementlist-{{ $item->venteId }}"> <i class="fa fa-arrow-right"></i>
                                                 @endforeach
                                             @endif
                                         </tbody>
@@ -65,9 +68,9 @@
                                     <div class="row">
                                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="form-group">
-                                            <h3 class="m-0">Total: <strong id="montantTotal" class="prix">0</strong></h3>
+                                            <h3 class="">Total: <strong id="" class="">{{ $total[0]->solde }}</strong></h3>
                                             <h3> Clients Débiteurs  <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-primary" id="btnclient"><i class="fa fa-plus"></i></a>
-                                </h3>
+                                            </h3>
                                         </div>
                                     </div>
                                     </div>
@@ -90,13 +93,11 @@
                                 </div>
                             </div>
                         </div>
-                        
 
                     </div>
             </div>
         </section>
     </div>
-    
     <div class="modal fade " id="ajout_reglement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -194,7 +195,6 @@
                                 <input type="integer" name="solde" id="solde" class="form-control" placeholder="Adidogome, Lome"/>
                             </div>
                         </div>
-                        
                         <div class="modal-footer">
                             <div class="col-md-12 text-right">
                                 <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>
@@ -215,96 +215,120 @@
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    
+
     <script >
-    console.log('hummmmmmmmmmmmmmmmm');
- 
+                    $('#btnclient').on('click', function(){
+                    $('.modal-title-user').text('ENREGISTREMENT DU CLIENT (Particulier/Entreprise');
+                    $('#btnadd').text('Valider');
+                    $('#btnadd').removeClass('btn-warning');
+                    $('#btnadd').addClass('btn-primary');
+                    $('#idclient').val(null);
+                    $('#nom').val(null);
+                    $('#email').val(null);
+                    $('#contact').val(null);
+                    $('#adresse').val(null);
+                    $('#solde').val(null);
 
-    console.log('AZER');
+                    $('#ajout_client').modal('show');
+                });
 
-$('#btnreglement').on('click', function(){
+                    //post des données
+                    $('#ajout_client  form').on('submit', function (e) {
 
-    $('.modal-title-user').text('ENREGISTREMENT DU REGLEMENT');
-    $('#idreglement').val(null);
-    $('#client').val(null);
-    $('#btnadd').text('Valider');
-    $('#btnadd').removeClass('btn-warning');
-    $('#btnadd').addClass('btn-primary');
-    $('#total').val(null);
-    $('#donne').val(null);
-    $('#restant').val(null);
-    $('#ajout_reglement').modal('show');
-    });
-//post des données
-$('#ajout_reglement  form').on('submit', function (e) {
-
-    let url,message;
-    if (!$('#idreglement').val()){
-        url = '/storereglement'
-        message = 'reglement enregistré'
+                        let url,message;
+                        if (!$('#idclient').val()){
+                            url = '/ajoutclient'
+                            message = 'Client enregistré'
 
 
-    }
-    else{
-        url = '/updatereglement'
-        message = 'reglement modifié'
+                        }
+                        else{
+                            url = '/updateclient'
+                            message = 'Client modifié'
 
-    }
-    e.preventDefault();
-    if (e.isDefaultPrevented()){
-        $.ajax({
-            url : url ,
-            type : "post",
-            // data : $('#modal-form-user').serialize(),
-            data: new FormData($("#ajout_reglement form")[0]),
-            //data: new FormData($("#modal-form-user")[0]),
-            contentType: false,
-            processData: false,
-            success : function(data) {
+                        }
+                        e.preventDefault();
+                        if (e.isDefaultPrevented()){
+                            $.ajax({
+                                url : url ,
+                                type : "post",
+                                // data : $('#modal-form-user').serialize(),
+                                data: new FormData($("#ajout_client form")[0]),
+                                //data: new FormData($("#modal-form-user")[0]),
+                                contentType: false,
+                                processData: false,
+                                success : function(data) {
 
-                $('#ajout_reglement').modal('hide');
-                sweetToast('success',message);
+                                    $('#ajout_client').modal('hide');
+                                    sweetToast('success',message);
+                                    window.location='/reglementlist'
 
-            //    reglementTable.ajax.reload();
-               window.location.reload();
-            },
-            error : function(data){
-              alert('erreur')
-            }
-        });
-    }
-});
-//post des données
-$('#ajout_client  form').on('submit', function (e) {
+                                },
+                                error : function(data){
+                                alert('erreur')
+                                }
+                            });
+                        }
+                    });
 
-    let url;
-    if (!$('#idclient').val()){
-        url = '/ajoutclient'
-    }
+                                $('#btnreglement').on('click', function(){
 
-    e.preventDefault();
-    if (e.isDefaultPrevented()){
-        $.ajax({
-            url : url ,
-            type : "post",
-            // data : $('#modal-form-user').serialize(),
-            data: new FormData($("#ajout_client form")[0]),
-            //data: new FormData($("#modal-form-user")[0]),
-            contentType: false,
-            processData: false,
-            success : function(data) {
+                                    $('.modal-title-user').text('ENREGISTREMENT DU REGLEMENT');
+                                    $('#idreglement').val(null);
+                                    $('#client').val(null);
+                                    $('#btnadd').text('Valider');
+                                    $('#btnadd').removeClass('btn-warning');
+                                    $('#btnadd').addClass('btn-primary');
+                                    $('#total').val(null);
+                                    $('#donne').val(null);
+                                    $('#restant').val(null);
+                                    $('#ajout_reglement').modal('show');
+                                    });
 
-                $('#ajout_client').modal('hide');
-                window.location='/reglementlist'
+                                //post des données
+                                $('#ajout_reglement  form').on('submit', function (e) {
 
-            },
-            error : function(data){
-                alert('erreur')
-            }
-        });
-    }
-});</script>
-    
+                                    let url,message;
+                                    if (!$('#idreglement').val()){
+                                        url = '/storereglement'
+                                        message = 'reglement enregistré'
+
+
+                                    }
+                                    else{
+                                        url = '/updatereglement'
+                                        message = 'reglement modifié'
+
+                                    }
+                                    e.preventDefault();
+                                    if (e.isDefaultPrevented()){
+                                        $.ajax({
+                                            url : url ,
+                                            type : "post",
+                                            // data : $('#modal-form-user').serialize(),
+                                            data: new FormData($("#ajout_reglement form")[0]),
+                                            //data: new FormData($("#modal-form-user")[0]),
+                                            contentType: false,
+                                            processData: false,
+                                            success : function(data) {
+
+                                                $('#ajout_reglement').modal('hide');
+                                                sweetToast('success',message);
+
+                                            //    reglementTable.ajax.reload();
+                                            window.location.reload();
+                                            },
+                                            error : function(data){
+                                            alert('erreur')
+                                            }
+                                        });
+                                    }
+                                });
+                                //post des données
+
+
+    </script>
+
     <script>
 
         function setNumeralHtml(element, format, surfix="")

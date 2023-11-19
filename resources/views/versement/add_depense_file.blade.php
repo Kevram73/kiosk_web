@@ -1,5 +1,29 @@
 @extends('layout')
 @section('css')
+<style>
+    #previewContainer {
+       width: 200px;
+   height: 200px;
+   border: 5px solid black;
+   overflow: hidden;
+   float: left;
+   margin-right: 100px;
+   margin-top: 50px;
+   }
+   #previewContainer img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+ }
+  #removeImageButton {
+      background-color: blue;
+   color: white;
+   padding: 5px;
+   cursor: pointer;
+   top: 0;
+   right: 0;
+  }
+</style>
     <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
     <link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css"/>
 @endsection
@@ -32,13 +56,18 @@
                                 <form id="form" action="/depenseversem-files" method="POST" class="form-validate form-horizontal mb-lg" enctype="multipart/form-data">
                                         {{csrf_field()}}
                                         <div class="form-group mt-lg">
-                                            <label class="col-sm-3 control-label">Justificatif</label>
+                                            <label class="col-sm-3 control-label">Justificatifs</label>
                                             <div class="col-sm-9">
                                                 <input type="hidden" name="sold_id" id="sold_id" value="" />
                                                 <input type="hidden" name="depense_id" id="depense_id" value="{{$depense->id}}" />
-                                                <input type="file" name="file"  id="file" class="form-control" placeholder="" />
+                                                <input type="file" name="file"  id="fileInput" class="form-control" placeholder="" />
                                             </div>
                                         </div>
+                                        <div class="form-group mt-lg">
+                                            <div id="previewContainerContainer" class="card-body col-md-12 col-sm-12">
+                                               
+                                           </div>
+                                           </div>
                                         <div class="modal-footer">
                                             <div class="col-md-12 text-right">
                                                 <button type="submit" class="btn btn-primary" id="btnadd"><i class="fa fa-check"></i> Valider</button>
@@ -103,5 +132,33 @@
         });
     </script>
     <script src="js/depense.js"></script>
-    
+    <script>
+        console.log('viens');
+        document.querySelector('#fileInput').addEventListener('change', function(e) {
+          const files = e.target.files;
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.width = 200;
+                const previewContainer = document.createElement('div');
+                previewContainer.id = 'previewContainer';
+                const removeImageButton = document.createElement('div');
+                removeImageButton.id = 'removeImageButton';
+                removeImageButton.innerText = 'Supprimer';
+                removeImageButton.addEventListener('click', function() {
+                  previewContainer.remove();
+                });
+                previewContainer.appendChild(removeImageButton);
+                previewContainer.appendChild(img);
+                document.querySelector('#previewContainerContainer').appendChild(previewContainer);
+              }
+              reader.readAsDataURL(file);
+            }
+          }
+        });
+    </script>
 @endsection

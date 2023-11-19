@@ -6,16 +6,26 @@ use App\Categorie;
 use App\Http\Controllers\Controller;
 use App\Modele;
 use App\Prevente;
+use App\Historique;
+use App\User;
+use App\Client;
 use App\vente;
-//use http\Env\Response;
+use App\Facture;
 use App\Http\Resources\SaleResource;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
 
-class SalesController extends Controller
+class SalesController extends BaseController
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     /**
      * Display the list sales.
      *
@@ -23,18 +33,359 @@ class SalesController extends Controller
      */
     public function index()
     {
-        // get all the sales dones and their authors.
-        // $vente = SaleResource::collection(vente::all());
         return SaleResource::collection(vente::all());
     }
 
-    /**
-     * Create sales.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function filter(Request $request){
+        $sales = SaleResource::collection(vente::whereBetween("created_at", [$request->beginDate, $request->endDate])->get()->take(10));
+        return $this->sendResponse($sales, "Sales retrieved successfully");
+    }
+
+
+    public function store_vente_simple(Request $request)
+    {
+        if(vente::latest()->first() != null){
+            $id=vente::latest()->first()->id;
+            $ed = $id + 1;
+        } else {
+            $ed=1;
+        }
+
+        $vente = new vente();
+        $vente->numero="VENT".now()->format('Y')."-".$ed;
+
+        $vente->user_id= User::find($request->user_id)->id;
+        $vente->client_id= $request->client_id;
+        $vente->journal_id= $request->journal_id;
+        $vente->type_vente= 1;
+        $vente->date_vente= now();
+        $vente->boutique_id= User::find($request->user_id)->boutique->id;
+        $vente->totaux = $request->prix*$request->quantite - $request->reduction;
+        $vente->montant_reduction = $request->reduction;
+        $vente->save();
+
+
+        $total = 0;
+        $allReduction = 0;
+        foreach($request->product_list as $datum){
+            $prevente = new Prevente();
+            $prevente->prix = $datum['prix'];
+            $prevente->quantite = $datum['qte'];
+            $prevente->reduction = $datum['reduction'];
+            $prevente->prixtotal = $datum['prix']*$datum['qte'] - $datum['reduction'];
+            $prevente->vente_id=$vente->id;
+            $prevente->modele_fournisseur_id = $datum['mfid'];
+            $prevente->save();
+            $total += $datum['prix']*$datum['qte'];
+            $allReduction += $datum['reduction'];
+        }
+
+        $vente=vente::findOrFail($vente->id);
+
+        if($request->input('tva_on') == true)
+        {
+            $montant_ht = $total-$allReduction;
+            $montant_tva = ($montant_ht * 18)/100;
+            $vente->with_tva = true;
+            $vente->tva = 18;
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->montant_reduction = $allReduction;
+            $vente->totaux= $total;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+            $vente->montant_reduction = $allReduction;
+        }
+
+        $vente->save();
+
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =$request->user_id;
+        $historique->save();
+
+
+        $facture_id = Facture::latest()->first()->id;
+        if($facture_id){
+            $fac = $facture_id + 1;
+        } else {
+            $fac = 1;
+        }
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction = $request->reduction;
+        $facture->vente_id = $vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$fac;
+        $facture->save();
+
+        return $this->sendResponse($vente, "Vente effectué avec succès");
+    }
+
+    public function store_vente_credit(Request $request)
+    {
+        // $this->sendResponse($vente, "Vente effectué avec succès");
+        if(vente::latest()->first() != null){
+            $id=vente::latest()->first()->id;
+            $ed = $id + 1;
+        } else {
+            $ed=1;
+        }
+
+        $vente = new vente();
+        $vente->numero="VENT".now()->format('Y')."-".$ed;
+
+        $vente->user_id= User::find($request->user_id)->id;
+        $vente->client_id= $request->client_id;
+        $vente->journal_id= $request->journal_id;
+        $vente->type_vente= 2;
+        $vente->date_vente= now();
+        $vente->boutique_id= User::find($request->user_id)->boutique->id;
+        $vente->totaux = $request->prix*$request->quantite - $request->reduction;
+        $vente->montant_reduction = $request->reduction;
+        $vente->save();
+
+
+        $total = 0;
+        $allReduction = 0;
+
+        foreach($request->product_list as $datum){
+            $prevente = new Prevente();
+            $prevente->prix = $datum['prix'];
+            $prevente->quantite = $datum['qte'];
+            $prevente->reduction = $datum['reduction'];
+            $prevente->prixtotal = $datum['prix']*$datum['qte'] - $datum['reduction'];
+            $prevente->vente_id=$vente->id;
+            $prevente->modele_fournisseur_id = $datum['mfid'];
+            $prevente->save();
+            $total += $datum['prix']*$datum['qte'];
+            $allReduction += $datum['reduction'];
+        }
+        if($request->client_id != 0){
+            $client = Client::find($request->client_id);
+            $client->solde += $total;
+            $client->save();
+        }
+
+        $vente=vente::findOrFail($vente->id);
+
+        if($request->input('tva_on') == true)
+        {
+            $montant_ht = $total-$allReduction;
+            $montant_tva = ($montant_ht * 18)/100;
+            $vente->with_tva = true;
+            $vente->tva = 18;
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->montant_reduction = $allReduction;
+            $vente->totaux= $total;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+            $vente->montant_reduction = $allReduction;
+        }
+
+        $vente->save();
+
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =$request->user_id;
+        $historique->save();
+
+
+        $facture_id = Facture::latest()->first()->id;
+        if($facture_id){
+            $fac = $facture_id + 1;
+        } else {
+            $fac = 1;
+        }
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction = $request->reduction;
+        $facture->vente_id = $vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$fac;
+        $facture->save();
+
+        return $this->sendResponse($vente, "Vente effectué avec succès");
+    }
+    public function store_vente_nonlivre(Request $request)
+    {
+        // $this->sendResponse($vente, "Vente effectué avec succès");
+        if(vente::latest()->first() != null){
+            $id=vente::latest()->first()->id;
+            $ed = $id + 1;
+        } else {
+            $ed=1;
+        }
+
+        $vente = new vente();
+        $vente->numero="VENT".now()->format('Y')."-".$ed;
+
+        $vente->user_id= User::find($request->user_id)->id;
+        $vente->client_id= $request->client_id;
+        $vente->journal_id= $request->journal_id;
+        $vente->type_vente= 3;
+        $vente->date_vente= now();
+        $vente->boutique_id= User::find($request->user_id)->boutique->id;
+        $vente->totaux = $request->prix*$request->quantite - $request->reduction;
+        $vente->montant_reduction = $request->reduction;
+        $vente->save();
+
+
+        $total = 0;
+        $allReduction = 0;
+        foreach($request->product_list as $datum){
+            $prevente = new Prevente();
+            $prevente->prix = $datum['prix'];
+            $prevente->quantite = $datum['qte'];
+            $prevente->reduction = $datum['reduction'];
+            $prevente->prixtotal = $datum['prix']*$datum['qte'] - $datum['reduction'];
+            $prevente->vente_id=$vente->id;
+            $prevente->modele_fournisseur_id = $datum['mfid'];
+            $prevente->save();
+            $total += $datum['prix']*$datum['qte'];
+            $allReduction += $datum['reduction'];
+        }
+
+        $vente=vente::findOrFail($vente->id);
+
+        if($request->input('tva_on') == true)
+        {
+            $montant_ht = $total-$allReduction;
+            $montant_tva = ($montant_ht * 18)/100;
+            $vente->with_tva = true;
+            $vente->tva = 18;
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->montant_reduction = $allReduction;
+            $vente->totaux= $total;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+            $vente->montant_reduction = $allReduction;
+        }
+
+        $vente->save();
+
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =$request->user_id;
+        $historique->save();
+
+
+        $facture_id = Facture::latest()->first()->id;
+        if($facture_id){
+            $fac = $facture_id + 1;
+        } else {
+            $fac = 1;
+        }
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction = $request->reduction;
+        $facture->vente_id = $vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$fac;
+        $facture->save();
+
+        return $this->sendResponse($vente, "Vente effectué avec succès");
+
+    }
+
+    public function store_vente_gros(Request $request)
+    {
+        // $this->sendResponse($vente, "Vente effectué avec succès");
+        if(vente::latest()->first() != null){
+            $id=vente::latest()->first()->id;
+            $ed = $id + 1;
+        } else {
+            $ed=1;
+        }
+
+        $vente = new vente();
+        $vente->numero="VENT".now()->format('Y')."-".$ed;
+
+        $vente->user_id= User::find($request->user_id)->id;
+        $vente->client_id= $request->client_id;
+        $vente->journal_id= $request->journal_id;
+        $vente->type_vente= 4;
+        $vente->date_vente= now();
+        $vente->boutique_id= User::find($request->user_id)->boutique->id;
+        $vente->totaux = $request->prix*$request->quantite - $request->reduction;
+        $vente->montant_reduction = $request->reduction;
+        $vente->save();
+
+
+        $total = 0;
+        $allReduction = 0;
+        foreach($request->product_list as $datum){
+            $prevente = new Prevente();
+            $prevente->prix = $datum['prix'];
+            $prevente->quantite = $datum['qte'];
+            $prevente->reduction = $datum['reduction'];
+            $prevente->prixtotal = $datum['prix']*$datum['qte'] - $datum['reduction'];
+            $prevente->vente_id=$vente->id;
+            $prevente->modele_fournisseur_id = $datum['mfid'];
+            $prevente->save();
+            $total += $datum['prix']*$datum['qte'];
+            $allReduction += $datum['reduction'];
+        }
+
+        $vente=vente::findOrFail($vente->id);
+
+        if($request->input('tva_on') == true)
+        {
+            $montant_ht = $total-$allReduction;
+            $montant_tva = ($montant_ht * 18)/100;
+            $vente->with_tva = true;
+            $vente->tva = 18;
+            $vente->montant_ht = $montant_ht;
+            $vente->montant_tva = $montant_tva;
+            $vente->montant_reduction = $allReduction;
+            $vente->totaux= $total;
+        }else{
+            $vente->with_tva = false;
+            $vente->totaux = $total;
+            $vente->montant_reduction = $allReduction;
+        }
+
+        $vente->save();
+
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Ventes";
+        $historique->user_id =$request->user_id;
+        $historique->save();
+
+
+        $facture_id = Facture::latest()->first()->id;
+        if($facture_id){
+            $fac = $facture_id + 1;
+        } else {
+            $fac = 1;
+        }
+        $ed=1+$id;
+        $facture=new Facture();
+        $facture->prixapayer =$total;
+        $facture->montant_reduction = $request->reduction;
+        $facture->vente_id = $vente->id;
+        $facture ->numero="FACT".now()->format('Y')."-".$fac;
+        $facture->save();
+
+        return $this->sendResponse($vente, "Vente effectué avec succès");
+    }
+
+
     public function create(Request $request)
     {
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
         $data = $request->input('sale');
         $user_id=$data['user_id'] ;
         $boutique_id = ['boutique_id'];
@@ -123,16 +474,7 @@ class SalesController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+
 
     /**
      * Display the specified resource.
@@ -180,15 +522,7 @@ class SalesController extends Controller
     }
 
 
-    /***
-      Return list of all clients
-     ***/
-    public function list_clients()
-    {
-    $clients = Db::table('clients')->get();
 
-    return response()->json($clients->toArray());
-    }
 
     /**  Return the list of all products and their models.
      * @param $Request

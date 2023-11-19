@@ -26,4 +26,8 @@ class Boutique extends Model
                     ->withPivot(["is_active", "key", "value"])
                     ->withTimestamps();
     }
+
+    public function users(){
+        return User::where('boutique_id', $this->id)->get();
+    }
 }

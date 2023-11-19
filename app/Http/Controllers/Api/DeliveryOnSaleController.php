@@ -2,92 +2,50 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Historique;
 use App\Http\Controllers\Controller;
+use App\Historique;
+use App\vente;
+use App\Livraisonvente;
+use App\Prevente;
+use App\LivraisonVenteS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\LivraisonVenteResource;
+use App\Http\Controllers\Api\BaseController;
+use App\Http\Resources\SaleResource;
 
-class DeliveryOnSaleController extends Controller
+class DeliveryOnSaleController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    // prevente livraisons.
-    public function index(Request $request)
+    public function __construct()
     {
-
-    $livraison = DB::table('livraison_ventes')
-        ->join('livraison_v_s',function ($join){
-        $join->on('livraison_ventes.livraison_v_id','=','livraison_v_s.id');
-    })->join('preventes',function ($join){
-        $join->on('preventes.id','=','livraison_ventes.prevente_id') ;
-        })
-        ->join('modeles',function ($join){
-            $join->on('preventes.modele_fournisseur_id','=','modeles.id');
-        })
-        ->join('produits',function ($join){
-            $join->on('produits.id','=','modeles.produit_id') ;
-        })
-        ->get() ;
-
-    $preventes =DB::table('preventes')
-        ->join('modeles',function ($join){
-            $join->on('preventes.modele_fournisseur_id','=','modeles.id');
-        })
-        ->join('produits',function ($join){
-            $join->on('produits.id','=','modeles.produit_id') ;
-        })
-        ->join('livraison_ventes',function ($join){
-            $join->on('livraison_ventes.prevente_id','=','preventes.id') ;
-        })
-        ->get();
-
-    //$prevente = DB::table('preventes')->join('modeles',function ($join){
-     //   $join->on('preventes.modele_fournisseur_id','=','modeles.id');
-    //})->get();
-    //$historique = new Historique() ;
-    //$historique->actions = 'Liste';
-    //$historique->cible = "Livraison";
-    //$historique->user_id =$user_id;
-    //$historique->save();
-
-    return response()->json([
-        'livraisons'=> $preventes
-    ]);
-
+        $this->middleware('auth:sanctum');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function index()
     {
-        //$vente_id = $request->input('vente_id') ;
-        //$product_id = $request->input('product_id');
-        //$model_id = $request->input('modele_product');
-        //$qte_delyvered = $request->input('qte_delivered') ;
-
-        /**
-         * $prevente = DB::table('preventes',function ($join){
-        $join->on('mode')
-        });
-         */
-        $user_id = $request->input('user_id') ;
-        $vente_id =$request->input('vente_id');
-
-        // Create a nd save historique for the livraison.
-        $historique = new Historique();
-        $historique->action = "Creer";
-        $historique->cible = "Livraisons";
-        $historique->user_id = $user_id;
-        $historique->save();
-
-
+        $livraisons = LivraisonVenteS::all()->take(10);
+        return $this->sendResponse($livraisons, "Deliveries retrieved successfully.");
+        // return LivraisonVenteResource::collection($livraisons);
     }
+
+
+    public function ventes_non_livrees(){
+        $ventes = vente::where('type_vente', 3)->get();
+        foreach($ventes as $vente){
+            $quantite = 0;
+            $preventes = Prevente::where('vente_id', $vente->id)->get();
+            foreach($preventes as $prevente){
+                $quantite += $prevente->quantite;
+            }
+        }
+        return SaleResource::collection($ventes);
+    }
+
+    public function filter(Request $request){
+        $livraisons = LivraisonVenteS::whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
+        return $this->sendResponse($livraisons, "Deliveries retrieved successfully.");
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -97,51 +55,38 @@ class DeliveryOnSaleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lineLiv = new LivraisonVenteS();
+        $lineLiv->numero = $request->numero;
+        $lineLiv->date_livraison = now();
+        $lineLiv->boutique_id = $request->boutique_id;
+        $lineLiv->created_at = now();
+        $lineLiv->updated_at = now();
+        $lineLiv->save();
+
+        $livraison = new Livraisonvente();
+        $livraison->quantite_livre += $request->qte;
+        $prevente = Prevente::find($request->prevente_id);
+        $prevente->quantite -= $request->qte;
+        $prevente->save();
+        $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
+        $livraison->prevente_id = $request->prevente_id;
+        $livraison->livraison_v_id = $lineLiv->id;
+        $livraison->created_at = now();
+        $livraison->updated_at = now();
+        $livraison->save();
+
+        $historique = new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Livraisons";
+        $historique->user_id = $request->user_id;
+        $historique->save();
+
+        return response()->json([
+            'status' => 'success',
+            'livraison' => $livraison,
+            'line' => $lineLiv
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

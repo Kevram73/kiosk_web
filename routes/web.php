@@ -1,5 +1,10 @@
 <?php
+
+use App\Caisse;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\CompteBancaire;
+use Carbon\Carbon;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +22,23 @@ Route::get('/', function () {
     return redirect('/connexion');
 });
 
+
+Route::get('/listemontantcollecte','CaisseController@listemontantcollecte')->name('listemontantcollecte');
+
 // Route::get('/b', 'BordsController@b');
-Route::get('/bord', 'BordsController@index')->name('bord');
+Route::group(['middleware' => 'flagetat'], function () {
+    // Routes nécessitant la vérification du flagetat
+    Route::get('/bord', 'BordsController@index')->name('bord');
+
+});
+
 Route::get('/bordcaisse', 'BordsController@caisse')->name('caissebord');
 Route::get('/bordmagasin', 'BordsController@magasin')->name('magasinbord');
 Route::get('/bordadmin', 'BordsController@admin')->name('adminbord');
 Route::get('/allseuil', 'BordsController@allseuil')->name('allseuil');
 //Route::resource('Users','UserController');
+
+Route::post('/ajoutDEBITEURINVENT', 'ClientsController@storeDEBITEUR');
 
 Route::get('/clients', 'ClientsController@liste')->name('clients');
 Route::get('/allclient', 'ClientsController@index');
@@ -31,8 +46,26 @@ Route::get('/deleteclient-{id}', 'ClientsController@destroy');
 Route::post('/ajoutclient', 'ClientsController@store');
 Route::post('/updateclient', 'ClientsController@update');
 Route::get('/showclient-{id}', 'ClientsController@show');
+Route::get('/livraison', 'LivraisonsController@liste')->name('livraisons');
 
+Route::get('/showlivraisonNew-{id}', 'LivraisonsController@showNewOne');
+Route::get('/livraison-{id}', 'LivraisonsController@showNew');
+//Route::get('/newlivraisonCentrale', 'LivraisonsController@livraisonNew');
 
+Route::get('/newlivraisonCentrale', 'LivraisonsController@createNew');
+Route::get('/alllivraisonNew', 'LivraisonsController@indexNew');
+Route::get('/deletelivraisonNew-{id}', 'LivraisonsController@destroyNew');
+Route::post('/storelivraisonNew', 'LivraisonsController@storeNew');
+Route::post('/updatelivraisonNew', 'LivraisonsController@updateNew');
+Route::get('/showlivraison-{id}', 'LivraisonsController@showNew');
+Route::get('/verificationNew-{id}', 'LivraisonsController@verificationNew');
+Route::get('/detaillivraisonNew-{id}', 'LivraisonsController@showNew1');
+
+Route::get('/modeleboutique-{id}', 'BoutiquesController@modeleboutique');
+Route::get('/recuperercommandeNewmodele-{id}', 'LivraisonsController@commande1');
+Route::get('/showlivNew-{id}', 'LivraisonsController@showN');
+//Route::get('/alllivraisonNew', 'LivraisonsController@indexNew1');
+Route::get('/recupercommande-{id}', 'LivraisonsController@commande1');
 
 Route::get('/boutiques', 'BoutiquesController@liste')->name('boutiques');
 Route::get('/allboutique', 'BoutiquesController@index');
@@ -43,6 +76,9 @@ Route::get('/showboutique-{id}', 'BoutiquesController@show');
 Route::get('/showboutiquevaleur-{id}', 'BoutiquesController@showValeur');
 Route::post('/settings', 'BoutiquesController@settingStore');
 Route::get('/settings-{id}', 'BoutiquesController@settingIndex');
+Route::get('/restantinventairedebitor-{id}', 'InventairesController@totalachat');
+Route::get('/calculate/{id}', 'InventairesController@calculate');
+Route::post('/updatesuperinventaire', 'InventairesController@updateModeleSuperInventaire');
 
 Route::get('/fournisseurs', 'FournisseursController@liste')->name('fournisseurs');
 Route::get('/allfournisseur', 'FournisseursController@index');
@@ -65,6 +101,12 @@ Route::post('/updatefourni', 'FournisseursController@update2');
 Route::get('/showfourni-{id}', 'FournisseursController@show2');
 
 
+Route::get('/recuperermodeleboutiq-{id}', 'LivraisonsController@produit');
+
+
+Route::get('/recupevaleurbilling-{id}', 'CaisseController@valeurBilling');
+
+
 Route::get('/employes', 'EmployesController@liste')->name('employes');
 Route::get('/allemploye', 'EmployesController@index');
 Route::get('/deleteemploye-{id}', 'EmployesController@destroy');
@@ -83,6 +125,9 @@ Route::get('/showUser-{id}', 'UserController@show');
 Route::get('/show', 'UserController@create');
 Route::get('/compte', 'UserController@compte')->name('compte');
 Route::get('/changeUserState-{id}', 'UserController@changeState');
+Route::get('/changeBoutiqState-{id}', 'BoutiquesController@changeState');
+
+
 Route::get('/changeUserPwd-{id}', 'UserController@changePwd');
 
 
@@ -97,7 +142,11 @@ Route::get('/showcategorie-{id}', 'CategoriesController@show');
 
 
 //Route::get('/allinventaire', 'ModelesController@inventaire');
-Route::get('/inventaire', 'InventairesController@liste')->name('inventaire');
+Route::get('/inventaire', 'InventairesController@liste')->name('inventaire'); 
+Route::get('/inventairesuper', 'InventairesController@listesuper')->name('inventairesuper');
+
+
+Route::get('/allinventairesuper-{id}', 'InventairesController@indexsuper');
 Route::get('/allinventaire', 'InventairesController@index');
 Route::get('/inventaire_non_regulated','InventairesController@list_non_regulated');
 Route::get('/inventaire_non_reg-{id}','InventairesController@regulate_inventaire');
@@ -136,6 +185,9 @@ Route::post('/updatemodele', 'ModelesController@update');
 Route::get('/showmodele-{id}', 'ModelesController@show');
 Route::get('modeles-reporting', 'ModelesController@liste_reporting')->name('liste_reporting');
 Route::get('/allreportvent', 'ModelesController@allreportvent');
+Route::get('/allreportventsuper', 'InventairesController@allreportventsuper');
+
+
 Route::get('/allreportventsum', 'ModelesController@allreportventsum');
 
 Route::get('/allproduit', 'ProduitsController@index');
@@ -171,7 +223,7 @@ Route::post('/updatelivraison2', 'LivraisonsController@update2');
 Route::get('/showlivraison2-{id}', 'LivraisonsController@show2');
 Route::get('/verification2-{id}', 'LivraisonsController@verification2');
 
- 
+
 Route::get('/recupererfournisseurP', 'FournisseursController@fournisseurP');
 Route::get('/recupererfournisseur-{id}', 'ProvisionsController@fournisseur');
 Route::get('/recupererprovision-{id}-{ed}', 'ProvisionsController@provision');
@@ -212,13 +264,19 @@ Route::get('/adminhistoriqueachat', 'CommandesController@adminhistorique')->name
 
 
 Route::get('/allfournihistoriquesum', 'CommandesController@allfournihistoriquesum');
+Route::get('/allLivraisonBoutiqhistoriquesum', 'LivraisonsController@allLivraisonBoutiqhistoriquesum');
+
 Route::get('/allfournihistorique', 'CommandesController@allfournihistorique');
+Route::get('/alllivraisonBoutiqhistorique', 'LivraisonsController@alllivraisonBoutiqhistorique');
+
 Route::get('/allfournihistori', 'CommandesController@tyuio');
 
 
 Route::get('/recupererventemodele-{id}', 'VentesController@vente');
 Route::get('/recupererlivraisonventemodele-{id}', 'VentesController@livraisonvente');
 Route::get('/recuperercredit-{id}', 'VentesController@credit');
+Route::get('/recupereravoir-{id}', 'VentesController@avoir');
+
 Route::get('/devisvente', 'VentesController@createdevis')->name('devisvente');
 Route::get('/devisventegros', 'VentesController@createdevisgros')->name('devisventegros');
 Route::get('/ventesimple', 'VentesController@create')->name('ventesimple');
@@ -235,11 +293,18 @@ Route::get('/facturesimple-{id}', 'VentesController@facturesimple')->name('factu
 Route::get('/facturecredit-{id}', 'VentesController@facturecredit')->name('facturecredit');
 Route::get('/facturegros-{id}', 'VentesController@facturegros')->name('facturegros');
 Route::get('/debiteurs', 'VentesController@debiteurs')->name('debiteurs');
+Route::get('/alldebiteurs', 'VentesController@alldebiteurs')->name('alldebiteurs');
+
 Route::post('/regler', 'ReglementsController@store');
 Route::post('/regler-{id}', 'ReglementsController@store3');
 Route::get('/reglementlist', 'ReglementsController@reglementlist')->name('reglementlist');
+Route::get('/reglementlistallshoop', 'ReglementsController@reglementlistallshoop')->name('reglementlistallshoop');
+
+
 Route::get('/reglementachatlist', 'ReglementsController@reglementachatlist')->name('reglementachatlist');
 Route::get('/reglementlist-{id}', 'ReglementsController@reglementlistshow')->name('reglementlistshow');
+//Route::get('/reglementlist-{id}', 'ReglementsController@reglementlistshow')->name('reglementlistshow');
+
 Route::get('/reglementachatlist-{id}', 'ReglementsController@reglementachatlistshow')->name('reglementachatlistshow');
 Route::get('/reglementsbyclient-{id}', 'ReglementsController@reglementsbyclient');
 Route::get('/reglementsbyfournisseur-{id}', 'ReglementsController@reglementsbyfournisseur');
@@ -257,6 +322,20 @@ Route::post('/updatereglementachat', 'ReglementsController@updateachat');
 Route::get('/deletereglementachat-{id}', 'ReglementsController@destroyachat');
 Route::get('/restant-{id}', 'ReglementsController@total');
 Route::get('/restantachat-{id}', 'ReglementsController@totalachat');
+
+Route::get('/get-solde-{id}', function($id) {
+    $user = CompteBancaire::findOrFail($id);
+    //dd($user);
+    return response()->json(['solder' => $user->solder]);
+    })->name('get-solde');
+    Route::get('/get-date', function() {
+        $user = DB::table('caisses')
+        ->where('date', '=',Carbon::now()->format('Y-m-d'))
+        ->where ('boutique_id', '=',Auth::user()->boutique->id )
+        ->exists();
+        //dd($user);
+        return response()->json($user);
+        })->name('get-date');
 Route::get('/expl', 'ReglementsController@create');
 Route::get('/recettes', 'ReglementsController@recetteIndex')->name('recettes');
 Route::get('/recetteslist', 'ReglementsController@recetteListe');
@@ -309,6 +388,8 @@ Route::get('/historiques', 'HistoriquesController@liste')->name('historiques');
 Route::get('/allhistorique', 'HistoriquesController@index');
 
 Route::get('/connexion', function () {return view('connexion');})->name('connexion');
+Route::get('/bloquer', function () {return view('bloquer');})->name('bloquer');
+
 
 Auth::routes();
 
@@ -354,6 +435,10 @@ Route::get('/recupererdiversmoisdepenses-{id}-{ed}', 'DepenseController@diversmo
 Route::get('/diversanneedepenses-{id}', 'DepenseController@totalannee');
 Route::get('/recupererdiversanneedepenses-{id}', 'DepenseController@diversannee');
 Route::get('/historiquedepenses', 'DepenseController@historique');
+Route::get('/viewDepense-files-{id}', 'DepenseController@justificatifdepense');
+
+
+Route::get('/viewCharge-files-{id}', 'ChargesController@justificatifCharge');
 
 Route::get('/recupererdiversdate-{id}', 'ChargesController@diversdate');
 Route::get('/recupererdatedivers', 'ChargesController@recuperdatedivers');
@@ -404,12 +489,27 @@ Route::post('/store_projet_modeles-{id}', 'ProjetController@store_projet_modeles
 
 
 Route::get('/resultat', 'ResultatsController@resultat')->name('resultat');
+Route::get('/resultatsuper', 'ResultatsController@resultatsuper')->name('resultatsuper');
 Route::get('/resultatjr', 'ResultatsController@resultatjr');
 Route::get('/tableau-{id}', 'ResultatsController@tableau');
 Route::get('/exemple-{id}', 'ResultatsController@exemple');
 Route::get('/tableaujr-{id}', 'ResultatsController@tableaujr');
 Route::get('/tableaumois-{id}-{ed}', 'ResultatsController@tableaumois');
+Route::get('/resultatsuperjr', 'ResultatsController@resultatsuperjr');
 
+Route::get('/tableausuper-{id}', 'ResultatsController@tableausuper');
+Route::get('/exemplesuper-{id}', 'ResultatsController@exemplesuper');
+Route::get('/tableausuperjr-{id}', 'ResultatsController@tableausuperjr');
+Route::get('/tableausupermois-{id}-{ed}', 'ResultatsController@tableausupermois');
+
+
+Route::get('/alllivraisonNew', 'LivraisonsController@indexNew');
+Route::get('/deletelivraisonNew-{id}', 'LivraisonsController@destroyNew');
+Route::post('/storelivraisonNew', 'LivraisonsController@storeNew');
+Route::post('/updatelivraisonNew', 'LivraisonsController@updateNew');
+Route::get('/showlivraison-{id}', 'LivraisonsController@showNew');
+Route::get('/verificationNew-{id}', 'LivraisonsController@verificationNew');
+Route::get('/detaillivraisonNew-{id}', 'LivraisonsController@showNew1');
 
 
 Route::get('/verouillage-{id}', 'UserController@verrouillage');
@@ -436,13 +536,42 @@ Route::get('/banques','BanqueController@list_banques')->name('banques');
 Route::get('/agences','BanqueController@listagences')->name('agences');
 Route::get('/comptes','BanqueController@list_comptes')->name('comptes');
 
+Route::post('/agences','BanqueController@create_agence');
 Route::post('/banques','BanqueController@create_banque');
+Route::post('/comptessaved','BanqueController@create_compte');
+Route::get('/showbanquedetail-{id}', 'BanqueController@showdetail');
+
+Route::get('/deletecompte-{id}', 'BanqueController@destroycompte');
+Route::get('/showcompte-{id}', 'BanqueController@showdetailcompt');
+Route::post('/updatecompte', 'BanqueController@update_compte');
+Route::get('/showcomptedetail-{id}', 'BanqueController@showdetailcompte');
+
+Route::post('/updatebanque', 'BanqueController@update_banque');
+
+Route::get('/deletebanque-{id}', 'BanqueController@destroy');
+
+Route::get('/showbanque-{id}', 'BanqueController@show');
 Route::get('/get_account','BanqueController@get_account_for_bank');
 Route::get('/get_solde','BanqueController@get_solde');
 Route::get('/situationsBoutiques','SituationController@liste');
 
 Route::get('/caisses','CaisseController@liste')->name('caisses');
- 
+
+Route::get('/addBulling', 'CaisseController@addBullingshow')->name('addBullingshow');
+Route::post('/storecaisse', 'CaisseController@storeCaisseCollect');
+Route::post('/storeBilling', 'CaisseController@store');
+
+
+Route::get('/listeglobal','CaisseController@listeglobal')->name('listeglobal');
+
+Route::get('/showdetailcaisse','CaisseController@showdetailcaisse')->name('showdetailcaisse');
+
+Route::get('/UPDATEVERSEMENT-{id}','CaisseController@UPDATEVERSEMENT')->name('UPDATEVERSEMENT');
+Route::post('/editversement/{id}','CaisseController@editversement')->name('editversement');
+
+
+Route::get('/justificatifversement-{id}','CaisseController@justificatifversement')->name('justificatifversement');
+
 Route::get('/allversements','CaisseController@versements')->name('allversements');
 
 Route::get('/depenseversem-files-{id}', 'CaisseController@create_depense_file')->name('depenseversem_file');
@@ -453,3 +582,10 @@ Route::get('/validationversement', 'CaisseController@indexVALIDATION')->name('va
 
 Route::get('/depotversement', 'CaisseController@create_depot')->name('depotversement');
 Route::post('/add-depotversement', 'CaisseController@store_depot')->name('store_depotversement');
+
+Route::get('/caisses','CaisseController@liste')->name('caisses');
+
+Route::get('/allversements','CaisseController@versements')->name('allversements');
+
+Route::get('/chargeversem-files-{id}', 'ChargesController@create_depense_file')->name('chargeversem');
+Route::post('/charge-files', 'ChargesController@store_depense')->name('chargefiles');

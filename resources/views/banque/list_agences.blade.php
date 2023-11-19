@@ -1,6 +1,9 @@
 @extends('layout')
 @section('css')
     <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+   
+    <link rel="stylesheet" href="/vendor/select/css/select2.min.css" />
+
 @endsection
 @section('contenu')
     <!-- Modal to add banques -->
@@ -26,7 +29,9 @@
 
 
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-outline-light" id ="btnAddAgence"
-                           onclick="addAgenceBanque()">Ajouter agences banques</a>
+                           onclick="addAgenceBanque()"   
+                           data-bs-toggle="modal"
+                           data-bs-target="#idAddAgenceModal">Ajouter agences banques </a>
                         @include('banque.agence_list_table')
                     </div>
                 </section>
@@ -64,14 +69,15 @@
     export default {
         components: {Index}
     }
-</script>
+</script> 
     <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="js/banques.js"></script>
+    <script src="js/agence.js"></script>
 
+    <script src="/vendor/select/js/select2.full.min.js"></script>
 
 @endsection

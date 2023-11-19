@@ -6,11 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class DevisVente extends Model
 {
+    public function devis_ligne(){
+        return DevisLignesVente::where('devis_id', $this->id)->get();
+    }
     public function boutique(){
-        return $this->belongsTo('App\Boutique');
+        return Boutique::find($this->boutique_id);
     }
 
     public function user(){
-        return $this->belongsTo('App\User');
+        return User::find($this->user_id);
+    }
+
+    public function client(){
+        return Client::find($this->client_id);
     }
 }

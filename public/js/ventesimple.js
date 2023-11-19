@@ -11,7 +11,7 @@ function sweetToast(type,text){
         showConfirmButton: false,
         timer: 2000,
         animation : true,
-    });
+    }); 
 }
 
 $("#client").select2( {
@@ -54,6 +54,34 @@ $('#categorie').on('change',function ( ) {
         },
     })
 });
+
+$('#checkavoir').on('change',function () {
+    var setTva = $('#checkavoir');
+    var avoir = $("#avoir");
+    // let  message= "Set TVA "+ setTva.attr("checked");
+    if (setTva.is(":checked"))
+    {
+        avoir.css('display', 'inline-block');
+    }else{
+        avoir.css('display', 'none');
+    }
+    // sweetToast('success',message);
+})
+
+$('#client').on('change',function ( ) {
+    $.ajax({
+        url: '/recupereravoir-' + $('#client').val(),
+        type: "get",
+        success: function (data) {
+
+                $('#avoir').val(data);
+
+            },
+        error: function (data) {
+            console.log("erreur")
+        },
+    })
+})
 
 $('#produit').on('change',function ( ) {
     $.ajax({
@@ -210,7 +238,7 @@ $('#ajout').on('click',function () {
 
 
 
-
+ 
                     $('#quantite').val(null);
                     $('#reduction').val(null);
                     $('#prixQte').val(null);
@@ -279,7 +307,7 @@ $('#valider').on('click',function (e) {
 
             url = '/storevente'
 
-
+ 
             e.preventDefault()
 
             if ($table2.data().length <= 0 ){

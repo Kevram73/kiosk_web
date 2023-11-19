@@ -6,11 +6,12 @@ use App\Depense;
 use App\Historique;
 use App\Http\Controllers\Controller;
 use App\Sold;
+use App\JournalDepense;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+use App\Http\Controllers\Api\BaseController as BaseController;
 
-class ExpenseController extends Controller
+class ExpenseController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -19,11 +20,18 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses = Depense::all();
+        $expenses = Depense::all()->take(10);
 
-        return response()->json($expenses->toArray());
+        return response([
+            'data' => $expenses,
+            'status' => 200
+        ]);
+    }
 
+    public function filter(Request $request){
+        $expenses = Depense::whereBetween('created_at', [$request->beginDate, $request->endDate])->get();
 
+        return $this->sendResponse($expenses, "Depenses retrieved successfully.");
     }
 
     /**
@@ -31,8 +39,27 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+
+    public function available_depense(Request $request){
+        $journal = JournalDepense::where('user_id', $request->user_id)->where('date_fermeture', null)->get();
+        if(count($journal) == 0){
+            $elt = JournalDepense::create(
+                [
+                    'date_creation' => Carbon::now(),
+                    'mois' => Carbon::now()->month,
+                    'annee' => Carbon::now()->year,
+                    'user_id' => $request->user_id,
+                    'boutique_id' => $request->boutique_id,
+                ]
+            );
+        } else {
+            $elt = $journal->first();
+        }
+
+        return response([
+            'data' => $elt,
+            'status' => 200,
+        ]);
 
     }
 
@@ -44,60 +71,34 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $_name = $data['name'];
-        $_montant =$data['montant'];
-        $_date_rep=$data['date_dep'];
-        $_motif = $data['motif'];
-        $_user_id = $data['user_id'];
-        $solde_id = $data['sold_id'] ;
-        $_boutique_id = $data['boutique_id'] ;
 
-        DB::beginTransaction();
-        $id=DB::table('journal_depenses')->max('id');
-        $charge = new Depense();
-        //$charge->name = $request->name;
-        $charge->name = $_name;
-        //$charge->montant = $request->montant;
-        $charge->montant = $_montant;
-       // $charge->date_dep = date('Y-m-d', strtotime($request->date));
-        $charge->date_dep = date('Y-m-d', strtotime($_date_rep));
-        //$charge->motif = $request->motif;
-        $charge->motif = $_motif;
-
-        $charge->journal_id = $id;
-        $charge->user_id = $_user_id;
-        $charge->sold_id = $solde_id;
-        $charge->boutique_id =$_boutique_id;
-
-        $charge->save();
-
-        $sold = Sold::find($solde_id);
-        if($sold->montant <= $request->montant)
-        {
-            DB::rollback();
-            return response([
-                'data' => 'unable to create resoruce',
-                'status'=>404,
-
-            ]);
+        $id=JournalDepense::latest()->first()->id;
+        if($id){
+            $ed = $id + 1;
+        } else {
+            $ed=1;
         }
+        $expense = Depense::create([
+            'name' => $request->name,
+            'montant' => $request->montant,
+            'date_dep' => Carbon::now(),
+            'motif' => $request->motif,
+            'user_id' => $request->user_id,
+            'boutique_id' => $request->boutique_id,
+            'journal_id' => $id,
+        ]);
 
 
-        $sold->montant -= $_montant;
-        $sold->update();
 
         $historique = new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Dépense";
-        $historique->user_id = $_user_id;
+        $historique->user_id = $request->user_id;
         $historique->save();
 
-        DB::commit();
-
         return response([
-            'charge'=>$charge->toArray(),
-            'status'=>201
+            'data' => $expense,
+            'status' => 201
         ]);
     }
 
@@ -109,7 +110,7 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**

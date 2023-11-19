@@ -44,7 +44,13 @@ class DepenseController extends Controller
         $historique->save();
         return view('depenses/index', compact('sold'));
     }
+   public function justificatifdepense($id)
+    {
+        $depense = DepenseFile::where('depense_id',$id)->first();
+        //dd($depense);
 
+        return view('depenses.depensesjustif',compact('depense'));
+    }
 
     /**
      * Display a listing of the resource.
@@ -60,7 +66,10 @@ class DepenseController extends Controller
                 return
                         '<a class="btn btn-info" href="/depense-files-' . $clt->id . '"> <i class="fa fa-file"></i></a>
                         <a class="btn btn-success" onclick="editcharge(' . $clt->id . ')"> <i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-danger" onclick="deletecharge(' . $clt->id . ')"><i class="fa fa-trash-o"></i></a>';
+                        <a class="btn btn-danger" onclick="deletecharge(' . $clt->id . ')"><i class="fa fa-trash-o"></i></a>
+                                                <a class="btn btn-warning" href="/viewDepense-files-' . $clt->id . '"> <i class="fa fa-eye"></i>    </a>
+
+                        ';
             })
             ->make(true);
     }

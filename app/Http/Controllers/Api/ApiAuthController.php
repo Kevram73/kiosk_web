@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController;
 use App\User;
+use App\CollectorShop;
+use App\Collecter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+
 
 
 class ApiAuthController extends BaseController
@@ -26,7 +30,7 @@ class ApiAuthController extends BaseController
         }
 
         $token = $request->user()->createToken('API Token')->plainTextToken;
-        return response()->json(['token' => $token, 'user' => $request->user()]);
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->role()]);
     }
 
 
@@ -58,4 +62,32 @@ class ApiAuthController extends BaseController
 
         return response()->json(['message' => 'Password changed successfully.']);
     }
+
+    public function login_collector(Request $request){
+        $credentials = $request->only(['email', 'password']);
+        if (!Auth::attempt($credentials) && $request->user()->hasRole("COLLECTOR")) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        $token = $request->user()->createToken('API Token')->plainTextToken;
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->role()]);
+    }
+
+    public function register_collector(Request $request){
+        $user = new User();
+        $user->nom = $request->nom;
+        $user->prenom = $request->prenom;
+        $user->sexe = $request->sexe;
+        $user->email = $request->email;
+        $user->contact = $request->contact;
+        $user->password = "$2y$10$3Zhxu5tToajvOuTvwV8Y5.7vM.jWu2xw2FxHUNHcf5WyJzlwX83ae";
+        $user->boutique_id = 1;
+        $user->solde = 0;
+        $user->assignRole('COLLECTOR');
+        $user->save();
+
+        return response()->json(['new_user' => $user]);
+    }
+
+    
 }

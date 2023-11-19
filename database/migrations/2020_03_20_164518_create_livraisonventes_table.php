@@ -14,6 +14,7 @@ class CreateLivraisonventesTable extends Migration
     public function up()
     {
         if(!Schema::hasTable('livraison_ventes')){
+            
             Schema::create('livraison_ventes', function (Blueprint $table) {
                 $table->Increments('id');
                 $table->double('quantite_livre');
