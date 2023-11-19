@@ -4,7 +4,6 @@
     </IfModule>
 
     RewriteEngine On
-    RewriteBase /
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -19,35 +18,5 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
 </IfModule>
-#disable directory browsing
-Options -Indexes
-
-#PROTECT ENV FILE
-<Files .env>
-order allow,deny
-Deny from all
-</Files>
-
-#PROTECT ENV FILE
-<Files .htaccess>
-order allow,deny
-Deny from all
-</Files>
-
-<ifModule mod_env.c>
-  SetEnv KeepAlive On
-  SetEnv KeepAliveTimeout 100
-  SetEnv MaxKeepAliveRequests 500
-</ifModule>
-
-<ifModule mod_headers.c>
-  Header unset Connection
-  Header set Connection keep-alive
-
-  Header unset Keep-Alive
-  Header set Keep-Alive timeout=100,max=500
-</ifModule>
-RewriteCond %{HTTP_HOST} ^boutique\.mingoube\.com$
-RewriteRule ^/?$ "https\:\/\/boutique\.mingoube\.com\/connexion" [R=301,L]
-
