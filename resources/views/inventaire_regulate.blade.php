@@ -2,6 +2,18 @@
 @section('css')
 <link rel="stylesheet" type="text/css"
       href="DataTables/datatables.min.css"/>
+<script>
+    /**
+
+     import Scala from "../../octopus/assets/vendor/codemirror/mode/clike/scala.html";
+     export default {
+        components: {Scala}
+    }
+
+     */
+
+
+</script>
 <script src="https://unpkg.com/htmx.org@1.8.5"></script>
 @endsection
 
@@ -60,7 +72,7 @@
                                         <input type="number" name="donne" id="donne" class="form-control"  required/>
                                     </div>
                                 </div>
-            
+
                                 <div class="form-group mt-lg">
                                     <label class="col-sm-3 control-label" id="te">Restant</label>
                                     <div class="col-sm-9">
@@ -112,7 +124,7 @@
                             $i = 1 ;
                             @endphp
                             @isset($inventaire)
-                                
+
                             @foreach($inventaire as $re)
                                 <tr>
 
@@ -166,7 +178,7 @@
 
 </script>
 <script>
-    
+
     $('#fournisseur').on('change',function ( ) {
        console.log('lsuds');
    $('#total').empty();
@@ -199,14 +211,14 @@ $('#donne').on('value change',function ( ) {
 </script>
 
 <script>
-        
+
 
     $(document).ready(function(){
         $('#regulatedTable').DataTable({
             "order": [[ 0, "desc" ]],
             "pageLength":10,
             "oLanguage": {
-                
+
                 "sProcessing":     "Traitement en cours...",
                 "sSearch":         "Rechercher&nbsp;:",
                 "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
@@ -223,7 +235,7 @@ $('#donne').on('value change',function ( ) {
                     "sNext":       "Suivant",
                     "sLast":       "Dernier"
                 },
-                
+
                 "oAria": {
                     "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
                     "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"

@@ -11,24 +11,24 @@
 <script>
 
 	$(document).ready(function() {
-	
+
 		$('#calendar').fullCalendar({
-		
+
 			// US Holidays
-			events: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic',
-			
+			events: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/basic',
+
 			eventClick: function(event) {
 				// opens events in a popup window
 				window.open(event.url, 'gcalevent', 'width=700,height=600');
 				return false;
 			},
-			
+
 			loading: function(bool) {
 				$('#loading').toggle(bool);
 			}
-			
+
 		});
-		
+
 	});
 
 </script>
@@ -40,7 +40,7 @@
 		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 		font-size: 14px;
 	}
-		
+
 	#loading {
 		display: none;
 		position: absolute;

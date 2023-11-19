@@ -13,7 +13,7 @@
             </header>
 
             <div class="row">
-                <section class="panel"> 
+                <section class="panel">
                     <header class="panel-heading">
                         <div class="panel-actions">
                             <a href="#" class="fa fa-caret-down"></a>
@@ -21,14 +21,14 @@
 
                         <h1 class="panel-title">LISTES DES  BANQUES</h1>
                     </header>
- 
+
                     <div class="panel-body">
 
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-outline-light"
                            id="btnaddBanq" onclick="addBanque()"
                            data-bs-toggle="modal"
-                           data-bs-target="#idAddBanqueModal">Ajouter Banque</a>
-                       
+                           data-bs-target="#idAddBanqueModal">Ajouter Banques</a>
+
                         @include('banque.bank_list_table')
                     </div>
                 </section>
@@ -62,7 +62,7 @@
 @section('js')
 
 <script>
-    import Index from "../../../public/octopus/assets/vendor/flot/examples/zooming/index.html";
+    import Index from "../../../octopus/assets/vendor/flot/examples/zooming/index.html";
     export default {
         components: {Index}
     }
@@ -82,7 +82,7 @@
                 "order": [[ 0, "desc" ]],
                 "pageLength":10,
                 "oLanguage": {
-                    
+
                     "sProcessing":     "Traitement en cours...",
                     "sSearch":         "Rechercher&nbsp;:",
                     "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
@@ -99,7 +99,7 @@
                         "sNext":       "Suivant",
                         "sLast":       "Dernier"
                     },
-                    
+
                     "oAria": {
                         "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
                         "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
@@ -107,8 +107,8 @@
                 }
             });
         });
-    
-    
+
+
             $(document).ready(function() {
             $('#provisionTable').DataTable();
             } );

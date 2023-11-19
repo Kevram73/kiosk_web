@@ -382,7 +382,10 @@ class SalesController extends BaseController
 
     public function create(Request $request)
     {
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
         $data = $request->input('sale');
         $user_id=$data['user_id'] ;
         $boutique_id = ['boutique_id'];

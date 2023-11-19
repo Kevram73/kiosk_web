@@ -17,10 +17,10 @@
 
 
 		<!-- Vendor CSS -->
-		<link rel="stylesheet" href="public/octopus/assets/vendor/bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" href="public/octopus/assets/vendor/font-awesome/css/font-awesome.css" />
-		<link rel="stylesheet" href="public/octopus/assets/vendor/magnific-popup/magnific-popup.css" />
-        <link rel="stylesheet" href="public/octopus/assets/vendor/select2/select2.css" />
+		<link rel="stylesheet" href="octopus/assets/vendor/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="octopus/assets/vendor/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" href="octopus/assets/vendor/magnific-popup/magnific-popup.css" />
+        <link rel="stylesheet" href="octopus/assets/vendor/select2/select2.css" />
 
 
 
@@ -29,16 +29,16 @@
 
 
         <!-- Theme CSS -->
-		<link rel="stylesheet" href="public/octopus/assets/stylesheets/theme.css" />
+		<link rel="stylesheet" href="octopus/assets/stylesheets/theme.css" />
 
 		<!-- Skin CSS -->
-		<link rel="stylesheet" href="public/octopus/assets/stylesheets/skins/default.css" />
+		<link rel="stylesheet" href="octopus/assets/stylesheets/skins/default.css" />
 
 		<!-- Theme Custom CSS -->
-		<link rel="stylesheet" href="public/octopus/assets/stylesheets/theme-custom.css">
+		<link rel="stylesheet" href="octopus/assets/stylesheets/theme-custom.css">
 
 		<!-- Head Libs -->
-		<script src="public/octopus/assets/vendor/modernizr/modernizr.js"></script>
+		<script src="octopus/assets/vendor/modernizr/modernizr.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
 
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
@@ -52,7 +52,7 @@
             <header class="header">
                 <div class="logo-container">
                     <a class="logo">
-                        <img src="public/image/IMG-2014.PNG" height="60" alt="BOUTIQUE+" />
+                        <img src="image/IMG-2014.PNG" height="60" alt="BOUTIQUE+" />
                     </a>
                     <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
                         <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
@@ -635,15 +635,15 @@
 
 
 		<!-- Vendor -->
-		<script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
-		<script src="public/octopus/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
-		<script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-		<script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-		<script src="public/octopus/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-		<script src="public/octopus/assets/vendor/magnific-popup/magnific-popup.js"></script>
-		<script src="public/octopus/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+		<script src="octopus/assets/vendor/jquery/jquery.js"></script>
+		<script src="octopus/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+		<script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+		<script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+		<script src="octopus/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script src="octopus/assets/vendor/magnific-popup/magnific-popup.js"></script>
+		<script src="octopus/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
-        <script src="/public/vendor/numeral/numeral.min.js"></script>
+        <script src="/vendor/numeral/numeral.min.js"></script>
         <script>
         // switch between locales
         numeral.locale('fr');
@@ -651,18 +651,18 @@
 
 		<!-- Specific Page Vendor -->
 
-        <script src="public/octopus/assets/vendor/select2/select2.js"></script>
+        <script src="octopus/assets/vendor/select2/select2.js"></script>
 
 
 
         <!-- Theme Base, Components and Settings -->
-		<script src="public/octopus/assets/javascripts/theme.js"></script>
+		<script src="octopus/assets/javascripts/theme.js"></script>
 
 		<!-- Theme Custom -->
-		<script src="public/octopus/assets/javascripts/theme.custom.js"></script>
+		<script src="octopus/assets/javascripts/theme.custom.js"></script>
 
 		<!-- Theme Initialization Files -->
-		<script src="public/octopus/assets/javascripts/theme.init.js"></script>
+		<script src="octopus/assets/javascripts/theme.init.js"></script>
         @yield('js')
 
 		<!-- Examples -->

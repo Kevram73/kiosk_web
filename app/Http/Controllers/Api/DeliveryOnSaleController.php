@@ -31,6 +31,13 @@ class DeliveryOnSaleController extends BaseController
 
     public function ventes_non_livrees(){
         $ventes = vente::where('type_vente', 3)->get();
+        foreach($ventes as $vente){
+            $quantite = 0;
+            $preventes = Prevente::where('vente_id', $vente->id)->get();
+            foreach($preventes as $prevente){
+                $quantite += $prevente->quantite;
+            }
+        }
         return SaleResource::collection($ventes);
     }
 
@@ -60,6 +67,7 @@ class DeliveryOnSaleController extends BaseController
         $livraison->quantite_livre += $request->qte;
         $prevente = Prevente::find($request->prevente_id);
         $prevente->quantite -= $request->qte;
+        $prevente->save();
         $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
         $livraison->prevente_id = $request->prevente_id;
         $livraison->livraison_v_id = $lineLiv->id;
