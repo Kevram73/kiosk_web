@@ -32,7 +32,9 @@ use App\Http\Controllers\Api\DevisController;
 // Login Request
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/login/collector', [ApiAuthController::class, 'login_collector']);
+Route::post('/login/admin', [ApiAuthController::class, 'login_admin']);
 Route::post('/register/collector', [ApiAuthController::class, 'register_collector']);
+Route::post('/register/admin', [ApiAuthController::class, 'register_admin']);
 Route::post('/logout', [ApiAuthController::class, 'logout']);
 Route::post('/change-password', [ApiAuthController::class, 'changePassword']);
 Route::get('/solde', [BoutiqueController::class,'solde']);

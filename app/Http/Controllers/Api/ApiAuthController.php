@@ -89,5 +89,31 @@ class ApiAuthController extends BaseController
         return response()->json(['new_user' => $user]);
     }
 
-    
+    public function login_admin(Request $request){
+        $credentials = $request->only(['email', 'password']);
+        if (!Auth::attempt($credentials) && $request->user()->hasRole("ADMIN")) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        $token = $request->user()->createToken('API Token')->plainTextToken;
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->role()]);
+    }
+
+    public function register_admin(Request $request){
+        $user = new User();
+        $user->nom = $request->nom;
+        $user->prenom = $request->prenom;
+        $user->sexe = $request->sexe;
+        $user->email = $request->email;
+        $user->contact = $request->contact;
+        $user->password = "$2y$10$3Zhxu5tToajvOuTvwV8Y5.7vM.jWu2xw2FxHUNHcf5WyJzlwX83ae";
+        $user->boutique_id = 1;
+        $user->solde = 0;
+        $user->assignRole('ADMIN');
+        $user->save();
+
+        return response()->json(['new_user' => $user]);
+
+
+    }
 }
