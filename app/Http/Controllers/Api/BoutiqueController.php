@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController;
 use App\Boutique;
 use App\Collecter;
+use App\Historique;
 use App\User;
 use App\CollectorShop;
 use Illuminate\Http\Request;
@@ -22,6 +23,22 @@ class BoutiqueController extends BaseController
     public function index(Request $request){
         $boutiques = Boutique::all();
         return $this->sendResponse($boutiques, "Boutiques retrieved successfully.");
+    }
+
+    public function store(Request $request){
+        $boutique = new Boutique();
+        $boutique->nom = $request->name;
+        $boutique->adresse = $request->address;
+        $boutique->telephone = $request->phone;
+        $boutique->contact = $request->email;
+        $boutique->save();
+        $historique=new Historique();
+        $historique->actions = "Creer";
+        $historique->cible = "Boutique";
+        $historique->user_id =Auth::user()->id;
+        $historique->save();
+
+        return $this->sendResponse($boutique, "Boutique created successfully.", 201);
     }
 
     public function get_users(Request $request, int $id){

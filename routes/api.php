@@ -96,6 +96,7 @@ Route::post('/register/collector', [CollectorController::class, 'register']);
 Route::get('/collectors', [CollectorController::class, 'get_list_collectors']);
 
 Route::get('/boutiques', [BoutiqueController::class, 'index']);
+Route::get('/boutiques/store', [BoutiqueController::class, 'store']);
 
 Route::get('/shops/collectors', [BoutiqueController::class, 'get_shops']);
 Route::get('/transactions', [BoutiqueController::class, 'list_transaction']);
