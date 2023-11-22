@@ -91,7 +91,7 @@ class ApiAuthController extends BaseController
 
     public function login_admin(Request $request){
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials) && $request->user()->hasRole("ADMIN")) {
+        if (!Auth::attempt($credentials) && $request->user()->hasRole("ADMINISTRATEUR")) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
@@ -109,7 +109,7 @@ class ApiAuthController extends BaseController
         $user->password = "$2y$10$3Zhxu5tToajvOuTvwV8Y5.7vM.jWu2xw2FxHUNHcf5WyJzlwX83ae";
         $user->boutique_id = 1;
         $user->solde = 0;
-        $user->assignRole('ADMIN');
+        $user->assignRole('ADMINISTRATEUR');
         $user->save();
 
         return response()->json(['new_user' => $user]);
