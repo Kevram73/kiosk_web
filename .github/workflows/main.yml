@@ -25,6 +25,6 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.2
       with:
-        server: pressingmobile-tg.mon.world
-        username: kiosk@testing.pressingmobile-tg.mon.world
+        server: 109.234.165.113
+        username: mobile@test-boutiqueplus.mingoube.com
         password: Alkashi13!!!%
