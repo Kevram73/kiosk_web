@@ -26,7 +26,7 @@ class ApiAuthController extends BaseController
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials) && $request->user()->hasRole("CAISSIER")) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
