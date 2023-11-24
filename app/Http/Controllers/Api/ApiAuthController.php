@@ -26,7 +26,7 @@ class ApiAuthController extends BaseController
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials) && $request->user()->hasRole("CAISSIER")) {
+        if (!Auth::guard('api')->attempt($credentials) && $request->user()->hasRole("CAISSIER")) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
@@ -52,7 +52,7 @@ class ApiAuthController extends BaseController
             'password' => 'required|confirmed',
         ]);
 
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
 
         if (!Hash::check($request->current_password, $user->password)) {
             return response()->json(['error' => 'The current password is incorrect.'], 422);
@@ -66,7 +66,7 @@ class ApiAuthController extends BaseController
 
     public function login_collector(Request $request){
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials) && $request->user()->hasRole("COLLECTOR")) {
+        if (!Auth::guard('api')->attempt($credentials) && $request->user()->hasRole("COLLECTOR")) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
@@ -92,7 +92,7 @@ class ApiAuthController extends BaseController
 
     public function login_admin(Request $request){
         $credentials = $request->only(['email', 'password']);
-        if (!Auth::attempt($credentials) && $request->user()->hasRole("ADMINISTRATEUR")) {
+        if (!Auth::guard('api')->attempt($credentials) && $request->user()->hasRole("ADMINISTRATEUR")) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
