@@ -448,11 +448,11 @@
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="vendor/select/js/select2.full.min.js"></script>
 
-    {{-- <script src="public/js/livraison.js"></script> --}}
-    <script src="public/js/livraison.js"></script>
-        <script src="public/js/livraisonHistorique.js"></script>
+    {{-- <script src="js/livraison.js"></script> --}}
+    <script src="js/livraison.js"></script>
+        <script src="js/livraisonHistorique.js"></script>
 
-    <script src="public/js/livraisonNew1.js"></script>
-    <script src="public/js/test/livraisonOne.js"></script>
+    <script src="js/livraisonNew1.js"></script>
+    <script src="js/test/livraisonOne.js"></script>
 
 @endsection

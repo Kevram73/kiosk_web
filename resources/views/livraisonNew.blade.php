@@ -166,8 +166,8 @@
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="public/js/fourni.js"></script>
-    <script src="public/js/fournisseur.js"></script>
+    <script src="js/fourni.js"></script>
+    <script src="js/fournisseur.js"></script>
     <script >
         $('#symbole').on('change', function(e){
             var value = $('#symbole').val();

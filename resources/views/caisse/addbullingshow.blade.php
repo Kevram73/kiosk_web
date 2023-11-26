@@ -162,6 +162,6 @@
 
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/addbillingshow.js"></script>
+    <script src="js/addbillingshow.js"></script>
 
 @endsection

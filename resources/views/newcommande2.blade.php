@@ -207,8 +207,8 @@
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="vendor/select/js/select2.full.min.js"></script>
-    <script src="public/js/newcommande2.js"></script>
-    <!-- <script src="public/js/fournisseur.js"></script> -->
+    <script src="js/newcommande2.js"></script>
+    <!-- <script src="js/fournisseur.js"></script> -->
 
 
 @endsection

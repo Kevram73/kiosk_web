@@ -286,6 +286,6 @@
 
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/devisventegros.js"></script>
+    <script src="js/devisventegros.js"></script>
 
 @endsection

@@ -308,6 +308,6 @@
 
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/ventecredit.js"></script>
+    <script src="js/ventecredit.js"></script>
 
 @endsection

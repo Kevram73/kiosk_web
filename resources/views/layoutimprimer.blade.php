@@ -49,7 +49,7 @@
         </script>
 
         @yield('js')
-        <script src="public/js/facture.js"></script>
+        <script src="js/facture.js"></script>
 		<!-- Examples -->
 
 

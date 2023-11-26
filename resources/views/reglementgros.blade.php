@@ -124,8 +124,8 @@
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="public/js/facturegros.js"></script>
-    <script src="public/js/facture-paye-complet.js"></script>
+    <script src="js/facturegros.js"></script>
+    <script src="js/facture-paye-complet.js"></script>
     <script>
         function setNumeralHtml(element, format, surfix="", type="html")
         {

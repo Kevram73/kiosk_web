@@ -108,6 +108,6 @@
             });
         });
     </script>
-    <script src="public/js/projet.js"></script>
+    <script src="js/projet.js"></script>
 
 @endsection

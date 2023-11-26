@@ -121,7 +121,7 @@
             });
         });
     </script>
-    <script src="public/js/depense.js"></script>
+    <script src="js/depense.js"></script>
     <script>
         console.log('viens');
         document.querySelector('#fileInput').addEventListener('change', function(e) {

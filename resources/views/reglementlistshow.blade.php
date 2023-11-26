@@ -139,7 +139,7 @@
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="public/js/reglement_list_show.js"></script>
+    <script src="js/reglement_list_show.js"></script>
     <script>
 
         function setNumeralHtml(element, format, surfix="")

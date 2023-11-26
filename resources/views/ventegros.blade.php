@@ -309,6 +309,6 @@
 
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/ventegros.js"></script>
+    <script src="js/ventegros.js"></script>
 
 @endsection

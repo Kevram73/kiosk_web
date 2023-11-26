@@ -187,6 +187,6 @@
 
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/add_modele_projet.js"></script>
+    <script src="js/add_modele_projet.js"></script>
 
 @endsection

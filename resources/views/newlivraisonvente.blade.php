@@ -104,6 +104,6 @@
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="vendor/select/js/select2.full.min.js"></script>
-    <script src="public/js/newlivraisonvente.js"></script>
+    <script src="js/newlivraisonvente.js"></script>
 
 @endsection

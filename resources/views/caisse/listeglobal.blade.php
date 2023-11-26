@@ -161,7 +161,7 @@
             });
         });
     </script>
-    <script src="public/js/caisse.js"></script>
+    <script src="js/caisse.js"></script>
     <script>
   
         $(document).ready(function(){

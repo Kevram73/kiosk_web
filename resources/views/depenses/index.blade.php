@@ -151,6 +151,6 @@
         }
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/depense.js"></script>
+    <script src="js/depense.js"></script>
 
 @endsection

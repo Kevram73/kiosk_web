@@ -72,7 +72,7 @@
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="public/js/compte_bancaire.js"></script>
+    <script src="js/compte_bancaire.js"></script>
     <script>
         console.log('recherche');
    $(document).ready(function(){

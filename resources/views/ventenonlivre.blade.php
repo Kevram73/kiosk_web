@@ -305,6 +305,6 @@
 
         setNumeralHtml("prix", "0,0");
     </script>
-    <script src="public/js/ventenonlivre.js"></script>
+    <script src="js/ventenonlivre.js"></script>
 
 @endsection

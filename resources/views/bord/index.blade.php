@@ -529,7 +529,7 @@
     <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
     <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="public/js/bord.js"></script>
-    <script src="public/js/seuil.js"></script>
+    <script src="js/bord.js"></script>
+    <script src="js/seuil.js"></script>
 
 @endsection

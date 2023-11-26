@@ -88,5 +88,5 @@
     </div>
 @endsection
 @section('js')
-    <script src="public/js/bord.js"></script>
+    <script src="js/bord.js"></script>
 @endsection

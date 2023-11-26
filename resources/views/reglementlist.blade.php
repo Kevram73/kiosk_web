@@ -208,7 +208,7 @@
     </div>
 @endsection
 @section('js')
-    <script src="public/js/addReglementClient.js"></script>
+    <script src="js/addReglementClient.js"></script>
     <script src="octopus/assets/vendor/jquery/jquery.js"></script>
     <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>

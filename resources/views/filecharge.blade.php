@@ -102,6 +102,6 @@
             });
         });
     </script>
-    <script src="public/js/depense.js"></script>
+    <script src="js/depense.js"></script>
     
 @endsection
