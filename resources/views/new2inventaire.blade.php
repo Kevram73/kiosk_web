@@ -64,7 +64,7 @@
                     </header>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped mb-none" id="inventaireTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                        <table class="table table-bordered table-striped mb-none" id="inventaireTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Catégorie</th>

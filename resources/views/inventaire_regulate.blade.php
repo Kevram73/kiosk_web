@@ -108,7 +108,7 @@
                     <div class="panel-body">
                         <a type="button"  class="btn btn-info" data-toggle="modal" data-target="#inventaireRegulateModal"> Faire une Régularisation </a>
 
-                        <table class="table table-bordered table-striped mb-none" id="regulatedTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                        <table class="table table-bordered table-striped mb-none" id="regulatedTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">N°</th>

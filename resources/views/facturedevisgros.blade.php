@@ -54,7 +54,7 @@
 
             <div class="row">
                 <div class="col-12 table-responsive">
-                    <table class="table table-bordered table-striped mb-none" id="afficheTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
+                    <table class="table table-bordered table-striped mb-none" id="afficheTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
                         <thead>
                         <tr>
                             <th class="center hidden-phone">Désignation</th>

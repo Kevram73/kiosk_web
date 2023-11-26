@@ -1,7 +1,7 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
-     <link rel="stylesheet" href="public/vendor/select/css/select2.min.css" />
+    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+     <link rel="stylesheet" href="vendor/select/css/select2.min.css" />
     <style>
       /*  .select2-container {
             width: 700px;
@@ -196,7 +196,7 @@
                                                 </div>
                                             </div>
                                             <br>
-                                            <table class="table table-bordered table-striped mb-none" id="achatFourniTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                            <table class="table table-bordered table-striped mb-none" id="achatFourniTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                                 <thead>
                                                 <tr>
                                                     <th class="center hidden-phone">Dates </th>
@@ -440,13 +440,13 @@
 @endsection
 @section('js')
  
-    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="public/vendor/select/js/select2.full.min.js"></script>
+    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="vendor/select/js/select2.full.min.js"></script>
 
     {{-- <script src="public/js/livraison.js"></script> --}}
     <script src="public/js/livraison.js"></script>

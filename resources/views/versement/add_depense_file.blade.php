@@ -24,8 +24,8 @@
    right: 0;
   }
 </style>
-    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
-    <link rel="stylesheet" type="text/css" href="public/vendor/daterangepicker/daterangepicker.css"/>
+    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"/>
 @endsection
 @section('contenu')
     <div class="inner-wrapper">
@@ -94,12 +94,12 @@
 @endsection
 @section('js')
 
-    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script>
         function setNumeralHtml(element, format, surfix="")
         {
@@ -116,8 +116,8 @@
         }
         setNumeralHtml("prix", "0,0");
     </script>
-    <script type="text/javascript" src="public/vendor/daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="public/vendor/daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
 
     <script>
         $(function() {

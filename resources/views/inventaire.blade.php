@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-<link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+<link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 @endsection
 @section('contenu')
     <div class="inner-wrapper">
@@ -43,7 +43,7 @@
                                     <!-- Inventaire pending table -->
                                     <div id="inventaire_pending" class="tab-pane active">
                                         <a class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btnAddInventaire"><i class="fa fa-plus"></i>Ajouter un inventaire</a>
-                                        <table class="table table-bordered table-striped mb-none" id="inventaireTablePending" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                        <table class="table table-bordered table-striped mb-none" id="inventaireTablePending" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                             <thead>
                                             <tr>
                                                 <th class="center hidden-phone">Numero</th>
@@ -63,7 +63,7 @@
                                     <!-- Inventaire valider -->
                                     <div id="inventaire_valider" class="tab-pane ">
                                         {{-- <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btninventaire"><i class="fa fa-plus"></i>Faire l'inventaire</a> --}} <br>
-                                        <table class="table table-bordered table-striped mb-none" id="inventaireTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                        <table class="table table-bordered table-striped mb-none" id="inventaireTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                             <thead>
                                             <tr>
                                                 <th class="center hidden-phone">Numero</th>
@@ -82,7 +82,7 @@
                                     <!-- Inventaire regularisation -->
                                     <div id="inventaire_regularistion" class="tab-pane ">
                                         {{-- <a class=" btn btn-default mb-xs mt-xs mr-xs btn btn-default" id="btninventaire"><i class="fa fa-plus"></i>Faire l'inventaire</a> --}} <br>
-                                        <table class="table table-bordered table-striped mb-none" id="inventaireTableRegularisation" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                        <table class="table table-bordered table-striped mb-none" id="inventaireTableRegularisation" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                             <thead>
                                             <tr>
                                                 <th class="center hidden-phone">Code Inventaire</th>
@@ -178,12 +178,12 @@
 @endsection
 @section('js')
 
-    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script src="public/js/inventaire.js"></script>
 
 @endsection

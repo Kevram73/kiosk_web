@@ -1,5 +1,5 @@
 <table class="table table-bordered table-striped mb-none"
-       id="provisionTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+       id="provisionTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
     <thead>
     <tr>
         <th class="center hidden-phone">Nom Banque</th>

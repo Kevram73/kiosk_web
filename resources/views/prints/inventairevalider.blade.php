@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Inventaire</title>
-    <link rel="stylesheet" href="public/octopus/assets/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="octopus/assets/vendor/bootstrap/css/bootstrap.css" />
 </head>
 <body>
     <div class="wrapper">
@@ -50,7 +50,7 @@
 
             <div class="row">
                 <div class="col-12 table-responsive">
-                    <table class="table table-bordered table-striped mb-none" id="afficheTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
+                    <table class="table table-bordered table-striped mb-none" id="afficheTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
                         <thead>
                         <tr>
                             {{-- <th class="text-center hidden-phone">Categorie</th> --}}
@@ -84,7 +84,7 @@
             </div>
         </section>
     </div>
-    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
 </body>
 </html>
