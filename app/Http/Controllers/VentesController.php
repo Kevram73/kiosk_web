@@ -69,6 +69,9 @@ class VentesController extends Controller
         })->
         orderBy('ventes.created_at', 'DESC')->get();
 
+
+
+
         $modele2=DB::table('modeles')
             ->join('produits', function ($join) {
                 $join->on('modeles.produit_id', '=', 'produits.id');
@@ -76,6 +79,7 @@ class VentesController extends Controller
             ->where ('modeles.boutique_id', '=',Auth::user()->boutique->id )
             ->whereColumn('modeles.seuil','>=','modeles.quantite')
             ->get();
+
         $mod=count($modele2);
         $clients=DB::table('clients')
             ->join('ventes', function ($join) {

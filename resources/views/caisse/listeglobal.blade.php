@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 @endsection
 @section('contenu')
     <div class="inner-wrapper">
@@ -30,7 +30,7 @@
 
 {{--                                     <a  class="modal-with-form btn btn-default mb-xs mt-xs mr-xs btn btn-default"  href="/addBulling">Ajouter Billetage </a>
  --}}                                    <div class="table-responsive">
-                                    <table class="table table-bordered table-striped mb-none" id="situationTable"  data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                    <table class="table table-bordered table-striped mb-none" id="situationTable"  data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                         <thead>
                                             <tr>
                                                 <th class="center hidden-phone">Date</th>
@@ -93,14 +93,14 @@
 @endsection
 @section('js')
 
-    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script type="text/javascript" src="/vendor/daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script type="text/javascript" src="public/vendor/daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="public/vendor/daterangepicker/daterangepicker.js"></script>
     <script>
         $('#check-date').click(function() {
             $.ajax({
@@ -161,7 +161,7 @@
             });
         });
     </script>
-    <script src="js/caisse.js"></script>
+    <script src="public/js/caisse.js"></script>
     <script>
   
         $(document).ready(function(){

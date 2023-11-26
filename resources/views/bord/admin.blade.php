@@ -41,6 +41,6 @@
 
 @endsection
 @section('js')
-    <script src="js/bord.js"></script>
+    <script src="public/js/bord.js"></script>
 
 @endsection

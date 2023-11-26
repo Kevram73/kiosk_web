@@ -382,23 +382,17 @@ class SalesController extends BaseController
 
     public function create(Request $request)
     {
-<<<<<<< HEAD
-=======
-
->>>>>>> main
         $data = $request->input('sale');
-        $user_id=$data['user_id'] ;
-        $boutique_id = ['boutique_id'];
-        $client_id=$data['client_id'] ;
-        $type_vente=$data['type_vente'];
-        $with_tva=$data['with_tva'];
-        $tva_value=$data['tva_value'];
-        $montant_ht = $data['montant_ht'];
-        $montant_tva = $data['montant_tva'];
-        $montant_reduction = $data['montant_reduction'];
-        $product_product_list = $data['products'] ;
-
-
+        $user_id=$data->user_id;
+        $boutique_id = $data->boutique_id;
+        $client_id=$data->client_id;
+        $type_vente=$data->type_vente;
+        $with_tva=$data->with_tva;
+        $tva_value=$data->tva_value;
+        $montant_ht = $data->montant_ht;
+        $montant_tva = $data->montant_tva;
+        $montant_reduction = $data->montant_reduction;
+        $product_product_list = $data->products;
         // get the higher value of the journals.
         $_journal_max=DB::table('journals')->max('id');
         $_vente_max=DB::table('ventes')->max('id');
@@ -422,16 +416,16 @@ class SalesController extends BaseController
         foreach ($product_product_list as $item)
         {
         $prevente = new Prevente();
-        $prevente->modele_fournisseur_id =$item.model_id ;
-        $prevente->prix =$item.prix ;
-        $prevente->quantite =$item.qty ;
-        $prevente->reduction =$item.reduction ;
-        $prevente->prixtotal=$item.total_cost;
+        $prevente->modele_fournisseur_id =$item->model_id ;
+        $prevente->prix =$item->prix ;
+        $prevente->quantite =$item->qty ;
+        $prevente->reduction =$item->reduction ;
+        $prevente->prixtotal=$item->total_cost;
         $prevente->vente_id=$_vente->id();
         $prevente->save();
 
         // check if their is a models like that in store.
-        $check_model_in_store = Modele::findOrFail($item.model_id) ;
+        $check_model_in_store = Modele::findOrFail($item->model_id) ;
         if($check_model_in_store != null)
         {
           if($check_model_in_store->quantite < $prevente->quantite)

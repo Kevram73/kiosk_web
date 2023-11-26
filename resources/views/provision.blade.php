@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 @endsection
 @section('contenu')
     <div class="inner-wrapper">
@@ -28,7 +28,7 @@
                         @endif
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-success" id="btnhistorique"><i class="fa fa-file-text"></i>Historiques</a>
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id ="btnjournalachat"><i class="fa fa-file-text"></i>Fermer le journal</a>
-                        <table class="table table-bordered table-striped mb-none" id="provisionTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                        <table class="table table-bordered table-striped mb-none" id="provisionTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Numero</th>
@@ -72,12 +72,12 @@
 @endsection
 @section('js')
 
-    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="js/commande.js"></script>
+    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="public/js/commande.js"></script>
 
 @endsection

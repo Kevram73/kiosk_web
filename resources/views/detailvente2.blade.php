@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 @endsection
 @section('contenu')
     <div class="inner-wrapper">
@@ -27,7 +27,7 @@
                                 <li class="list-group-item">Montant total :<b> <span class="text-danger prix" >{{ $all_vente->totaux }} FCFA</span></b></li>
                         </ul>
                         </div>
-                        <table class="table table-bordered table-striped mb-none" id="afficheTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
+                        <table class="table table-bordered table-striped mb-none" id="afficheTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Produit</th>
@@ -106,7 +106,7 @@
                                     <li class="list-group-item"> <h4><center>Retoure produits</center></h4> </li>
                                     <li class="list-group-item">Montant total rendu :<b> <span class="text-danger prix" >{{ $total_rendu }} FCFA</span></b></li>
                                 </ul>
-                                <table class="table table-bordered table-striped mb-none" id="afficheTable2" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
+                                <table class="table table-bordered table-striped mb-none" id="afficheTable2" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf" >
                                     <thead>
                                     <tr>
                                         <th class="center hidden-phone">Montant total</th>
@@ -142,12 +142,12 @@
 @endsection
 @section('js')
 
-    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
     <script>
 
         function setNumeralHtml(element, format, surfix="")

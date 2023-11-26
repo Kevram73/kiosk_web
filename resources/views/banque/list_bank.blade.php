@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 @endsection
 @section('contenu')
     <!-- Modal to add banques -->
@@ -62,18 +62,18 @@
 @section('js')
 
 <script>
-    import Index from "../../../octopus/assets/vendor/flot/examples/zooming/index.html";
+    import Index from "../../../public/octopus/assets/vendor/flot/examples/zooming/index.html";
     export default {
         components: {Index}
     }
 </script>
-    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="js/banques.js"></script>
+    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="public/js/banques.js"></script>
 
     <script>
              console.log('recherche');

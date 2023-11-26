@@ -1,6 +1,6 @@
 @extends('layout')
 @section('css')
-    <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+    <link rel="stylesheet" href="public/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
     <style>
         .hideIds tr td:first-of-type {
             visibility: hidden;
@@ -117,7 +117,7 @@
                                                             </div>
                                                             <br>
 
-                                                            <table class="table table-bordered table-striped mb-none" id="produitTransfertTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                                            <table class="table table-bordered table-striped mb-none" id="produitTransfertTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                                                 <thead>
                                                                 <tr>
                                                                     <th class="center hidden-phone" style="display: table-column;"></th>
@@ -142,7 +142,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <table class="table table-bordered table-striped mb-none" id="transfertTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                        <table class="table table-bordered table-striped mb-none" id="transfertTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                             <thead>
                                             <tr>
                                                 <th class="center hidden-phone">Code</th>
@@ -174,7 +174,7 @@
                                                             <div style="border-bottom: 1px solid gray"></div>
                                                             <br>
                                                             <h5 style="margin-bottom: 25px;">Liste des produits</h5>
-                                                            <table class="table table-bordered table-striped mb-none" id="tproduitTransfertTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                                            <table class="table table-bordered table-striped mb-none" id="tproduitTransfertTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                                                 <thead>
                                                                 <tr>
                                                                     <th class="center hidden-phone" style="display: table-column;"></th>
@@ -221,7 +221,7 @@
                                                             
                                                             <br>
 
-                                                            <table class="table table-bordered table-striped mb-none" id="produitReceptionTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                                            <table class="table table-bordered table-striped mb-none" id="produitReceptionTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                                                 <thead>
                                                                 <tr>
                                                                     <th class="center hidden-phone" style="display: table-column;"></th>
@@ -246,7 +246,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <table class="table table-bordered table-striped mb-none" id="receptionTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                        <table class="table table-bordered table-striped mb-none" id="receptionTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                             <thead>
                                             <tr>
                                                 <th class="center hidden-phone">Code</th>
@@ -278,7 +278,7 @@
                                                             <div style="border-bottom: 1px solid gray"></div>
                                                             <br>
                                                             <h5 style="margin-bottom: 25px;">Liste des produits</h5>
-                                                            <table class="table table-bordered table-striped mb-none" id="tproduitReceptionTable" data-swf-path="octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
+                                                            <table class="table table-bordered table-striped mb-none" id="tproduitReceptionTable" data-swf-path="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf">
                                                                 <thead>
                                                                 <tr>
                                                                     <th class="center hidden-phone" style="display: table-column;"></th>
@@ -318,12 +318,12 @@
 @endsection
 @section('js')
 
-    <script src="octopus/assets/vendor/jquery/jquery.js"></script>
-    <script src="octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-    <script src="octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
-    <script src="js/transfert.js"></script>
+    <script src="public/octopus/assets/vendor/jquery/jquery.js"></script>
+    <script src="public/octopus/assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="public/octopus/assets/vendor/nanoscroller/nanoscroller.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="public/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+    <script src="public/js/transfert.js"></script>
 
 @endsection
