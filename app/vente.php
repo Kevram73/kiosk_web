@@ -10,6 +10,7 @@ class vente extends Model
         $preventes = Prevente::where("vente_id", $this->id)->get();
         return $preventes;
     }
+    
     public function caisse(){
         // $caisse = CaisseBoutique::where('boutique_id', $this->boutique_id)->get()->first();
         // return $caisse;

@@ -33,7 +33,8 @@ class SalesController extends BaseController
      */
     public function index()
     {
-        return SaleResource::collection(vente::all());
+        $ventes = vente::where('boutique_id', Auth::user()->boutique_id)->get();
+        return SaleResource::collection($ventes);
     }
 
     public function filter(Request $request){

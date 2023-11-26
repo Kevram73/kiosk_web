@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Produit;
+use App\Modele;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 class ProductController extends BaseController
 {
     public function index(){
-        $products = Produit::all();
+        $products = Modele::all();
 
         return response()->json([
             'status' => 'success',
