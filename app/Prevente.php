@@ -14,7 +14,12 @@ class Prevente extends Model
     }
 
     public function product(){
-        $produit_id = Modele::find($this->modele_fournisseur_id)->produit_id;
+        $modele = Modele::find($this->modele_fournisseur_id);
+        if($modele == null){
+            return "";
+        }
+        $produit_id = $modele->produit_id;
+
         if(Produit::find($produit_id)){
             $productName = Produit::find($produit_id)->nom;
             return $productName;
