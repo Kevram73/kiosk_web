@@ -1,5 +1,6 @@
 @extends('layout')
 @section('css')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     {{-- <link rel="stylesheet" href="octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" /> --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap.min.css">
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
@@ -53,7 +54,7 @@
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-success" id="btnhistorique"><i class="fa fa-file-text"></i>Historiques</a>
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id="btnjournal"><i class="fa fa-file-text"></i>Fermer le journal</a>
 
-                        <table class="table table-bordered table-striped mb-none" id="venteTable" >
+                        <table class="table table-bordered table-striped mb-none"  >
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Numero</th>
