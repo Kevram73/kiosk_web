@@ -51,7 +51,7 @@
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-success" id="btnhistorique"><i class="fa fa-file-text"></i>Historiques</a>
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id="btnjournal"><i class="fa fa-file-text"></i>Fermer le journal</a>
 
-                        <table class="table table-bordered table-striped mb-none" id="venteTable" >
+                        <table class="table table-bordered table-striped mb-none"  >
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Numero</th>
@@ -63,7 +63,27 @@
                             </tr>
                             </thead>
                             <tbody class="center hidden-phone">
-
+                                @foreach ($vente as $vente_line)
+                                <tr>
+                                    <td>{{ $vente_line->numero }}</td>
+                                    <td>{{ $vente_line->created_at }}</td>
+                                    <td>{{ $vente_line->totaux }}</td>
+                                    <td>
+                                        @if ($vente_line->type_vente == 1)
+                                            SIMPLE
+                                        @elseif($vente_line->type_vente == 2)
+                                            CREDIT
+                                        @elseif($vente_line->type_vente == 3)
+                                            NON LIVREE
+                                        @elseif($vente_line->type_vente == 4)
+                                            EN GROS
+                                        @endif
+                                    </td>
+                                    <td>{{ $vente_line->nom }} {{ $vente_line->prenom }}</td>
+                                    <td><a class="btn btn-info " onclick="show({{$vente_line->id}})" ><i class="fa  fa-info"></i></a>
+                                        <a class="btn btn-danger" onclick="deletepro({{$vente_line->id}})"><i class="fa fa-trash-o"></i></a></td>
+                                </tr>
+                                @endforeach
 
                             </tbody>
                         </table>

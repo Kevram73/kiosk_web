@@ -50,14 +50,14 @@ class VentesController extends Controller
     {
         $vente = vente::with('user')->
         with('boutique')->where ('ventes.boutique_id', '=',Auth::user()->boutique->id)->orderBy('ventes.created_at', 'DESC')->get();
-
-        return datatables()->of($vente)
-            ->addColumn('action', function ($clt) {
-                return  '<a class="btn btn-info " onclick="show(' . $clt->id . ')" ><i class="fa  fa-info"></i></a>
-                                     <a class="btn btn-danger" onclick="deletepro(' . $clt->id . ')"><i class="fa fa-trash-o"></i></a>'
-                                      ;
-            })
-            ->make(true);
+        return view('vente', compact('vente'));
+        // return datatables()->of($vente)
+        //     ->addColumn('action', function ($clt) {
+        //         return  '<a class="btn btn-info " onclick="show(' . $clt->id . ')" ><i class="fa  fa-info"></i></a>
+        //                              <a class="btn btn-danger" onclick="deletepro(' . $clt->id . ')"><i class="fa fa-trash-o"></i></a>'
+        //                               ;
+        //     })
+        //     ->make(true);
     }
 
     public function liste()
