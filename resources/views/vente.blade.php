@@ -54,7 +54,7 @@
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-success" id="btnhistorique"><i class="fa fa-file-text"></i>Historiques</a>
                         <a class="btn btn-default mb-xs mt-xs mr-xs btn btn-danger" id="btnjournal"><i class="fa fa-file-text"></i>Fermer le journal</a>
 
-                        <table class="table table-bordered table-striped mb-none"  >
+                        <table class="table table-bordered table-striped mb-none" id="venteTable" >
                             <thead>
                             <tr>
                                 <th class="center hidden-phone">Numero</th>
