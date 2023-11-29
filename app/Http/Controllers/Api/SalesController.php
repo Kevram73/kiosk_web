@@ -33,7 +33,7 @@ class SalesController extends BaseController
      */
     public function index()
     {
-        $ventes = vente::where('boutique_id', Auth::user()->boutique_id)->paginate(10);
+        $ventes = vente::where('boutique_id', Auth::user()->boutique_id)->orderBy('created_at', 'desc')->get()->take(10);
         return SaleResource::collection($ventes);
     }
 

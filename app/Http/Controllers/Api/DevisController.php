@@ -26,7 +26,7 @@ class DevisController extends BaseController
      */
     public function index()
     {
-        return DevisResource::collection(DevisVente::all()->take(10));
+        return DevisResource::collection(DevisVente::orderBy('created_at', 'desc')->get()->take(10));
     }
 
     public function storeDevis(Request $request)
