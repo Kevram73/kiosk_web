@@ -20,7 +20,7 @@ class ExpenseController extends BaseController
      */
     public function index()
     {
-        $expenses = Depense::all()->take(10);
+        $expenses = Depense::orderBy('created_at', 'desc')->get()->take(10);
 
         return response([
             'data' => $expenses,

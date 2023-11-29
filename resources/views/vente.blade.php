@@ -141,5 +141,6 @@
     <script src="js/vente.js"></script>
     <script src="js/categorie.js"></script>
     <script src="js/seuil.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 @endsection
