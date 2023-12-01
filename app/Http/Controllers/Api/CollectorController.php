@@ -34,7 +34,7 @@ class CollectorController extends BaseController
         }
 
         $token = $request->user()->createToken('API Token')->plainTextToken;
-        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->role()]);
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->getRoleNames()]);
     }
 
     public function register(Request $request){
@@ -52,9 +52,10 @@ class CollectorController extends BaseController
         $user->save();
         return response()->json([
             'status' => 'success',
-            'collector' => $user,
+            'user' => $user,
+            'role' => $user->getRoleNames()
         ], 200);
     }
 
-    
+
 }
