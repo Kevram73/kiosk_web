@@ -87,7 +87,7 @@ class ApiAuthController extends BaseController
         $user->assignRole('COLLECTOR');
         $user->save();
 
-        return response()->json(['new_user' => $user]);
+        return response()->json(['new_user' => $user, 'role' => $user->getRoleNames()]);
     }
 
     public function login_admin(Request $request){
