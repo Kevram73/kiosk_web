@@ -31,7 +31,7 @@ class ApiAuthController extends BaseController
         }
 
         $token = $request->user()->createToken('API Token')->plainTextToken;
-        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->getRolesName()]);
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => ""]);
     }
 
 
@@ -71,7 +71,7 @@ class ApiAuthController extends BaseController
         }
 
         $token = $request->user()->createToken('API Token')->plainTextToken;
-        return response()->json(['token' => $token, 'user' => $request->user(), "role" => $request->user()->getRoleNames()]);
+        return response()->json(['token' => $token, 'user' => $request->user(), "role" => ""]);
     }
 
     public function register_collector(Request $request){
