@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Client;
 use App\Historique;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class ClientsController extends BaseController
 {
@@ -22,7 +22,7 @@ class ClientsController extends BaseController
      */
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::where('boutique_id', Auth::user()->boutique_id)->get();
         return response()->json([
             'status' => 'success',
             'clients' => $clients,
