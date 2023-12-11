@@ -22,7 +22,7 @@ class ClientsController extends BaseController
      */
     public function index()
     {
-        $clients = Client::where('boutique_id', Auth::user()->boutique_id)->get();
+        $clients = Client::where('boutique_id', Auth::user()->boutique_id)->paginate(10);
         return response()->json([
             'status' => 'success',
             'clients' => $clients,
