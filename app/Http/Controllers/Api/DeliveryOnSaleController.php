@@ -33,8 +33,7 @@ class DeliveryOnSaleController extends BaseController
 
         $boutiqueId = auth()->user()->boutique_id;
 
-        $ventes = vente::with('preventes.livraisonVentes')
-            ->where('type_vente', 3)
+        $ventes = vente::where('type_vente', 3)
             ->where('boutique_id', $boutiqueId)
             ->get();
         
@@ -46,7 +45,7 @@ class DeliveryOnSaleController extends BaseController
             });
         });
         
-        return SaleResource::collection($ventesFiltrees);
+        return SaleResource::collection($ventes);
     }
 
     public function filter(Request $request){
