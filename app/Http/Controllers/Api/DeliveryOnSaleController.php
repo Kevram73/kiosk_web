@@ -36,24 +36,9 @@ class DeliveryOnSaleController extends BaseController
         $ventes = vente::where('type_vente', 3)
             ->where('boutique_id', $boutiqueId)
             ->get();
-        $venteIds = $ventes->pluck('id')->toArray();
-        $preventes = Prevente::whereIn('vente_id', $venteIds)->get();
-        $preventeIds = $preventes->pluck('id')->toArray();
-        $livraisonventePreventeIds = Livraisonvente::where('quantite_restante', '>', 0)
-            ->whereIn('prevente_id', $preventeIds)
-            ->pluck('prevente_id')
-            ->toArray();
-
-        // Retrieve preventeIds from Prevente not in Livraisonvente
-        $preventeIdsNotInTable = Prevente::whereNotIn('id', $livraisonventePreventeIds)
-            ->whereIn('id', $preventeIds)
-            ->pluck('id')
-            ->toArray();
-
-        // Filter the existing preventeIds based on the conditions
-        $filteredPreventeIds = array_intersect($preventeIds, $livraisonventePreventeIds, array_diff($livraisonventePreventeIds, $preventeIdsNotInTable));
         
-        return $filteredPreventeIds;
+        
+        return SaleResource::collection($ventes);
     }
 
     public function filter(Request $request){
