@@ -32,7 +32,7 @@ class vente extends Model
 
     public function incompletedPrevente(){
         $preventeIds= [];
-        $preventes = Prevente::where("vente_id", $vente->id)->get();
+        $preventes = Prevente::where("vente_id", $this->id)->get();
         foreach($preventes as $prevent){
             array_push($preventeIds, $prevent->id);
         }
