@@ -44,11 +44,10 @@ class DeliveryOnSaleController extends BaseController
                 $query->whereNotExists(function ($subQuery) {
                     $subQuery->select(DB::raw(1))
                         ->from('livraison_ventes')
-                        ->whereRaw('livraison_ventes.prevente_id = preventes.id');
+                        ->whereRaw('livraison_ventes.prevente_id = preventes.id')
+                        ->andWhere('quantite_restante', '>', 0);
                 });
-            })
-            ->orWhere('quantite_restante', '>', 0)
-            ->get();
+            })->get();
         $preventesNonLivreesIds = $preventesNonLivrees->pluck('id')->toArray();
 
         $ventesFiltrees = $ventes->filter(function ($vente) use ($preventesNonLivreesIds) {
