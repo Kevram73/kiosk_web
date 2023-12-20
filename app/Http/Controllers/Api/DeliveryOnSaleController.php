@@ -44,16 +44,14 @@ class DeliveryOnSaleController extends BaseController
         $livraisons = Livraisonvente::all();
         for($i=0; $i<count($preventeIds); $i++){
             foreach($livraisons as $livraison){
-                if(!in_array($preventeIds[$i], $livraison->prevente_id)){
-                    $notInAndGoodIn[] = $preventeIds[$i];
-                } else {
-                    if($livraison->quantite_restante>0){
+                if($preventeIds[$i] == $livraison->prevente_id){
+                    if($livraison->quantite_restante == 0)
                         $notInAndGoodIn[] = $preventeIds[$i];
-                    }
+                } else {
+                    $notInAndGoodIn[] = $preventeIds[$i];
                 }
             }
         }
-        
         
         return $notInAndGoodIn;
     }
