@@ -63,7 +63,8 @@ class DeliveryOnSaleController extends BaseController
             array_push($ventesResult, $vente);
         }
         
-        return array_values(array_unique($ventesResult));
+        $results = array_values(array_unique($ventesResult));
+        return SaleResource::collection($results);
     }
 
     public function filter(Request $request){
