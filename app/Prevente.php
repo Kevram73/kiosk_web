@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prevente extends Model
 {
+    public function vente()
+    {
+        return $this->belongsTo(vente::class, 'vente_id');
+    }
+
+    public function livraisonVentes()
+    {
+        return $this->hasMany(Livraisonvente::class, 'prevente_id');
+    }
+
     public function modelefournisseur(){
         if(Modele::find($this->modele_fournisseur_id)){
             return Modele::find($this->modele_fournisseur_id)->libelle;

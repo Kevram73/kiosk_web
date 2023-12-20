@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class vente extends Model
 {
     public function preventes(){
-        $preventes = Prevente::where("vente_id", $this->id)->get();
-        return $preventes;
+        return $this->hasMany(Prevente::class, 'vente_id');
     }
     
     public function caisse(){

@@ -33,7 +33,7 @@ class DeliveryOnSaleController extends BaseController
 
         $boutiqueId = auth()->user()->boutique_id;
 
-        $ventes = Vente::with('preventes.livraisonVentes')
+        $ventes = vente::with('preventes.livraisonVentes')
             ->where('type_vente', 3)
             ->where('boutique_id', $boutiqueId)
             ->get();
