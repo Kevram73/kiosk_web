@@ -49,7 +49,7 @@ class DeliveryOnSaleController extends BaseController
         for($i=0; $i<count($preventeIds); $i++){
             foreach($livraisons as $livraison){
                 if($livraison->prevente_id=$preventeIds[$i]){
-                    if($livraison->quantite_restante == 0)
+                    if($livraison->quantite_restante > 0)
                         array_push($notInAndGoodIn, $preventeIds[$i]);
                 } else {
                     array_push($notInAndGoodIn, $preventeIds[$i]);
@@ -63,10 +63,10 @@ class DeliveryOnSaleController extends BaseController
             $vente = vente::find($prevente->vente_id);
             array_push($ventesResult, $vente);
         }
-        
+
         $results = array_values(array_unique($ventesResult));
         return SaleCResource::collection($results);
-        
+
     }
 
     public function filter(Request $request){
