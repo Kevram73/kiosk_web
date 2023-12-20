@@ -52,7 +52,7 @@ class DeliveryOnSaleController extends BaseController
 
         // Filter the existing preventeIds based on the conditions
         $filteredPreventeIds = array_intersect($preventeIds, $livraisonventePreventeIds, array_diff($livraisonventePreventeIds, $preventeIdsNotInTable));
-        $ventesCorresponding = Vente::where('type_vente', 3)
+        $ventesCorresponding = vente::where('type_vente', 3)
             ->whereHas('preventes', function ($query) use ($filteredPreventeIds) {
                 $query->whereIn('id', $filteredPreventeIds);
             })
