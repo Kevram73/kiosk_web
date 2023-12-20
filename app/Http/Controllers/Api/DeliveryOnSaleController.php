@@ -55,8 +55,15 @@ class DeliveryOnSaleController extends BaseController
                 }
             }
         }
+        $uniqueArray = array_values(array_unique($notInAndGoodIn));
+        $ventesResult = [];
+        for($i=0; $i<count($uniqueArray); $i++){
+            $prevente = Prevente::find($uniqueArray[$i]);
+            $vente = vente::find($prevente->vente_id);
+            array_push($ventesResult, $vente);
+        }
         
-        return array_unique($notInAndGoodIn);
+        return array_values(array_unique($ventesResult));
     }
 
     public function filter(Request $request){
