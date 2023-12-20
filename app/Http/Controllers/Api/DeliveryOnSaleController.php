@@ -33,27 +33,19 @@ class DeliveryOnSaleController extends BaseController
 
         $boutiqueId = auth()->user()->boutique_id;
 
-        $ventes = vente::where('type_vente', 3)
+        $ventes = Vente::with('preventes.livraisonVentes')
+            ->where('type_vente', 3)
             ->where('boutique_id', $boutiqueId)
             ->get();
-
-        $venteIds = $ventes->pluck('id')->toArray();
-        $preventes = Prevente::whereIn('vente_id', $venteIds)->get();
-        $preventesNonLivrees = Prevente::whereIn('vente_id', $venteIds)
-            ->where(function ($query) {
-                $query->whereNotExists(function ($subQuery) {
-                    $subQuery->select(DB::raw(1))
-                        ->from('livraison_ventes')
-                        ->whereRaw('livraison_ventes.prevente_id = preventes.id')
-                        ->whereRaw('livraison_ventes.quantite_restante', '>', 0);
+        
+        $ventesFiltrees = $ventes->filter(function ($vente) {
+            return $vente->preventes->some(function ($prevente) {
+                return $prevente->livraisonVentes->every(function ($livraison) {
+                    return $livraison->quantite_restante <= 0;
                 });
-            })->get();
-        $preventesNonLivreesIds = $preventesNonLivrees->pluck('id')->toArray();
-
-        $ventesFiltrees = $ventes->filter(function ($vente) use ($preventesNonLivreesIds) {
-            return in_array($vente->id, $preventesNonLivreesIds);
+            });
         });
-
+        
         return SaleResource::collection($ventesFiltrees);
     }
 
