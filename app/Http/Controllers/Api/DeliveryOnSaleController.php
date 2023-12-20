@@ -38,7 +38,9 @@ class DeliveryOnSaleController extends BaseController
             ->get();
         $venteIds = $ventes->pluck('id')->toArray();
         $preventes = Prevente::whereIn('vente_id', $venteIds)->get();
-        
+        $preventeIds = $preventes->pluck('id')->toArray();
+        $livraison_ventes = Livraisonvente::whereIn('prevente_id', $preventeIds)->get();
+    
         // $ventesFiltrees = $ventes->filter(function ($vente) {
         //     return $vente->preventes->some(function ($prevente) {
         //         return $prevente->livraisonVentes->every(function ($livraison) {
