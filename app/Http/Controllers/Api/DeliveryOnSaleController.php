@@ -38,7 +38,10 @@ class DeliveryOnSaleController extends BaseController
             ->get();
         $preventeIds = [];
         foreach ($ventes as $vente) {
-            $preventeIds[] = $vente->preventes()->pluck('id');
+            $preventes = Prevente::where("vente_id", $vente_id)->get();
+            foreach($preventes as $prevent){
+                $preventeIds[] = $prevent->id;
+            }
         }
         $notInAndGoodIn = [];
         $livraisons = Livraisonvente::all();
