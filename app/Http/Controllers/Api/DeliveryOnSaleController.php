@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Resources\LivraisonVenteResource;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\SaleResource;
+use App\Http\Resources\SaleCResource;
 
 class DeliveryOnSaleController extends BaseController
 {
@@ -64,7 +65,8 @@ class DeliveryOnSaleController extends BaseController
         }
         
         $results = array_values(array_unique($ventesResult));
-        return SaleResource::collection($results);
+        return SaleCResource::collection($results);
+        
     }
 
     public function filter(Request $request){
