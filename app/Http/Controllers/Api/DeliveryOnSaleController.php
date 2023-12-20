@@ -36,9 +36,26 @@ class DeliveryOnSaleController extends BaseController
         $ventes = vente::where('type_vente', 3)
             ->where('boutique_id', $boutiqueId)
             ->get();
+        $preventeIds = [];
+        foreach ($ventes as $vente) {
+            $preventeIds[] = $vente->preventes()->pluck('id');
+        }
+        $notInAndGoodIn = [];
+        $livraisons = Livraisonvente::all();
+        for($i=0; $i<count($preventeIds); $i++){
+            foreach($livraisons as $livraison){
+                if(!in_array($preventeIds[$i], $livraison->prevente_id)){
+                    $notInAndGoodIn[] = $preventeIds[$i];
+                } else {
+                    if($livraison->quantite_restante>0){
+                        $notInAndGoodIn[] = $preventeIds[$i];
+                    }
+                }
+            }
+        }
         
         
-        return SaleResource::collection($ventes);
+        return $notInAndGoodIn;
     }
 
     public function filter(Request $request){
