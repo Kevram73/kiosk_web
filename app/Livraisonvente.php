@@ -12,8 +12,7 @@ class Livraisonvente extends Model
         return LivraisonVenteS::find($this->livraison_v_id);
     }
 
-    public function prevente()
-    {
-        return $this->belongsTo(Prevente::class, 'prevente_id');
+    public function prevente(){
+        return Prevente::find($this->prevente_id);
     }
 }
