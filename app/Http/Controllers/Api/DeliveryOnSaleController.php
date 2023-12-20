@@ -45,7 +45,7 @@ class DeliveryOnSaleController extends BaseController
                     $subQuery->select(DB::raw(1))
                         ->from('livraison_ventes')
                         ->whereRaw('livraison_ventes.prevente_id = preventes.id')
-                        ->andWhere('quantite_restante', '>', 0);
+                        ->whereRaw('livraison_ventes.quantite_restante', '>', 0);
                 });
             })->get();
         $preventesNonLivreesIds = $preventesNonLivrees->pluck('id')->toArray();
