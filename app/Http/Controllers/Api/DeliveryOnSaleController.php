@@ -38,9 +38,9 @@ class DeliveryOnSaleController extends BaseController
             ->get();
         $preventeIds = [];
         foreach ($ventes as $vente) {
-            $preventes = Prevente::where("vente_id", $vente_id)->get();
+            $preventes = Prevente::where("vente_id", $vente->id)->get();
             foreach($preventes as $prevent){
-                $preventeIds[] = $prevent->id;
+                array_push($preventeIds, $prevent->id);
             }
         }
         $notInAndGoodIn = [];
