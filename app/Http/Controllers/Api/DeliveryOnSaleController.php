@@ -36,6 +36,8 @@ class DeliveryOnSaleController extends BaseController
         $ventes = vente::where('type_vente', 3)
             ->where('boutique_id', $boutiqueId)
             ->get();
+        $venteIds = $ventes->pluck('id')->toArray();
+        $preventes = Prevente::whereIn('vente_id', $venteIds)->get();
         
         // $ventesFiltrees = $ventes->filter(function ($vente) {
         //     return $vente->preventes->some(function ($prevente) {
