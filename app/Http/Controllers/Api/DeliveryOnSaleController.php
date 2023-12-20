@@ -56,7 +56,7 @@ class DeliveryOnSaleController extends BaseController
             }
         }
         
-        return $notInAndGoodIn;
+        return array_unique($notInAndGoodIn);
     }
 
     public function filter(Request $request){
