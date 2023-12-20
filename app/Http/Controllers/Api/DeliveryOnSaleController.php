@@ -52,13 +52,8 @@ class DeliveryOnSaleController extends BaseController
 
         // Filter the existing preventeIds based on the conditions
         $filteredPreventeIds = array_intersect($preventeIds, $livraisonventePreventeIds, array_diff($livraisonventePreventeIds, $preventeIdsNotInTable));
-        $ventesCorresponding = vente::where('type_vente', 3)
-            ->whereHas('preventes', function ($query) use ($filteredPreventeIds) {
-                $query->whereIn('id', $filteredPreventeIds);
-            })
-            ->where('boutique_id', $boutiqueId)
-            ->get();
-        return SaleResource::collection($ventesCorresponding);
+        
+        return $filteredPreventeIds;
     }
 
     public function filter(Request $request){
