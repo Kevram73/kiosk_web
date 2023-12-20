@@ -46,9 +46,9 @@ class DeliveryOnSaleController extends BaseController
             foreach($livraisons as $livraison){
                 if($livraison->prevente_id=$preventeIds[$i]){
                     if($livraison->quantite_restante == 0)
-                        $notInAndGoodIn[] = $preventeIds[$i];
+                        array_push($notInAndGoodIn[], $preventeIds[$i]);
                 } else {
-                    $notInAndGoodIn[] = $preventeIds[$i];
+                    array_push($notInAndGoodIn, $preventeIds[$i]);
                 }
             }
         }
