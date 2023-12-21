@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Historique;
 use App\vente;
 use App\Livraisonvente;
-use App\LivraisonV;
-use App\Modele;
 use App\Prevente;
 use App\LivraisonVenteS;
 use Illuminate\Http\Request;
@@ -85,54 +83,47 @@ class DeliveryOnSaleController extends BaseController
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
+        $lineLiv = new LivraisonVenteS();
+        $lineLiv->numero = $request->numero;
+        $lineLiv->date_livraison = now();
+        $lineLiv->boutique_id = $request->boutique_id;
+        $lineLiv->created_at = now();
+        $lineLiv->updated_at = now();
+        $lineLiv->save();
 
-        $id=DB::table('livraison_v_s')->max('id');
-        $ed=1+$id;
-        $livraison = new LivraisonV();
-        $livraison ->numero="LIV-VENT".now()->format('Y')."-".$ed;
-        $livraison ->date_livraison= now();
-        $livraison ->boutique_id= auth()->user()->boutique->id;
-        $livraison->save();
-
-        $alllivraison= explode( ',', $request->input('livTable') );
-        for ($i =0 ;$i<count($alllivraison);$i+=2) {
-            $commande_modele = DB::table('preventes')->find($alllivraison[$i]);
-            $quantite_livre= DB::table('livraison_ventes')
-                    ->where('prevente_id', $alllivraison[$i])
-                    ->sum('quantite_livre');
-
-            $livraisonvente = new Livraisonvente();
-            $livraisonvente->livraison_v_id=$livraison ->id;
-            $livraisonvente->prevente_id=$alllivraison[$i];
-            $livraisonvente->quantite_livre =$alllivraison[$i];
-            $livraisonvente->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i];
-            $livraisonvente->save();
-
-            $modele= Modele::findOrFail($commande_modele->modele_fournisseur_id);
-            $modele->quantite=$modele->quantite- $livraisonvente ->quantite_livre;
-            $modele->update();
-
-            if ($livraisonvente->quantite_restante==0){
-                DB::table('preventes')
-                    ->where('id',$alllivraison[$i])
-                    ->update(['etat' => false]);
-            }
+        $livraison_ligne = Livraisonvente::where('prevente_id', $request->prevente_id)->get();
+        if(count($livraison_ligne) > 0){
+            $livraison = Livraisonvente::find($livraison_ligne[0]->id);
+            $livraison->quantite_livre += $request->qte;
+            $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
+            $livraison->prevente_id = $request->prevente_id;
+            $livraison->livraison_v_id = $lineLiv->id;
+            $livraison->created_at = now();
+            $livraison->updated_at = now();
+            $livraison->save();
+        } else {
+            $livraison = new Livraisonvente();
+            $livraison->quantite_livre += $request->qte;
+            $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
+            $livraison->prevente_id = $request->prevente_id;
+            $livraison->livraison_v_id = $lineLiv->id;
+            $livraison->created_at = now();
+            $livraison->updated_at = now();
+            $livraison->save();
         }
-
-        $historique=new Historique();
-        $historique->actions = "Creer";
-        $historique->cible = "Livraisons";
-        $historique->user_id =auth()->user()->id;
-        $historique->save();
-
-        DB::commit();
+        $historique = new Historique();
+            $historique->actions = "Creer";
+            $historique->cible = "Livraisons";
+            $historique->user_id = $request->user_id;
+            $historique->save();
 
         return response()->json([
             'status' => 'success',
-            'livraison' => $livraisonvente,
-            'line' => $livraison
+            'livraison' => $livraison,
+            'line' => $lineLiv
         ], 201);
+
+
     }
 
 
