@@ -47,15 +47,22 @@ class DeliveryOnSaleController extends BaseController
         $notInAndGoodIn = [];
         $livraisons = Livraisonvente::all();
         for($i=0; $i<count($preventeIds); $i++){
-            foreach($livraisons as $livraison){
-                if($livraison->prevente_id==$preventeIds[$i]){
-                    if($livraison->quantite_restante > 0)
+            $isPresent = false;
+
+            foreach ($livraisons as $livraison) {
+                if ($livraison->prevente_id == $preventeIds[$i]) {
+                    $isPresent = true;
+                    if ($livraison->quantite_restante > 0) {
                         array_push($notInAndGoodIn, $preventeIds[$i]);
-                } else {
-                    array_push($notInAndGoodIn, $preventeIds[$i]);
+                    }
+                    break;
                 }
             }
+            if (!$isPresent) {
+                array_push($notInAndGoodIn, $preventeIds[$i]);
+            }
         }
+
         $uniqueArray = array_values(array_unique($notInAndGoodIn));
         $ventesResult = [];
         for($i=0; $i<count($uniqueArray); $i++){
