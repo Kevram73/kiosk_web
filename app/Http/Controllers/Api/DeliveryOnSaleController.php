@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Historique;
 use App\vente;
 use App\Livraisonvente;
+use App\LivraisonV;
 use App\Prevente;
 use App\LivraisonVenteS;
 use Illuminate\Http\Request;
