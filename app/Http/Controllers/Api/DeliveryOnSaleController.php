@@ -115,7 +115,7 @@ class DeliveryOnSaleController extends BaseController
                 $livraison->quantite_livre = $prevente->quantite;
                 $livraison->quantite_restante = 0;
             } else {
-                $livraison->quantite_livre += $request->qte;
+                $livraison->quantite_livre = $request->qte;
                 $livraison->quantite_restante = $prevente->quantite - $request->qte;
             }
             $livraison->quantite_livre += $request->qte;
