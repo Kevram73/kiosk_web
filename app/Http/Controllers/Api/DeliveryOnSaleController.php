@@ -7,6 +7,7 @@ use App\Historique;
 use App\vente;
 use App\Livraisonvente;
 use App\LivraisonV;
+use App\Modele;
 use App\Prevente;
 use App\LivraisonVenteS;
 use Illuminate\Http\Request;
@@ -101,7 +102,7 @@ class DeliveryOnSaleController extends BaseController
                     ->where('prevente_id', $alllivraison[$i])
                     ->sum('quantite_livre');
 
-            $livraisonvente = new Livraison_vente();
+            $livraisonvente = new Livraisonvente();
             $livraisonvente->livraison_v_id=$livraison ->id;
             $livraisonvente->prevente_id=$alllivraison[$i];
             $livraisonvente->quantite_livre =$alllivraison[$i+1];
@@ -122,7 +123,7 @@ class DeliveryOnSaleController extends BaseController
         $historique=new Historique();
         $historique->actions = "Creer";
         $historique->cible = "Livraisons";
-        $historique->user_id =Auth::user()->id;
+        $historique->user_id =auth()->user()->id;
         $historique->save();
 
         DB::commit();
