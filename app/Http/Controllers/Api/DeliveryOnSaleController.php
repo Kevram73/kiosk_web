@@ -91,7 +91,7 @@ class DeliveryOnSaleController extends BaseController
         $livraison = new LivraisonV();
         $livraison ->numero="LIV-VENT".now()->format('Y')."-".$ed;
         $livraison ->date_livraison= now();
-        $livraison ->boutique_id= Auth::user()->boutique->id;
+        $livraison ->boutique_id= auth()->user()->boutique->id;
         $livraison->save();
 
         $alllivraison= explode( ',', $request->input('livTable') );
