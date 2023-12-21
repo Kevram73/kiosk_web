@@ -105,8 +105,8 @@ class DeliveryOnSaleController extends BaseController
             $livraisonvente = new Livraisonvente();
             $livraisonvente->livraison_v_id=$livraison ->id;
             $livraisonvente->prevente_id=$alllivraison[$i];
-            $livraisonvente->quantite_livre =$alllivraison[$i+1];
-            $livraisonvente->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i+1];
+            $livraisonvente->quantite_livre =$alllivraison[$i];
+            $livraisonvente->quantite_restante =$commande_modele->quantite - $quantite_livre - $alllivraison[$i];
             $livraisonvente->save();
 
             $modele= Modele::findOrFail($commande_modele->modele_fournisseur_id);
