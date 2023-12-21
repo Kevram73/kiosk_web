@@ -96,13 +96,10 @@ class DeliveryOnSaleController extends BaseController
         if(count($livraison_ligne) > 0){
 
             $livraison = Livraisonvente::find($livraison_ligne[0]->id);
-            if($request->qte > $livraison->quantite_restante){
-                $livraison->quantite_livre += $livraison->quantite_restante;
-                $livraison->quantite_restante = 0;
-            } else {
-                $livraison->quantite_livre += $request->qte;
-                $livraison->quantite_restante -= $request->qte;
-            }
+
+            $livraison->quantite_livre += $request->qte;
+            $livraison->quantite_restante -= $request->qte;
+
 
             $livraison->prevente_id = $request->prevente_id;
             $livraison->livraison_v_id = $lineLiv->id;
@@ -111,13 +108,10 @@ class DeliveryOnSaleController extends BaseController
             $livraison->save();
         } else {
             $livraison = new Livraisonvente();
-            if($request->qte > $prevente->quantite){
-                $livraison->quantite_livre = $prevente->quantite;
-                $livraison->quantite_restante = 0;
-            } else {
-                $livraison->quantite_livre = $request->qte;
-                $livraison->quantite_restante = $prevente->quantite - $request->qte;
-            }
+
+            $livraison->quantite_livre = $request->qte;
+            $livraison->quantite_restante = $prevente->quantite - $request->qte;
+
             $livraison->quantite_livre += $request->qte;
             $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
             $livraison->prevente_id = $request->prevente_id;
