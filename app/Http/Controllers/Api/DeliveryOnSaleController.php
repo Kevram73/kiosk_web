@@ -92,7 +92,9 @@ class DeliveryOnSaleController extends BaseController
         $lineLiv->save();
 
         $livraison_ligne = Livraisonvente::where('prevente_id', $request->prevente_id)->get();
+        $prevente = Prevente::find($request->prevente_id);
         if(count($livraison_ligne) > 0){
+
             $livraison = Livraisonvente::find($livraison_ligne[0]->id);
             $livraison->quantite_livre += $request->qte;
             $livraison->quantite_restante = $prevente->quantite - $livraison->quantite_livre;
