@@ -25,6 +25,6 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.2
       with:
-        server: 109.234.165.113
-        username: kevram@test-boutiqueplus.mingoube.com
+        server: 109.234.166.141
+        username: boutique@boutique.mekanopro.com
         password: Alkashi13!!!%
